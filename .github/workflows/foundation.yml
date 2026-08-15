@@ -1,0 +1,55 @@
+name: Foundation Validation
+
+on:
+  push:
+    branches:
+      - master
+      - foundation-bootstrap
+  pull_request:
+    branches:
+      - master
+
+concurrency:
+  group: foundation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate foundation
+    runs-on: ubuntu-latest
+
+    env:
+      # Prisma config requires DIRECT_DATABASE_URL to be defined during schema generation.
+      # No database connection is made by this foundation schema because it has no models.
+      DIRECT_DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      AUTH_SECRET: ci-only-placeholder
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate Prisma Client
+        run: npm run prisma:generate
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Next.js production build
+        run: npm run build
+
+      - name: OpenNext Cloudflare build
+        run: npm run build:cloudflare
