@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-08-18
+
+### Foundation Validation
+
+- Added and verified the initial technical package foundation for Ant Design, Prisma + Neon, and Cloudflare OpenNext.
+- Added Linux GitHub Actions validation for Prisma generation, lint, typecheck, Next.js build, and OpenNext Cloudflare build.
+- Excluded generated `.open-next` output from ESLint so generated deployment artifacts are not treated as application source.
+- Local validation passed: `npm run lint`, `npm run typecheck`, `npm run build`, and `npm run build:cloudflare`.
+- Confirmed Windows local Workers runtime remains blocked by `workerd` access violation `0xc0000005`; Linux CI is the authoritative Cloudflare runtime validation gate.
+
 ## 2026-08-15
 
 ### Added
@@ -15,4 +25,8 @@
 
 ### Not Yet Implemented
 
-No application runtime architecture changes have been made yet. The repository remains a Next.js starter until runtime/library compatibility is verified and the implementation portion of TASK-000 proceeds.
+- Authentication
+- Authorization / RBAC
+- Multi-tenant runtime enforcement
+- R2 upload/download implementation
+- Business modules

@@ -1,11 +1,11 @@
 # Current Project State
 
 ## Date
-2026-08-15
+2026-08-18
 
 ## Project Status
 
-NEW / FOUNDATION BOOTSTRAP
+FOUNDATION BOOTSTRAP — LOCAL VALIDATION PASSED
 
 ## Repository
 
@@ -23,19 +23,19 @@ NEW / FOUNDATION BOOTSTRAP
 - Tailwind CSS 4
 - ESLint
 
-## Planned Target Stack
+## Target Stack
 
-- Next.js 16.3.1, subject to runtime compatibility verification
+- Next.js 16.3.1
 - React 19.2.8
 - TypeScript
 - Ant Design 5
-- Prisma
+- Prisma 7
 - Neon PostgreSQL
 - Cloudflare Workers / OpenNext
 - Cloudflare R2
 - GitHub
 
-## Implemented
+## Implemented Foundation
 
 - Project documentation foundation.
 - Initial architecture documentation.
@@ -43,17 +43,30 @@ NEW / FOUNDATION BOOTSTRAP
 - Initial task/backlog structure.
 - Initial testing strategy.
 - Initial roadmap.
+- Ant Design package foundation.
+- Prisma + Neon package foundation.
+- Cloudflare OpenNext package/configuration foundation.
+- Cloudflare R2 environment/configuration foundation.
+- Linux GitHub Actions foundation validation workflow.
+- ESLint exclusion for generated `.open-next` output.
+
+## Local Validation
+
+Verified successfully by the developer on 2026-08-18:
+
+- `npm run lint`
+- `npm run typecheck`
+- `npm run build`
+- `npm run build:cloudflare`
+
+Windows Cloudflare local runtime (`wrangler dev` / `wrangler types`) remains blocked by a `workerd` access-violation crash (`0xc0000005`). This is treated as a local Windows runtime limitation; Linux CI is the authoritative Cloudflare runtime validation gate.
 
 ## Not Implemented
 
-- Ant Design integration
-- Prisma
-- Neon connection
 - Authentication
 - Authorization / RBAC
 - Multi-tenant runtime enforcement
-- R2 integration
-- Cloudflare deployment configuration
+- R2 upload/download implementation
 - Business modules
 
 ## Active Task
@@ -62,4 +75,4 @@ TASK-000 — Architecture Bootstrap
 
 ## Next Action
 
-Verify runtime/library compatibility, then implement the technical package foundation without introducing business modules.
+Verify the Linux GitHub Actions foundation workflow. If CI passes, complete TASK-000 and begin TASK-001 — Application Foundation & Design System.
