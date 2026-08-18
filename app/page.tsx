@@ -1,5 +1,6 @@
-import { Card, Col, Row, Statistic, Typography } from "antd";
+import { Card, Col, Row, Statistic } from "antd";
 import { ApplicationShell } from "@/components/application-shell";
+import { Paragraph, Title } from "@/components/ui/typography";
 
 const stats = [
   { title: "Total Students", value: 0 },
@@ -12,10 +13,10 @@ export default function Home() {
   return (
     <ApplicationShell>
       <div className="dashboard-intro">
-        <Typography.Title level={2}>Good morning</Typography.Title>
-        <Typography.Paragraph type="secondary">
+        <Title level={2}>Good morning</Title>
+        <Paragraph type="secondary">
           Your institution overview will appear here as modules are enabled.
-        </Typography.Paragraph>
+        </Paragraph>
       </div>
 
       <Row gutter={[16, 16]}>
@@ -30,10 +31,10 @@ export default function Home() {
       </Row>
 
       <Card className="empty-panel" style={{ marginTop: 20 }}>
-        <Typography.Title level={4}>Application foundation</Typography.Title>
-        <Typography.Paragraph type="secondary">
+        <Title level={4}>Application foundation</Title>
+        <Paragraph type="secondary">
           Authentication, institution setup, academic configuration, and business modules will be introduced as separate vertical slices.
-        </Typography.Paragraph>
+        </Paragraph>
       </Card>
     </ApplicationShell>
   );

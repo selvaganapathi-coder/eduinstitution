@@ -1,11 +1,17 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { Layout, Menu, Drawer, Button, Typography, Grid, Space } from "antd";
+import {
+  Layout,
+  Menu,
+  Drawer,
+  Button,
+  Grid,
+  Space,
+} from "antd";
+import { Text, Title } from "@/components/ui/typography";
 import type { MenuProps } from "antd";
-
 const { Header, Sider, Content } = Layout;
-const { Title, Text } = Typography;
 const { useBreakpoint } = Grid;
 
 type MenuItem = Required<MenuProps>["items"][number];
