@@ -14,13 +14,14 @@
     "prisma:generate": "prisma generate"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.20.2",
-    "dotenv": "^17.4.2",
+    "@ant-design/cssinjs": "^2.1.2",
     "@ant-design/nextjs-registry": "1.3.0",
     "@neondatabase/serverless": "1.1.0",
+    "@opennextjs/cloudflare": "^1.20.2",
     "@prisma/adapter-neon": "7.9.1",
     "@prisma/client": "7.9.1",
     "antd": "5.22.2",
+    "dotenv": "^17.4.2",
     "next": "16.3.1",
     "react": "19.2.8",
     "react-dom": "19.2.8"
