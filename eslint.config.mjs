@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // OpenNext generates deployment artifacts here. These are generated
+    // JavaScript files, not application source, and must not be linted.
+    ".open-next/**",
   ]),
 ]);
 

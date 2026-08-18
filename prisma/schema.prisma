@@ -1,0 +1,14 @@
+generator client {
+  provider   = "prisma-client"
+  output     = "../src/generated/prisma"
+  moduleFormat = "esm"
+  runtime    = "workerd"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// No business models are defined yet.
+// Foundation models will be introduced only when their authentication,
+// authorization, and institution requirements are specified.
