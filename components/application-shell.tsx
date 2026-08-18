@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Layout, Menu, Drawer, Button, Typography, Grid, Space } from "antd";
 import type { MenuProps } from "antd";
 
@@ -21,7 +21,7 @@ const items: MenuItem[] = [
   { key: "reports", label: "Reports" },
 ];
 
-export function ApplicationShell({ children }: { children: React.ReactNode }) {
+export function ApplicationShell({ children }: { children: ReactNode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const screens = useBreakpoint();
   const desktop = screens.md;
