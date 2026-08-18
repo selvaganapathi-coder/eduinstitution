@@ -1,7 +1,7 @@
 # TASK-000 — Architecture Bootstrap
 
 ## Status
-IN PROGRESS
+IN PROGRESS — LINUX CI VALIDATION
 
 ## Priority
 CRITICAL
@@ -14,7 +14,7 @@ Verify and establish the technical foundation for the new EduInstitution applica
 
 ## Current Repository Reality
 
-The repository is a clean Next.js starter using Next.js 16.3.1, React 19.2.8, TypeScript, Tailwind CSS 4, and ESLint. No database, authentication, authorization, R2 integration, or business modules are implemented.
+The repository started as a clean Next.js 16.3.1 starter using React 19.2.8, TypeScript, Tailwind CSS 4, and ESLint. The foundation branch now contains the initial Ant Design, Prisma/Neon, OpenNext/Cloudflare, R2 configuration, documentation, and validation infrastructure.
 
 ## In Scope
 
@@ -61,6 +61,17 @@ The repository is a clean Next.js starter using Next.js 16.3.1, React 19.2.8, Ty
 - Avoid unnecessary dependencies.
 - Verify database connection behavior in the actual target runtime.
 
+## Validation Results
+
+Local developer validation passed on 2026-08-18:
+
+- `npm run lint` — PASS after excluding generated `.open-next` output from ESLint.
+- `npm run typecheck` — PASS.
+- `npm run build` — PASS.
+- `npm run build:cloudflare` — PASS.
+
+Windows local Workers runtime validation remains blocked by `workerd` access violation `0xc0000005` during `wrangler types` / `wrangler dev`. Linux GitHub Actions is therefore the authoritative Cloudflare runtime/build validation environment.
+
 ## Acceptance Criteria
 
 - Repository foundation is documented.
@@ -72,3 +83,4 @@ The repository is a clean Next.js starter using Next.js 16.3.1, React 19.2.8, Ty
 - Build, lint, and relevant tests pass after implementation.
 - No business module is implemented as part of TASK-000.
 - Current state and changelog are updated.
+- Linux CI foundation validation passes.
