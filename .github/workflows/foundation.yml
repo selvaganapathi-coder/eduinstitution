@@ -20,7 +20,7 @@ jobs:
 
     env:
       # Prisma config requires DIRECT_DATABASE_URL to be defined during schema generation.
-      # No database connection is made by this foundation schema because it has no models.
+      # No database connection is made during the foundation validation workflow.
       DIRECT_DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
       DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
       AUTH_SECRET: ci-only-placeholder
@@ -34,12 +34,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Generate Prisma Client
         run: npm run prisma:generate
+
+      - name: Test
+        run: npm run test
 
       - name: Lint
         run: npm run lint
