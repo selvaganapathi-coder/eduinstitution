@@ -1,5 +1,6 @@
 import { AuthorizationError } from "./errors";
-import { requireTenantContext, type TenantContext } from "./tenant-context";
+import { requireTenantContext } from "./tenant-context";
+import type { TenantContext } from "./types";
 
 export function requirePermissionFromContext(
   context: TenantContext,
