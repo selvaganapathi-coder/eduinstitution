@@ -11,6 +11,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
     "prisma:generate": "prisma generate"
   },
   "dependencies": {
@@ -38,6 +39,7 @@
     "prisma": "^7.9.1",
     "tailwindcss": "^4",
     "typescript": "^5",
+    "vitest": "4.1.10",
     "wrangler": "^4.123.0"
   }
 }
