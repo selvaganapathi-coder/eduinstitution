@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { AuthorizationError } from "./errors";
 import { requirePermissionFromContext } from "./authorization";
-import type { TenantContext } from "./tenant-context";
+import type { TenantContext } from "./types";
 
 const baseContext: TenantContext = {
   userId: "user-1",
