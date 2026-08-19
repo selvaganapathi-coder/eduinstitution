@@ -1,17 +1,7 @@
-import { AuthorizationError } from "./errors";
 import { requireTenantContext } from "./tenant-context";
-import type { TenantContext } from "./types";
+import { requirePermissionFromContext } from "./authorization-core";
 
-export function requirePermissionFromContext(
-  context: TenantContext,
-  permissionCode: string,
-): TenantContext {
-  if (!context.permissionCodes.includes(permissionCode)) {
-    throw new AuthorizationError(`Missing permission: ${permissionCode}`);
-  }
-
-  return context;
-}
+export { requirePermissionFromContext } from "./authorization-core";
 
 export async function requirePermission(permissionCode: string) {
   const context = await requireTenantContext();
