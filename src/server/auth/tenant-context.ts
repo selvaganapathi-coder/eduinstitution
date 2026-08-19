@@ -7,6 +7,7 @@ import {
   AuthenticationError,
   TenantAccessError,
 } from "./errors";
+import type { TenantContext } from "./types";
 
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
@@ -34,15 +35,6 @@ function getPrisma() {
 
   return prisma;
 }
-
-export type TenantContext = {
-  userId: string;
-  tenantId: string;
-  sessionId: string;
-  membershipId: string;
-  roleIds: string[];
-  permissionCodes: string[];
-};
 
 export async function requireTenantContext(): Promise<TenantContext> {
   const cookieStore = await cookies();
