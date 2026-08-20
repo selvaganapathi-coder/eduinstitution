@@ -2,12 +2,13 @@
 
 ## Foundation
 
-- TASK-000 — Architecture Bootstrap — IN PROGRESS
-- TASK-001 — Application Foundation & Design System — BACKLOG
-- TASK-002 — Authentication — BACKLOG
-- TASK-003 — Authorization and RBAC — BACKLOG
-- TASK-004 — Institution Management — BACKLOG
-- TASK-005 — Academic Year Management — BACKLOG
-- TASK-006 — Student Management — BACKLOG
+- TASK-000 — Architecture Bootstrap — COMPLETED
+- TASK-001 — Application Foundation & Design System — COMPLETED
+- TASK-002 — Authentication — COMPLETED
+- TASK-003 — Authorization and RBAC — COMPLETED
+- TASK-004 — Institution Management — COMPLETED
+- TASK-005 — Authentication Completion & Tenant Selection — IN PROGRESS
+- TASK-006 — Academic Year Management — BACKLOG
+- TASK-007 — Student Management — BACKLOG
 
 Later modules will be added only after their dependencies and requirements are understood.
