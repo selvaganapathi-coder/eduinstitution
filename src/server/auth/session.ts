@@ -1,12 +1,15 @@
-import { createHash, randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
 
 import { PrismaClient } from "@/src/generated/prisma/client";
-
-const SESSION_COOKIE = "session";
-const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
+import {
+  generateSessionToken,
+  getSessionCookieOptions,
+  hashSessionToken,
+  SESSION_COOKIE,
+  SESSION_TTL_SECONDS,
+} from "./session-core";
 
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
@@ -27,30 +30,12 @@ function getPrisma() {
   return prisma;
 }
 
-function generateToken() {
-  return randomBytes(32).toString("base64url");
-}
-
-export function hashSessionToken(token: string) {
-  return createHash("sha256").update(token, "utf8").digest("hex");
-}
-
-export function getSessionCookieOptions(expiresAt: Date) {
-  return {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax" as const,
-    path: "/",
-    expires: expiresAt,
-  };
-}
-
 export async function createSession(input: {
   userId: string;
   tenantId: string;
   expiresInSeconds?: number;
 }) {
-  const token = generateToken();
+  const token = generateSessionToken();
   const tokenHash = hashSessionToken(token);
   const expiresAt = new Date(
     Date.now() + (input.expiresInSeconds ?? SESSION_TTL_SECONDS) * 1000,
@@ -90,9 +75,7 @@ export async function logout() {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE)?.value;
 
-  if (token) {
-    await revokeSession(token);
-  }
+  if (token) await revokeSession(token);
 
   cookieStore.set(SESSION_COOKIE, "", {
     httpOnly: true,
@@ -109,5 +92,3 @@ export async function cleanupExpiredSessions() {
     where: { expiresAt: { lte: new Date() } },
   });
 }
-
-export { SESSION_COOKIE, SESSION_TTL_SECONDS };
