@@ -34,6 +34,7 @@ TASK-007 — INSTITUTION MANAGEMENT NAVIGATION & UI IN PROGRESS
 - Added Dashboard → Institution → Profile breadcrumbs.
 - Kept institution API and tenant-security contracts unchanged.
 - Updated UI toward a Google-inspired enterprise visual language: white surfaces, restrained borders, clear hierarchy, subtle elevation, blue action/navigation accents.
+- Fixed the React `react-hooks/error-boundaries` lint violation by keeping authentication/tenant-context error handling in the `try/catch` and rendering JSX after the guarded context lookup.
 
 ## Route Flow
 
@@ -45,7 +46,7 @@ Future routes are not exposed until their corresponding capabilities are impleme
 
 ## Validation
 
-Pending CI validation for TASK-007:
+The reported CI lint failure was caused by JSX being returned from inside the `try/catch` in `app/institution/page.tsx`. That has been corrected. Full CI validation remains required:
 
 - `npm run test`
 - `npm run lint`
@@ -55,4 +56,4 @@ Pending CI validation for TASK-007:
 
 ## Next Action
 
-Run the complete CI gate, review the UI/route diff, and merge only after all checks are green.
+Re-run the complete CI gate, review the UI/route diff, and merge only after all checks are green.
