@@ -4,7 +4,8 @@ import { neonConfig } from "@neondatabase/serverless";
 import { PrismaClient } from "@/src/generated/prisma/client";
 import { createSession } from "./session";
 import { verifyPassword } from "./credentials";
-import { AuthenticationError, TenantAccessError } from "./errors";
+import { AuthenticationError } from "./errors";
+import { selectTenantId } from "./tenant-selection";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
@@ -38,9 +39,23 @@ export type AuthenticateResult = {
   expiresAt: Date;
 };
 
-export async function authenticate(input: AuthenticateInput): Promise<AuthenticateResult> {
-  const email = input.email.trim().toLowerCase();
-  if (!email || !input.password) throw new AuthenticationError(INVALID_CREDENTIALS);
+export type InstitutionOption = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
+type AuthenticatedUser = {
+  id: string;
+  memberships: Array<{
+    tenantId: string;
+    tenant: InstitutionOption;
+  }>;
+};
+
+async function verifyCredentials(emailInput: string, password: string): Promise<AuthenticatedUser> {
+  const email = emailInput.trim().toLowerCase();
+  if (!email || !password) throw new AuthenticationError(INVALID_CREDENTIALS);
 
   const prisma = getPrisma();
   const user = await prisma.user.findUnique({
@@ -49,30 +64,32 @@ export async function authenticate(input: AuthenticateInput): Promise<Authentica
       memberships: {
         where: { status: "ACTIVE" },
         orderBy: { createdAt: "asc" },
-        select: { tenantId: true },
+        select: {
+          tenantId: true,
+          tenant: { select: { id: true, name: true, slug: true } },
+        },
       },
     },
   });
 
-  if (!user?.passwordHash || !(await verifyPassword(input.password, user.passwordHash))) {
+  if (!user?.passwordHash || !(await verifyPassword(password, user.passwordHash))) {
     throw new AuthenticationError(INVALID_CREDENTIALS);
   }
 
-  const tenantId = input.tenantId;
-  if (!tenantId) {
-    if (user.memberships.length !== 1) {
-      throw new TenantAccessError(
-        user.memberships.length === 0
-          ? "Your account does not have an active institution membership"
-          : "Select an institution before signing in",
-      );
-    }
-  }
+  return user;
+}
 
-  const selectedTenantId = tenantId ?? user.memberships[0]?.tenantId;
-  if (!selectedTenantId || !user.memberships.some((membership) => membership.tenantId === selectedTenantId)) {
-    throw new TenantAccessError("You do not have access to this institution");
-  }
+export async function getInstitutionOptions(
+  input: Pick<AuthenticateInput, "email" | "password">,
+): Promise<InstitutionOption[]> {
+  const user = await verifyCredentials(input.email, input.password);
+
+  return user.memberships.map(({ tenant }) => tenant);
+}
+
+export async function authenticate(input: AuthenticateInput): Promise<AuthenticateResult> {
+  const user = await verifyCredentials(input.email, input.password);
+  const selectedTenantId = selectTenantId(user.memberships, input.tenantId);
 
   const session = await createSession({
     userId: user.id,

@@ -1,11 +1,11 @@
 # Current Project State
 
 ## Date
-2026-08-18
+2026-08-21
 
 ## Project Status
 
-FOUNDATION BOOTSTRAP — LOCAL VALIDATION PASSED
+TASK-005 — AUTHENTICATION COMPLETION IN PROGRESS
 
 ## Repository
 
@@ -13,7 +13,7 @@ FOUNDATION BOOTSTRAP — LOCAL VALIDATION PASSED
 
 ## Current Branch
 
-`foundation-bootstrap`
+`task-005-authentication-completion-v2`
 
 ## Verified Existing Stack
 
@@ -21,58 +21,54 @@ FOUNDATION BOOTSTRAP — LOCAL VALIDATION PASSED
 - React 19.2.8
 - TypeScript
 - Tailwind CSS 4
-- ESLint
-
-## Target Stack
-
-- Next.js 16.3.1
-- React 19.2.8
-- TypeScript
 - Ant Design 5
-- Prisma 7
+- Prisma 7.9.1
 - Neon PostgreSQL
 - Cloudflare Workers / OpenNext
-- Cloudflare R2
-- GitHub
+- Cloudflare R2 foundation
+- Vitest
+- ESLint
 
-## Implemented Foundation
+## Completed Tasks
 
-- Project documentation foundation.
-- Initial architecture documentation.
-- Initial ADR foundation.
-- Initial task/backlog structure.
-- Initial testing strategy.
-- Initial roadmap.
-- Ant Design package foundation.
-- Prisma + Neon package foundation.
-- Cloudflare OpenNext package/configuration foundation.
-- Cloudflare R2 environment/configuration foundation.
-- Linux GitHub Actions foundation validation workflow.
-- ESLint exclusion for generated `.open-next` output.
+- TASK-000 — Architecture Bootstrap
+- TASK-001 — Application Foundation & Design System
+- TASK-002 — Multi-Tenant Authentication/Authorization Foundation
+- TASK-003 — Authentication Session Lifecycle
+- TASK-004 — Authentication Flow
 
-## Local Validation
+## Active Task
 
-Verified successfully by the developer on 2026-08-18:
+TASK-005 — Authentication Completion & Tenant Selection
 
+## TASK-005 Implementation
+
+- Centralized tenant selection authorization.
+- Server-derived active institution options after credential verification.
+- Institution selector for users with multiple active memberships.
+- Single-membership login no longer requires manual tenant ID entry.
+- Final tenant authorization remains server-side before session creation.
+- Added tenant-selection unit coverage.
+
+## Security Notes
+
+- Client-provided tenant IDs are never trusted as authorization evidence.
+- Institution choices are derived from active memberships.
+- Invalid credentials remain generic.
+- Session creation remains bound to the selected active membership.
+
+## Validation
+
+Pending CI validation for the TASK-005 branch:
+
+- `npm run test`
 - `npm run lint`
 - `npm run typecheck`
 - `npm run build`
 - `npm run build:cloudflare`
 
-Windows Cloudflare local runtime (`wrangler dev` / `wrangler types`) remains blocked by a `workerd` access-violation crash (`0xc0000005`). This is treated as a local Windows runtime limitation; Linux CI is the authoritative Cloudflare runtime validation gate.
-
-## Not Implemented
-
-- Authentication
-- Authorization / RBAC
-- Multi-tenant runtime enforcement
-- R2 upload/download implementation
-- Business modules
-
-## Active Task
-
-TASK-000 — Architecture Bootstrap
+The existing repository uses Linux GitHub Actions as the authoritative Cloudflare runtime validation gate.
 
 ## Next Action
 
-Verify the Linux GitHub Actions foundation workflow. If CI passes, complete TASK-000 and begin TASK-001 — Application Foundation & Design System.
+Open TASK-005 pull request, inspect CI, address any failures, complete code review, then merge only after all gates are green.
