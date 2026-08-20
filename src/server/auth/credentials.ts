@@ -1,51 +1,86 @@
-import { randomBytes, scrypt as nodeScrypt, timingSafeEqual } from "node:crypto";
-import { promisify } from "node:util";
+const HASH_ALGORITHM = "SHA-256";
+const ITERATIONS = 310_000;
+const KEY_LENGTH_BITS = 256;
+const SALT_BYTES = 16;
 
-const scrypt = promisify(nodeScrypt);
-const KEY_LENGTH = 64;
-const SCRYPT_N = 16384;
-const SCRYPT_R = 8;
-const SCRYPT_P = 1;
-const SCRYPT_MAXMEM = 32 * 1024 * 1024;
+function bytesToHex(bytes: Uint8Array) {
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function hexToBytes(value: string) {
+  if (!/^[0-9a-f]+$/i.test(value) || value.length % 2 !== 0) return null;
+
+  const bytes = new Uint8Array(value.length / 2);
+  for (let index = 0; index < bytes.length; index += 1) {
+    bytes[index] = Number.parseInt(value.slice(index * 2, index * 2 + 2), 16);
+  }
+  return bytes;
+}
+
+function constantTimeEqual(left: Uint8Array, right: Uint8Array) {
+  if (left.length !== right.length) return false;
+
+  let difference = 0;
+  for (let index = 0; index < left.length; index += 1) {
+    difference |= left[index] ^ right[index];
+  }
+  return difference === 0;
+}
+
+async function derivePasswordKey(password: string, salt: Uint8Array, iterations: number) {
+  const baseKey = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(password),
+    "PBKDF2",
+    false,
+    ["deriveBits"],
+  );
+
+  return new Uint8Array(
+    await crypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        salt,
+        iterations,
+        hash: HASH_ALGORITHM,
+      },
+      baseKey,
+      KEY_LENGTH_BITS,
+    ),
+  );
+}
 
 export async function hashPassword(password: string): Promise<string> {
-  const salt = randomBytes(16).toString("hex");
-  const derivedKey = (await scrypt(password, salt, KEY_LENGTH, {
-    N: SCRYPT_N,
-    r: SCRYPT_R,
-    p: SCRYPT_P,
-    maxmem: SCRYPT_MAXMEM,
-  })) as Buffer;
+  const salt = new Uint8Array(SALT_BYTES);
+  crypto.getRandomValues(salt);
+  const derivedKey = await derivePasswordKey(password, salt, ITERATIONS);
 
-  return ["scrypt", SCRYPT_N, SCRYPT_R, SCRYPT_P, salt, derivedKey.toString("hex")].join("$");
+  return [
+    "pbkdf2",
+    ITERATIONS,
+    "sha256",
+    bytesToHex(salt),
+    bytesToHex(derivedKey),
+  ].join("$");
 }
 
 export async function verifyPassword(password: string, encodedHash: string): Promise<boolean> {
   const parts = encodedHash.split("$");
-  if (parts.length !== 6 || parts[0] !== "scrypt") return false;
+  if (parts.length !== 5 || parts[0] !== "pbkdf2" || parts[2] !== "sha256") return false;
 
-  const [, nValue, rValue, pValue, salt, keyHex] = parts;
-  const N = Number(nValue);
-  const r = Number(rValue);
-  const p = Number(pValue);
+  const iterations = Number(parts[1]);
+  const salt = hexToBytes(parts[3]);
+  const expectedKey = hexToBytes(parts[4]);
 
-  if (!Number.isSafeInteger(N) || !Number.isSafeInteger(r) || !Number.isSafeInteger(p)) return false;
-  if (!salt || !/^[0-9a-f]+$/i.test(keyHex) || keyHex.length !== KEY_LENGTH * 2) return false;
-  if (N < 1024 || r < 1 || p < 1) return false;
+  if (!Number.isSafeInteger(iterations) || iterations < 100_000 || iterations > 2_000_000) return false;
+  if (!salt || salt.length < SALT_BYTES || !expectedKey || expectedKey.length !== KEY_LENGTH_BITS / 8) return false;
 
   try {
-    const derivedKey = (await scrypt(password, salt, KEY_LENGTH, {
-      N,
-      r,
-      p,
-      maxmem: SCRYPT_MAXMEM,
-    })) as Buffer;
-    const expectedKey = Buffer.from(keyHex, "hex");
-
-    return derivedKey.length === expectedKey.length && timingSafeEqual(derivedKey, expectedKey);
+    const derivedKey = await derivePasswordKey(password, salt, iterations);
+    return constantTimeEqual(derivedKey, expectedKey);
   } catch {
     return false;
   }
 }
 
-export const PASSWORD_HASH_ALGORITHM = "scrypt";
+export const PASSWORD_HASH_ALGORITHM = "pbkdf2-sha256";
