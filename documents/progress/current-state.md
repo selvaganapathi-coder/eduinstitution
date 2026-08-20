@@ -5,7 +5,7 @@
 
 ## Project Status
 
-TASK-005 — AUTHENTICATION COMPLETION IN PROGRESS
+TASK-006 — INSTITUTION MANAGEMENT IN PROGRESS
 
 ## Repository
 
@@ -13,7 +13,7 @@ TASK-005 — AUTHENTICATION COMPLETION IN PROGRESS
 
 ## Current Branch
 
-`task-005-authentication-completion-v2`
+`task-006-institution-management`
 
 ## Verified Existing Stack
 
@@ -36,30 +36,33 @@ TASK-005 — AUTHENTICATION COMPLETION IN PROGRESS
 - TASK-002 — Multi-Tenant Authentication/Authorization Foundation
 - TASK-003 — Authentication Session Lifecycle
 - TASK-004 — Authentication Flow
+- TASK-005 — Authentication Completion & Tenant Selection
 
 ## Active Task
 
-TASK-005 — Authentication Completion & Tenant Selection
+TASK-006 — Institution Management
 
-## TASK-005 Implementation
+## TASK-006 Implementation
 
-- Centralized tenant selection authorization.
-- Server-derived active institution options after credential verification.
-- Institution selector for users with multiple active memberships.
-- Single-membership login no longer requires manual tenant ID entry.
-- Final tenant authorization remains server-side before session creation.
-- Added tenant-selection unit coverage.
+- Added authenticated tenant-scoped institution profile read API.
+- Added permission-checked institution name update API.
+- Added `institution:update` permission guard.
+- Added institution profile management UI.
+- Kept institution slug immutable in the management UI.
+- Added shared institution-name validation and unit coverage.
+- Updated development seed so the development Administrator receives `institution:update`.
+- Existing tenant context remains the source of tenant identity; no client tenant ID is accepted by institution management endpoints.
 
 ## Security Notes
 
-- Client-provided tenant IDs are never trusted as authorization evidence.
-- Institution choices are derived from active memberships.
-- Invalid credentials remain generic.
-- Session creation remains bound to the selected active membership.
+- Institution reads resolve the tenant exclusively from the authenticated session's tenant context.
+- Institution updates require an active membership plus `institution:update`.
+- Cross-tenant access cannot be selected through request parameters.
+- Invalid profile names are rejected before persistence.
 
 ## Validation
 
-Pending CI validation for the TASK-005 branch:
+Pending CI validation for the TASK-006 branch:
 
 - `npm run test`
 - `npm run lint`
@@ -71,4 +74,4 @@ The existing repository uses Linux GitHub Actions as the authoritative Cloudflar
 
 ## Next Action
 
-Open TASK-005 pull request, inspect CI, address any failures, complete code review, then merge only after all gates are green.
+Open the TASK-006 pull request, inspect CI, address failures, complete review, then merge only after all gates are green.
