@@ -8,8 +8,9 @@
 - TASK-003 — Authentication Session Lifecycle — COMPLETED
 - TASK-004 — Authentication Flow — COMPLETED
 - TASK-005 — Authentication Completion & Tenant Selection — COMPLETED
-- TASK-006 — Institution Management — IN PROGRESS
-- TASK-007 — Academic Year Management — BACKLOG
-- TASK-008 — Student Management — BACKLOG
+- TASK-006 — Institution Management — COMPLETED
+- TASK-007 — Institution Management Navigation & UI — IN PROGRESS
+- TASK-008 — Academic Year Management — BACKLOG
+- TASK-009 — Student Management — BACKLOG
 
 Later modules will be added only after their dependencies and requirements are understood.

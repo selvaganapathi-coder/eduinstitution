@@ -7,6 +7,11 @@ import type { TenantContext } from "./types";
 const baseContext: TenantContext = {
   userId: "user-1",
   tenantId: "tenant-1",
+  tenant: {
+    id: "tenant-1",
+    name: "Example Institution",
+    slug: "example-institution",
+  },
   sessionId: "session-1",
   membershipId: "membership-1",
   roleIds: ["role-admin"],
@@ -36,6 +41,11 @@ describe("requirePermissionFromContext", () => {
     const contextWithoutPermissions: TenantContext = {
       ...baseContext,
       tenantId: "tenant-2",
+      tenant: {
+        id: "tenant-2",
+        name: "Other Institution",
+        slug: "other-institution",
+      },
       permissionCodes: [],
     };
 

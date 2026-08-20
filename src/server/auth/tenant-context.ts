@@ -44,6 +44,13 @@ export async function requireTenantContext(): Promise<TenantContext> {
       },
     },
     include: {
+      tenant: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
       roles: {
         include: {
           permissions: {
@@ -70,6 +77,7 @@ export async function requireTenantContext(): Promise<TenantContext> {
   return {
     userId: session.userId,
     tenantId: session.tenantId,
+    tenant: membership.tenant,
     sessionId: session.id,
     membershipId: membership.id,
     roleIds,
