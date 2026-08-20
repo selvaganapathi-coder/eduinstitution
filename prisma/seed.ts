@@ -1,7 +1,6 @@
 import { PrismaNeon } from "@prisma/adapter-neon";
-import { neonConfig } from "@neondatabase/serverless";
-import { PrismaClient } from "../src/generated/prisma-node/client.ts";
-import { hashPassword } from "../src/server/auth/credentials.ts";
+import { PrismaClient } from "../src/generated/prisma-node/client";
+import { hashPassword } from "../src/server/auth/credentials";
 
 const DEV_EMAIL = "admin@eduinstitution.local";
 const DEV_PASSWORD = "ChangeMe123!";
