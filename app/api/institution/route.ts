@@ -10,6 +10,7 @@ import {
 } from "@/src/server/auth/errors";
 import { requirePermission } from "@/src/server/auth/permissions";
 import { requireTenantContext } from "@/src/server/auth/tenant-context";
+import { validateInstitutionName } from "@/src/server/institution/validation";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
@@ -58,13 +59,9 @@ export async function PATCH(request: Request) {
   try {
     const context = await requirePermission("institution:update");
     const body = (await request.json()) as { name?: unknown };
+    const name = validateInstitutionName(body.name);
 
-    if (typeof body.name !== "string") {
-      return NextResponse.json({ error: "Institution name is required" }, { status: 400 });
-    }
-
-    const name = body.name.trim();
-    if (name.length < 2 || name.length > 120) {
+    if (!name) {
       return NextResponse.json({ error: "Institution name must be between 2 and 120 characters" }, { status: 400 });
     }
 
