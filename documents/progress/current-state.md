@@ -35,6 +35,7 @@ TASK-007 — INSTITUTION MANAGEMENT NAVIGATION & UI IN PROGRESS
 - Kept institution API and tenant-security contracts unchanged.
 - Updated UI toward a Google-inspired enterprise visual language: white surfaces, restrained borders, clear hierarchy, subtle elevation, blue action/navigation accents.
 - Fixed the React `react-hooks/error-boundaries` lint violation by keeping authentication/tenant-context error handling in the `try/catch` and rendering JSX after the guarded context lookup.
+- Extended `TenantContext` with the authenticated tenant's safe display metadata (`id`, `name`, `slug`) so institution routes do not perform an unrelated tenant lookup or use an invalid context property.
 
 ## Route Flow
 
@@ -46,13 +47,14 @@ Future routes are not exposed until their corresponding capabilities are impleme
 
 ## Validation
 
-The reported CI lint failure was caused by JSX being returned from inside the `try/catch` in `app/institution/page.tsx`. That has been corrected. Full CI validation remains required:
-
-- `npm run test`
-- `npm run lint`
-- `npm run typecheck`
-- `npm run build`
-- `npm run build:cloudflare`
+- Lint failure: fixed by moving JSX outside the `try/catch`.
+- Typecheck failure: fixed by hydrating the active tenant in `requireTenantContext()` and typing it in `TenantContext`.
+- Full CI validation remains required:
+  - `npm run test`
+  - `npm run lint`
+  - `npm run typecheck`
+  - `npm run build`
+  - `npm run build:cloudflare`
 
 ## Next Action
 
