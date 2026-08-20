@@ -12,9 +12,9 @@ async function main() {
     throw new Error("The development seed must not run in production.");
   }
 
-  const connectionString = process.env.DATABASE_URL;
+  const connectionString = process.env.DIRECT_DATABASE_URL ?? process.env.DATABASE_URL;
   if (!connectionString) {
-    throw new Error("DATABASE_URL is required to run the development seed.");
+    throw new Error("DIRECT_DATABASE_URL or DATABASE_URL is required to run the development seed.");
   }
 
   neonConfig.fetchConnectionCache = true;
