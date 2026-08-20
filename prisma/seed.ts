@@ -5,6 +5,7 @@ import { hashPassword } from "../src/server/auth/credentials";
 const DEV_EMAIL = "admin@eduinstitution.local";
 const DEV_PASSWORD = "ChangeMe123!";
 const DEV_TENANT_SLUG = "demo-institution";
+const INSTITUTION_UPDATE_PERMISSION = "institution:update";
 
 async function main() {
   if (process.env.NODE_ENV === "production") {
@@ -35,15 +36,42 @@ async function main() {
       create: { email: DEV_EMAIL, name: "Demo Administrator", passwordHash },
     });
 
+    const permission = await prisma.permission.upsert({
+      where: { code: INSTITUTION_UPDATE_PERMISSION },
+      update: { description: "Update the current institution profile" },
+      create: {
+        code: INSTITUTION_UPDATE_PERMISSION,
+        description: "Update the current institution profile",
+      },
+    });
+
     const role = await prisma.role.upsert({
       where: { tenantId_name: { tenantId: tenant.id, name: "Administrator" } },
-      update: { description: "Development administrator role", scope: "TENANT", isSystem: true },
+      update: {
+        description: "Development administrator role",
+        scope: "TENANT",
+        isSystem: true,
+      },
       create: {
         tenantId: tenant.id,
         name: "Administrator",
         description: "Development administrator role",
         scope: "TENANT",
         isSystem: true,
+      },
+    });
+
+    await prisma.rolePermission.upsert({
+      where: {
+        roleId_permissionId: {
+          roleId: role.id,
+          permissionId: permission.id,
+        },
+      },
+      update: {},
+      create: {
+        roleId: role.id,
+        permissionId: permission.id,
       },
     });
 
