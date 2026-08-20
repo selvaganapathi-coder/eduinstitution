@@ -1,11 +1,12 @@
 # Current Project State
 
 ## Date
+
 2026-08-21
 
 ## Project Status
 
-TASK-006 — INSTITUTION MANAGEMENT IN PROGRESS
+TASK-007 — INSTITUTION MANAGEMENT NAVIGATION & UI IN PROGRESS
 
 ## Repository
 
@@ -13,23 +14,9 @@ TASK-006 — INSTITUTION MANAGEMENT IN PROGRESS
 
 ## Current Branch
 
-`task-006-institution-management`
+`task-007-institution-navigation-ui`
 
-## Verified Existing Stack
-
-- Next.js 16.3.1
-- React 19.2.8
-- TypeScript
-- Tailwind CSS 4
-- Ant Design 5
-- Prisma 7.9.1
-- Neon PostgreSQL
-- Cloudflare Workers / OpenNext
-- Cloudflare R2 foundation
-- Vitest
-- ESLint
-
-## Completed Tasks
+## Completed Foundation
 
 - TASK-000 — Architecture Bootstrap
 - TASK-001 — Application Foundation & Design System
@@ -37,32 +24,28 @@ TASK-006 — INSTITUTION MANAGEMENT IN PROGRESS
 - TASK-003 — Authentication Session Lifecycle
 - TASK-004 — Authentication Flow
 - TASK-005 — Authentication Completion & Tenant Selection
+- TASK-006 — Institution Management
 
-## Active Task
+## TASK-007 Implementation
 
-TASK-006 — Institution Management
+- `/institution` is now the institution-management landing route.
+- `/institution/profile` owns institution identity editing.
+- Added route-aware institution-local navigation.
+- Added Dashboard → Institution → Profile breadcrumbs.
+- Kept institution API and tenant-security contracts unchanged.
+- Updated UI toward a Google-inspired enterprise visual language: white surfaces, restrained borders, clear hierarchy, subtle elevation, blue action/navigation accents.
 
-## TASK-006 Implementation
+## Route Flow
 
-- Added authenticated tenant-scoped institution profile read API.
-- Added permission-checked institution name update API.
-- Added `institution:update` permission guard.
-- Added institution profile management UI.
-- Kept institution slug immutable in the management UI.
-- Added shared institution-name validation and unit coverage.
-- Updated development seed so the development Administrator receives `institution:update`.
-- Existing tenant context remains the source of tenant identity; no client tenant ID is accepted by institution management endpoints.
+`/` Dashboard
+→ `/institution` Institution Overview
+→ `/institution/profile` Institution Profile
 
-## Security Notes
-
-- Institution reads resolve the tenant exclusively from the authenticated session's tenant context.
-- Institution updates require an active membership plus `institution:update`.
-- Cross-tenant access cannot be selected through request parameters.
-- Invalid profile names are rejected before persistence.
+Future routes are not exposed until their corresponding capabilities are implemented.
 
 ## Validation
 
-Pending CI validation for the TASK-006 branch:
+Pending CI validation for TASK-007:
 
 - `npm run test`
 - `npm run lint`
@@ -70,8 +53,6 @@ Pending CI validation for the TASK-006 branch:
 - `npm run build`
 - `npm run build:cloudflare`
 
-The existing repository uses Linux GitHub Actions as the authoritative Cloudflare runtime validation gate.
-
 ## Next Action
 
-Open the TASK-006 pull request, inspect CI, address failures, complete review, then merge only after all gates are green.
+Run the complete CI gate, review the UI/route diff, and merge only after all checks are green.
