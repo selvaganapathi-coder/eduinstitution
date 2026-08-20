@@ -51,7 +51,16 @@ async function main() {
         description: "Development administrator role",
         scope: "TENANT",
         isSystem: true,
-        permissions: { connect: [{ id: permission.id }] },
+        permissions: {
+          connect: [
+            {
+              roleId_permissionId: {
+                roleId: "__ROLE_ID__",
+                permissionId: permission.id,
+              },
+            },
+          ],
+        },
       },
       create: {
         tenantId: tenant.id,
@@ -59,7 +68,7 @@ async function main() {
         description: "Development administrator role",
         scope: "TENANT",
         isSystem: true,
-        permissions: { connect: [{ id: permission.id }] },
+        permissions: { create: { permissionId: permission.id } },
       },
     });
 
