@@ -1,6 +1,13 @@
+import { redirect } from "next/navigation";
 import { Card, Col, Row, Statistic } from "antd";
+
 import { ApplicationShell } from "@/components/application-shell";
 import { Paragraph, Title } from "@/components/ui/typography";
+import {
+  AuthenticationError,
+  TenantAccessError,
+} from "@/src/server/auth/errors";
+import { requireTenantContext } from "@/src/server/auth/tenant-context";
 
 const stats = [
   { title: "Total Students", value: 0 },
@@ -9,7 +16,17 @@ const stats = [
   { title: "Attendance Today", value: 0, suffix: "%" },
 ];
 
-export default function Home() {
+export default async function Home() {
+  try {
+    await requireTenantContext();
+  } catch (error) {
+    if (error instanceof AuthenticationError || error instanceof TenantAccessError) {
+      redirect("/login");
+    }
+
+    throw error;
+  }
+
   return (
     <ApplicationShell>
       <div className="dashboard-intro">
