@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import {
   generateSessionToken,
@@ -33,11 +33,7 @@ describe("session security primitives", () => {
   });
 
   it("uses secure HTTP-only cookie settings in production", () => {
-    const original = process.env.NODE_ENV;
-    Object.defineProperty(process.env, "NODE_ENV", {
-      value: "production",
-      configurable: true,
-    });
+    vi.stubEnv("NODE_ENV", "production");
 
     const expiresAt = new Date("2030-01-01T00:00:00.000Z");
     const options = getSessionCookieOptions(expiresAt);
@@ -49,9 +45,6 @@ describe("session security primitives", () => {
     expect(options.expires).toEqual(expiresAt);
     expect(SESSION_COOKIE).toBe("session");
 
-    Object.defineProperty(process.env, "NODE_ENV", {
-      value: original,
-      configurable: true,
-    });
+    vi.unstubAllEnvs();
   });
 });
