@@ -23,33 +23,17 @@ TASK-008 — PRODUCT ARCHITECTURE, FEATURE PLANNING & RESPONSIVE UI SYSTEM IN PR
 - TASK-006 — Institution Management
 - TASK-007 — Institution Management Navigation & UI
 
-## TASK-008 Objective
+## TASK-008 Completed Baseline Work
 
-Strengthen the engineering/product planning contract before the next business module so future development remains scalable across different institution types and consistent across desktop/mobile experiences.
-
-## Planning Baseline
-
-Every substantial feature must now define before implementation:
-
-- objective and user problem
-- supported institution types
-- scope and non-goals
-- dependencies
-- routes/navigation
-- field-level data specification
-- complete user flow
-- access/permission matrix
-- API/server flow
-- database impact
-- UI/content specification
-- mobile-responsive behavior
-- security
-- testing
-- performance/scale
-- CI/CD
-- documentation
-- risks/trade-offs
-- definition of done
+- Detailed feature-planning contract documented.
+- Field-level specification contract documented.
+- Route/user-flow/permission planning contract documented.
+- Institution compatibility contract documented.
+- Canonical capability/type/terminology architecture documented.
+- Institution capability matrix established as the planning baseline.
+- Server-side capability + permission + tenant security relationship documented.
+- Google-inspired responsive UI contract adopted as the product UX baseline.
+- Mobile-first and accessibility requirements made explicit.
 
 ## Institution-Type Baseline
 
@@ -62,13 +46,14 @@ The platform is designed as one multi-tenant product with configurable capabilit
 - University
 - Polytechnic
 - Training / Vocational Institute
+- Coaching / Learning Institute
 - Other education institutions
 
-Institution-specific behavior must not fork the authentication, tenancy, shared user model, or navigation shell.
+Institution-specific behavior must not fork authentication, tenancy, shared user models, or core authorization.
 
 ## UI Baseline
 
-The UI direction is now formally defined as a Google-inspired enterprise interface:
+The UI direction is formally defined as a Google-inspired enterprise interface:
 
 - clean white/neutral surfaces
 - restrained borders
@@ -84,13 +69,27 @@ The UI direction is now formally defined as a Google-inspired enterprise interfa
 
 See `documents/architecture/ui-design-system.md`.
 
+## Architecture Baseline
+
+See `documents/architecture/capability-architecture.md` for:
+
+- canonical institution type codes
+- capability codes
+- type-to-capability matrix
+- terminology strategy
+- route visibility rules
+- server-side capability/permission contract
+- extension rules
+- migration strategy
+- testing strategy
+
 ## Next Task Candidates
 
 1. TASK-009 — Academic Year / Term Management
 2. TASK-010 — Institution Capability / Type Configuration
 3. TASK-011 — Academic Structure
 
-Before choosing the next implementation task, the feature plan must identify the correct dependency order between academic year/term configuration and institution capability configuration.
+Before implementation, the selected task must declare its dependencies using the TASK-008 planning contract.
 
 ## Validation
 
@@ -98,4 +97,4 @@ TASK-008 is documentation/architecture work only. No application runtime behavio
 
 ## Next Action
 
-Review TASK-008 documentation changes, then create the next implementation task using the new detailed planning standard.
+Review the TASK-008 architecture baseline, then begin the next implementation task only after its detailed feature plan is complete.
