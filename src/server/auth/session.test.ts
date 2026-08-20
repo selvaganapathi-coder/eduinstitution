@@ -1,13 +1,23 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  SESSION_COOKIE,
-  SESSION_TTL_SECONDS,
+  generateSessionToken,
   getSessionCookieOptions,
   hashSessionToken,
-} from "./session";
+  SESSION_COOKIE,
+  SESSION_TTL_SECONDS,
+} from "./session-core";
 
 describe("session security primitives", () => {
+  it("generates cryptographically random URL-safe tokens", () => {
+    const first = generateSessionToken();
+    const second = generateSessionToken();
+
+    expect(first).toHaveLength(43);
+    expect(first).not.toBe(second);
+    expect(first).toMatch(/^[A-Za-z0-9_-]+$/);
+  });
+
   it("hashes the same token deterministically", () => {
     expect(hashSessionToken("test-token")).toBe(hashSessionToken("test-token"));
   });
@@ -29,13 +39,14 @@ describe("session security primitives", () => {
       configurable: true,
     });
 
-    const options = getSessionCookieOptions(new Date("2030-01-01T00:00:00.000Z"));
+    const expiresAt = new Date("2030-01-01T00:00:00.000Z");
+    const options = getSessionCookieOptions(expiresAt);
 
     expect(options.httpOnly).toBe(true);
     expect(options.secure).toBe(true);
     expect(options.sameSite).toBe("lax");
     expect(options.path).toBe("/");
-    expect(options.expires).toEqual(new Date("2030-01-01T00:00:00.000Z"));
+    expect(options.expires).toEqual(expiresAt);
     expect(SESSION_COOKIE).toBe("session");
 
     Object.defineProperty(process.env, "NODE_ENV", {
