@@ -6,15 +6,11 @@
 
 ## Project Status
 
-TASK-007 — INSTITUTION MANAGEMENT NAVIGATION & UI IN PROGRESS
+TASK-008 — PRODUCT ARCHITECTURE, FEATURE PLANNING & RESPONSIVE UI SYSTEM IN PROGRESS
 
 ## Repository
 
 `selvaganapathi-coder/eduinstitution`
-
-## Current Branch
-
-`task-007-institution-navigation-ui`
 
 ## Completed Foundation
 
@@ -25,37 +21,80 @@ TASK-007 — INSTITUTION MANAGEMENT NAVIGATION & UI IN PROGRESS
 - TASK-004 — Authentication Flow
 - TASK-005 — Authentication Completion & Tenant Selection
 - TASK-006 — Institution Management
+- TASK-007 — Institution Management Navigation & UI
 
-## TASK-007 Implementation
+## TASK-008 Completed Baseline Work
 
-- `/institution` is now the institution-management landing route.
-- `/institution/profile` owns institution identity editing.
-- Added route-aware institution-local navigation.
-- Added Dashboard → Institution → Profile breadcrumbs.
-- Kept institution API and tenant-security contracts unchanged.
-- Updated UI toward a Google-inspired enterprise visual language: white surfaces, restrained borders, clear hierarchy, subtle elevation, blue action/navigation accents.
-- Fixed the React `react-hooks/error-boundaries` lint violation by keeping authentication/tenant-context error handling in the `try/catch` and rendering JSX after the guarded context lookup.
-- Extended `TenantContext` with the authenticated tenant's safe display metadata (`id`, `name`, `slug`) so institution routes do not perform an unrelated tenant lookup or use an invalid context property.
+- Detailed feature-planning contract documented.
+- Field-level specification contract documented.
+- Route/user-flow/permission planning contract documented.
+- Institution compatibility contract documented.
+- Canonical capability/type/terminology architecture documented.
+- Institution capability matrix established as the planning baseline.
+- Server-side capability + permission + tenant security relationship documented.
+- Google-inspired responsive UI contract adopted as the product UX baseline.
+- Mobile-first and accessibility requirements made explicit.
 
-## Route Flow
+## Institution-Type Baseline
 
-`/` Dashboard
-→ `/institution` Institution Overview
-→ `/institution/profile` Institution Profile
+The platform is designed as one multi-tenant product with configurable capabilities and module-specific extensions for:
 
-Future routes are not exposed until their corresponding capabilities are implemented.
+- School
+- Engineering College
+- Pharmacy College
+- Arts & Science College
+- University
+- Polytechnic
+- Training / Vocational Institute
+- Coaching / Learning Institute
+- Other education institutions
+
+Institution-specific behavior must not fork authentication, tenancy, shared user models, or core authorization.
+
+## UI Baseline
+
+The UI direction is formally defined as a Google-inspired enterprise interface:
+
+- clean white/neutral surfaces
+- restrained borders
+- minimal elevation
+- strong information hierarchy
+- familiar controls
+- plain-language content
+- clear primary actions
+- consistent breadcrumbs/local navigation
+- product green identity with restrained blue utility accents
+- mobile-first responsive layouts
+- accessible, touch-friendly interactions
+
+See `documents/architecture/ui-design-system.md`.
+
+## Architecture Baseline
+
+See `documents/architecture/capability-architecture.md` for:
+
+- canonical institution type codes
+- capability codes
+- type-to-capability matrix
+- terminology strategy
+- route visibility rules
+- server-side capability/permission contract
+- extension rules
+- migration strategy
+- testing strategy
+
+## Next Task Candidates
+
+1. TASK-009 — Academic Year / Term Management
+2. TASK-010 — Institution Capability / Type Configuration
+3. TASK-011 — Academic Structure
+
+Before implementation, the selected task must declare its dependencies using the TASK-008 planning contract.
 
 ## Validation
 
-- Lint failure: fixed by moving JSX outside the `try/catch`.
-- Typecheck failure: fixed by hydrating the active tenant in `requireTenantContext()` and typing it in `TenantContext`.
-- Full CI validation remains required:
-  - `npm run test`
-  - `npm run lint`
-  - `npm run typecheck`
-  - `npm run build`
-  - `npm run build:cloudflare`
+TASK-008 is documentation/architecture work only. No application runtime behavior has been changed.
 
 ## Next Action
 
-Re-run the complete CI gate, review the UI/route diff, and merge only after all checks are green.
+Review the TASK-008 architecture baseline, then begin the next implementation task only after its detailed feature plan is complete.
