@@ -12,7 +12,8 @@
     "lint": "eslint",
     "typecheck": "prisma generate && tsc --noEmit",
     "test": "vitest run",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "db:seed": "prisma generate && prisma db seed"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^2.1.2",

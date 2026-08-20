@@ -1,0 +1,140 @@
+# TASK-004 — Authentication Flow
+
+## Status
+
+READY FOR CI VALIDATION
+
+## Objective
+
+Implement the server-side authentication flow on top of the merged multi-tenant authorization and session foundations.
+
+## Scope
+
+- Credential verification
+- Password hashing/verification integration
+- Active membership resolution
+- Explicit tenant selection constrained to authenticated memberships
+- Secure session creation through TASK-003
+- Authenticated-session resolution
+- Logout integration
+- Authentication error handling
+- Google-inspired sign-in UI using the existing Tailwind design system
+- Security-focused tests
+- Development-only authentication seed
+
+## Implemented
+
+- [x] Password hashing and verification using Cloudflare-compatible Web Crypto PBKDF2-SHA-256
+- [x] Credential authentication service
+- [x] Active membership resolution
+- [x] Tenant selection constrained to the user's active memberships
+- [x] TASK-003 session creation integration
+- [x] Authenticated session lookup using the stored token hash
+- [x] Session `lastSeenAt` refresh
+- [x] Login API endpoint
+- [x] Logout API endpoint
+- [x] Server-side dashboard protection
+- [x] Google-inspired responsive green login page
+- [x] Password security tests
+- [x] Tenant-context integration using hashed session tokens
+- [x] Node-specific Prisma generator for development seed execution
+- [x] Idempotent development seed for a demo administrator account
+- [x] `db:seed` now generates Prisma clients before seeding
+- [x] Seed imports normalized to omit explicit `.ts` extensions under the repository's bundler TypeScript configuration
+- [x] PBKDF2 salt normalized to an `ArrayBuffer` for current TypeScript Web Crypto `BufferSource` typing
+
+## Security review
+
+- Client-supplied tenant IDs are treated only as a requested selection and are accepted only when the authenticated user's active membership contains that tenant.
+- Invalid email/password responses use the same generic authentication error.
+- Passwords are never persisted in plaintext.
+- Password verification uses a constant-time comparison of derived keys.
+- Raw session tokens are not queried from the database; the stored SHA-256 token hash is used.
+- Dashboard access is enforced server-side through `requireTenantContext()`.
+- Inactive or revoked memberships cannot establish an authenticated tenant context.
+- Development seed execution is blocked in production.
+- The seed uses a Node-specific Prisma client; the application continues using the Cloudflare `workerd` client.
+
+## CI findings and resolutions
+
+The first CI typecheck exposed two TypeScript compatibility errors:
+
+1. `prisma/seed.ts` used explicit `.ts` extensions in imports. The repository's TypeScript bundler configuration does not enable `allowImportingTsExtensions`, so the imports were changed to extensionless ESM imports.
+2. `crypto.subtle.deriveBits()` rejected the PBKDF2 salt as `Uint8Array<ArrayBufferLike>` under the current TypeScript DOM definitions. The exact salt byte range is now converted to an `ArrayBuffer` before passing it as the `BufferSource`.
+
+These are build/type-system compatibility fixes only; the authentication behavior and PBKDF2 parameters remain unchanged.
+
+## Code-review findings and resolutions
+
+### Resolved
+
+1. Prisma seed initially attempted to execute the Cloudflare `workerd` client under Node. A separate `nodejs` Prisma generator was added for seed tooling.
+2. `db:seed` previously assumed generated clients already existed. It now runs `prisma generate` first.
+3. Session lookup was verified to hash the raw cookie before database lookup.
+4. Dashboard authentication is enforced on the server rather than only in the client UI.
+5. TypeScript CI compatibility issues in seed imports and Web Crypto `BufferSource` typing were corrected on the TASK-004 branch.
+
+### Follow-up, intentionally outside TASK-004
+
+- Production rate limiting / brute-force protection for login.
+- Password reset and account recovery.
+- Registration and email verification.
+- OAuth/social authentication.
+- A richer multi-institution picker UX instead of manual tenant ID entry.
+
+These remain separate slices and are not prerequisites for the current authentication contract.
+
+## Development seed
+
+```text
+Email:       admin@eduinstitution.local
+Password:    ChangeMe123!
+Institution: Demo Institution
+Role:        Administrator
+```
+
+The seed is development-only and idempotent.
+
+## Validation
+
+Initial CI validation failed only on the two TypeScript issues documented above. Both have now been corrected.
+
+Required next validation on the updated PR head:
+
+- [ ] `npm run typecheck`
+- [ ] `npm test`
+- [ ] `npm run lint`
+- [ ] `npm run build` / repository CI build gate
+- [ ] GitHub Actions green
+
+Previously verified locally:
+
+- [x] Prisma client generation
+- [x] Development database seed
+- [x] Login flow
+- [x] Protected dashboard redirect
+- [x] Session/authentication flow
+- [x] Logout flow
+
+## Definition of Done
+
+- [x] Authentication service implemented
+- [x] Credential verification implemented
+- [x] Membership/tenant resolution implemented
+- [x] Session creation integrated
+- [x] Authenticated-session resolution implemented
+- [x] Logout integrated
+- [x] Security tests added
+- [x] Development seed added
+- [x] CI typecheck findings corrected
+- [x] Documentation updated after CI findings
+- [ ] Complete final CI gate green
+- [ ] PR merged to `master`
+
+## Issue
+
+GitHub issue #6.
+
+## Next step
+
+Run the complete CI gate against the updated TASK-004 head. Merge only after all required checks are green.

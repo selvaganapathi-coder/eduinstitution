@@ -1,8 +1,17 @@
 generator client {
-  provider     = "prisma-client"
-  output       = "../src/generated/prisma"
-  moduleFormat = "esm"
-  runtime      = "workerd"
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  runtime             = "workerd"
+  importFileExtension = "ts"
+}
+
+generator seedClient {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma-node"
+  moduleFormat        = "esm"
+  runtime             = "nodejs"
+  importFileExtension = "ts"
 }
 
 datasource db {
