@@ -4,7 +4,8 @@ import { neonConfig } from "@neondatabase/serverless";
 import { PrismaClient } from "@/src/generated/prisma/client";
 import { createSession } from "./session";
 import { verifyPassword } from "./credentials";
-import { AuthenticationError, TenantAccessError } from "./errors";
+import { AuthenticationError } from "./errors";
+import { selectTenantId } from "./tenant-selection";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
@@ -58,21 +59,7 @@ export async function authenticate(input: AuthenticateInput): Promise<Authentica
     throw new AuthenticationError(INVALID_CREDENTIALS);
   }
 
-  const tenantId = input.tenantId;
-  if (!tenantId) {
-    if (user.memberships.length !== 1) {
-      throw new TenantAccessError(
-        user.memberships.length === 0
-          ? "Your account does not have an active institution membership"
-          : "Select an institution before signing in",
-      );
-    }
-  }
-
-  const selectedTenantId = tenantId ?? user.memberships[0]?.tenantId;
-  if (!selectedTenantId || !user.memberships.some((membership) => membership.tenantId === selectedTenantId)) {
-    throw new TenantAccessError("You do not have access to this institution");
-  }
+  const selectedTenantId = selectTenantId(user.memberships, input.tenantId);
 
   const session = await createSession({
     userId: user.id,
