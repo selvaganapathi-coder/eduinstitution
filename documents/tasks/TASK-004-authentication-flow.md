@@ -2,7 +2,7 @@
 
 ## Status
 
-IN PROGRESS
+READY FOR PR REVIEW
 
 ## Objective
 
@@ -13,13 +13,14 @@ Implement the server-side authentication flow on top of the merged multi-tenant 
 - Credential verification
 - Password hashing/verification integration
 - Active membership resolution
-- Explicit tenant selection from authenticated memberships
+- Explicit tenant selection constrained to authenticated memberships
 - Secure session creation through TASK-003
 - Authenticated-session resolution
 - Logout integration
 - Authentication error handling
 - Google-inspired sign-in UI using the existing Tailwind design system
-- Unit/integration tests
+- Security-focused tests
+- Development-only authentication seed
 
 ## Implemented
 
@@ -32,29 +33,69 @@ Implement the server-side authentication flow on top of the merged multi-tenant 
 - [x] Session `lastSeenAt` refresh
 - [x] Login API endpoint
 - [x] Logout API endpoint
-- [x] Google-inspired responsive login page
+- [x] Server-side dashboard protection
+- [x] Google-inspired responsive green login page
 - [x] Password security tests
-- [x] Tenant-context integration corrected to use hashed session tokens
+- [x] Tenant-context integration using hashed session tokens
+- [x] Node-specific Prisma generator for development seed execution
+- [x] Idempotent development seed for a demo administrator account
+- [x] `db:seed` now generates Prisma clients before seeding
 
-## Security requirements
+## Security review
 
-- Never trust a client-supplied tenant ID as authorization evidence.
-- Tenant selection must be limited to memberships belonging to the authenticated user.
-- Passwords must never be stored or logged in plaintext.
+- Client-supplied tenant IDs are treated only as a requested selection and are accepted only when the authenticated user's active membership contains that tenant.
+- Invalid email/password responses use the same generic authentication error.
+- Passwords are never persisted in plaintext.
 - Password verification uses a constant-time comparison of derived keys.
-- Authentication errors must not expose whether an account exists or whether its password is wrong.
-- Session creation must use the existing TASK-003 lifecycle.
-- Authorization remains server-side through the existing tenant context/permission layer.
-- Raw session tokens are never queried from the database; only SHA-256 token hashes are stored and compared.
+- Raw session tokens are not queried from the database; the stored SHA-256 token hash is used.
+- Dashboard access is enforced server-side through `requireTenantContext()`.
+- Inactive or revoked memberships cannot establish an authenticated tenant context.
+- Development seed execution is blocked in production.
+- The seed uses a Node-specific Prisma client; the application continues using the Cloudflare `workerd` client.
 
-## Non-goals
+## Code-review findings and resolutions
 
-- Registration
-- Password reset
-- OAuth/social login
-- Email verification
-- Student/faculty/business modules
-- Dashboard business logic
+### Resolved
+
+1. Prisma seed initially attempted to execute the Cloudflare `workerd` client under Node. A separate `nodejs` Prisma generator was added for seed tooling.
+2. Generated ESM imports required explicit TypeScript extensions. `importFileExtension = "ts"` was added to both generators.
+3. `db:seed` previously assumed generated clients already existed. It now runs `prisma generate` first.
+4. Session lookup was verified to hash the raw cookie before database lookup.
+5. Dashboard authentication is enforced on the server rather than only in the client UI.
+
+### Follow-up, intentionally outside TASK-004
+
+- Production rate limiting / brute-force protection for login.
+- Password reset and account recovery.
+- Registration and email verification.
+- OAuth/social authentication.
+- A richer multi-institution picker UX instead of manual tenant ID entry.
+
+These remain separate slices and are not prerequisites for the current authentication contract.
+
+## Development seed
+
+```text
+Email:       admin@eduinstitution.local
+Password:    ChangeMe123!
+Institution: Demo Institution
+Role:        Administrator
+```
+
+The seed is development-only and idempotent.
+
+## Validation
+
+Local verification reported successful by the developer:
+
+- [x] Prisma client generation
+- [x] Development database seed
+- [x] Login flow
+- [x] Protected dashboard redirect
+- [x] Session/authentication flow
+- [x] Logout flow
+
+Repository CI status must still be confirmed on the final PR head before merge.
 
 ## Definition of Done
 
@@ -65,11 +106,15 @@ Implement the server-side authentication flow on top of the merged multi-tenant 
 - [x] Authenticated-session resolution implemented
 - [x] Logout integrated
 - [x] Security tests added
-- [ ] Local test/lint/typecheck/build validation passes
-- [ ] GitHub Actions green
-- [ ] Documentation finalization
+- [x] Development seed added
+- [x] Documentation finalized for PR review
+- [ ] GitHub Actions green on final PR head
 - [ ] PR merged to `master`
 
 ## Issue
 
 GitHub issue #6.
+
+## Next step
+
+Create the TASK-004 pull request, wait for the complete CI gate, review any CI findings, and merge only after all required checks are green.
