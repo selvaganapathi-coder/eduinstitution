@@ -7,8 +7,8 @@
 - TASK-002 — Multi-Tenant Authentication/Authorization Foundation — COMPLETED
 - TASK-003 — Authentication Session Lifecycle — COMPLETED
 - TASK-004 — Authentication Flow — COMPLETED
-- TASK-005 — Authentication Completion & Tenant Selection — IN PROGRESS
-- TASK-006 — Institution Management — BACKLOG
+- TASK-005 — Authentication Completion & Tenant Selection — COMPLETED
+- TASK-006 — Institution Management — IN PROGRESS
 - TASK-007 — Academic Year Management — BACKLOG
 - TASK-008 — Student Management — BACKLOG
 
