@@ -2,13 +2,13 @@
 
 ## Status
 
-IN PROGRESS
+COMPLETED — MERGED
 
 ## Objective
 
 Implement the server-side session lifecycle required by the existing multi-tenant authentication foundation without introducing login UI or business modules.
 
-## Scope
+## Completed scope
 
 - Cryptographically random session token generation
 - SHA-256 token hashing
@@ -17,7 +17,7 @@ Implement the server-side session lifecycle required by the existing multi-tenan
 - Session revocation
 - Logout and cookie invalidation
 - Expired-session cleanup
-- Unit tests for security primitives
+- Security-focused unit tests
 
 ## Security contract
 
@@ -33,6 +33,12 @@ Cookie policy:
 - `Path: /`
 - Explicit expiry
 
+## Implementation boundary
+
+The session security primitives are separated from database/runtime integration so deterministic unit tests do not require the generated Prisma client, Neon connection, or Next.js request context.
+
+The runtime session service owns persistence and cookie interaction; the core security module owns token generation, hashing, constants, and cookie options.
+
 ## Non-goals
 
 - Login page
@@ -41,6 +47,21 @@ Cookie policy:
 - OAuth/social authentication
 - Email verification flow
 - Student/faculty/business modules
+
+## Validation
+
+- [x] `npm ci`
+- [x] Unit tests
+- [x] ESLint
+- [x] TypeScript typecheck
+- [x] Next.js production build
+- [x] Cloudflare/OpenNext production build
+- [x] GitHub Actions
+- [x] PR merged to `master`
+
+## Dependency stability note
+
+TASK-003 retains the previously validated project dependency and lockfile baseline. No unnecessary direct dependency was added for the session implementation.
 
 ## Definition of Done
 
@@ -52,10 +73,10 @@ Cookie policy:
 - [x] Logout implemented
 - [x] Expired-session cleanup implemented
 - [x] Security primitive tests added
-- [ ] Local test/lint/typecheck/build validation
-- [ ] GitHub Actions green
-- [ ] PR merged to `master`
+- [x] Local validation passed
+- [x] GitHub Actions passed
+- [x] TASK-003 merged to `master`
 
 ## Next step
 
-After this task is validated and merged, the login/authentication flow can consume the session lifecycle without changing its security contract.
+The login/authentication flow can now consume the session lifecycle without changing its security contract. Authentication UI, credentials verification, and other identity flows remain separate implementation slices.
