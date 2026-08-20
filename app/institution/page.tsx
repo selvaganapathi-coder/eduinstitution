@@ -24,27 +24,27 @@ export default function InstitutionPage() {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
+    async function loadInstitution() {
+      setLoading(true);
+      setError("");
+      try {
+        const response = await fetch("/api/institution", { cache: "no-store" });
+        const result = (await response.json()) as ApiResponse;
+        if (!response.ok || !result.institution) {
+          setError(result.error ?? "Unable to load institution");
+          return;
+        }
+        setInstitution(result.institution);
+        setName(result.institution.name);
+      } catch {
+        setError("Unable to load institution. Check your connection and try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
     void loadInstitution();
   }, []);
-
-  async function loadInstitution() {
-    setLoading(true);
-    setError("");
-    try {
-      const response = await fetch("/api/institution", { cache: "no-store" });
-      const result = (await response.json()) as ApiResponse;
-      if (!response.ok || !result.institution) {
-        setError(result.error ?? "Unable to load institution");
-        return;
-      }
-      setInstitution(result.institution);
-      setName(result.institution.name);
-    } catch {
-      setError("Unable to load institution. Check your connection and try again.");
-    } finally {
-      setLoading(false);
-    }
-  }
 
   async function saveInstitution() {
     setSaving(true);
