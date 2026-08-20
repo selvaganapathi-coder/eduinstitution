@@ -7,7 +7,7 @@ describe("password credentials", () => {
     const password = "Correct Horse Battery Staple";
     const hash = await hashPassword(password);
 
-    expect(hash).toMatch(/^scrypt\$\d+\$\d+\$\d+\$/);
+    expect(hash).toMatch(/^pbkdf2\$\d+\$sha256\$/);
     expect(hash).not.toContain(password);
     expect(await verifyPassword(password, hash)).toBe(true);
   });
@@ -30,6 +30,6 @@ describe("password credentials", () => {
 
   it("rejects malformed password hashes", async () => {
     expect(await verifyPassword("password", "not-a-password-hash")).toBe(false);
-    expect(await verifyPassword("password", "scrypt$1$1$1$salt$bad")).toBe(false);
+    expect(await verifyPassword("password", "pbkdf2$1$sha256$salt$bad")).toBe(false);
   });
 });
