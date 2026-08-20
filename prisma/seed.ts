@@ -1,7 +1,7 @@
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
-import { PrismaClient } from "../src/generated/prisma/client";
-import { hashPassword } from "../src/server/auth/credentials";
+import { PrismaClient } from "../src/generated/prisma/client.ts";
+import { hashPassword } from "../src/server/auth/credentials.ts";
 
 const DEV_EMAIL = "admin@eduinstitution.local";
 const DEV_PASSWORD = "ChangeMe123!";
@@ -29,37 +29,18 @@ async function main() {
     const tenant = await prisma.tenant.upsert({
       where: { slug: DEV_TENANT_SLUG },
       update: { name: "Demo Institution" },
-      create: {
-        name: "Demo Institution",
-        slug: DEV_TENANT_SLUG,
-      },
+      create: { name: "Demo Institution", slug: DEV_TENANT_SLUG },
     });
 
     const user = await prisma.user.upsert({
       where: { email: DEV_EMAIL },
-      update: {
-        name: "Demo Administrator",
-        passwordHash,
-      },
-      create: {
-        email: DEV_EMAIL,
-        name: "Demo Administrator",
-        passwordHash,
-      },
+      update: { name: "Demo Administrator", passwordHash },
+      create: { email: DEV_EMAIL, name: "Demo Administrator", passwordHash },
     });
 
     const role = await prisma.role.upsert({
-      where: {
-        tenantId_name: {
-          tenantId: tenant.id,
-          name: "Administrator",
-        },
-      },
-      update: {
-        description: "Development administrator role",
-        scope: "TENANT",
-        isSystem: true,
-      },
+      where: { tenantId_name: { tenantId: tenant.id, name: "Administrator" } },
+      update: { description: "Development administrator role", scope: "TENANT", isSystem: true },
       create: {
         tenantId: tenant.id,
         name: "Administrator",
@@ -70,16 +51,8 @@ async function main() {
     });
 
     const membership = await prisma.membership.upsert({
-      where: {
-        userId_tenantId: {
-          userId: user.id,
-          tenantId: tenant.id,
-        },
-      },
-      update: {
-        status: "ACTIVE",
-        roles: { set: [{ id: role.id }] },
-      },
+      where: { userId_tenantId: { userId: user.id, tenantId: tenant.id } },
+      update: { status: "ACTIVE", roles: { set: [{ id: role.id }] } },
       create: {
         userId: user.id,
         tenantId: tenant.id,
