@@ -36,11 +36,13 @@ async function derivePasswordKey(password: string, salt: Uint8Array, iterations:
     ["deriveBits"],
   );
 
+  const saltBuffer = salt.buffer.slice(salt.byteOffset, salt.byteOffset + salt.byteLength) as ArrayBuffer;
+
   return new Uint8Array(
     await crypto.subtle.deriveBits(
       {
         name: "PBKDF2",
-        salt,
+        salt: saltBuffer,
         iterations,
         hash: HASH_ALGORITHM,
       },
