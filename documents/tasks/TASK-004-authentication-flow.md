@@ -2,7 +2,7 @@
 
 ## Status
 
-READY FOR PR REVIEW
+READY FOR CI VALIDATION
 
 ## Objective
 
@@ -40,6 +40,8 @@ Implement the server-side authentication flow on top of the merged multi-tenant 
 - [x] Node-specific Prisma generator for development seed execution
 - [x] Idempotent development seed for a demo administrator account
 - [x] `db:seed` now generates Prisma clients before seeding
+- [x] Seed imports normalized to omit explicit `.ts` extensions under the repository's bundler TypeScript configuration
+- [x] PBKDF2 salt normalized to an `ArrayBuffer` for current TypeScript Web Crypto `BufferSource` typing
 
 ## Security review
 
@@ -53,15 +55,24 @@ Implement the server-side authentication flow on top of the merged multi-tenant 
 - Development seed execution is blocked in production.
 - The seed uses a Node-specific Prisma client; the application continues using the Cloudflare `workerd` client.
 
+## CI findings and resolutions
+
+The first CI typecheck exposed two TypeScript compatibility errors:
+
+1. `prisma/seed.ts` used explicit `.ts` extensions in imports. The repository's TypeScript bundler configuration does not enable `allowImportingTsExtensions`, so the imports were changed to extensionless ESM imports.
+2. `crypto.subtle.deriveBits()` rejected the PBKDF2 salt as `Uint8Array<ArrayBufferLike>` under the current TypeScript DOM definitions. The exact salt byte range is now converted to an `ArrayBuffer` before passing it as the `BufferSource`.
+
+These are build/type-system compatibility fixes only; the authentication behavior and PBKDF2 parameters remain unchanged.
+
 ## Code-review findings and resolutions
 
 ### Resolved
 
 1. Prisma seed initially attempted to execute the Cloudflare `workerd` client under Node. A separate `nodejs` Prisma generator was added for seed tooling.
-2. Generated ESM imports required explicit TypeScript extensions. `importFileExtension = "ts"` was added to both generators.
-3. `db:seed` previously assumed generated clients already existed. It now runs `prisma generate` first.
-4. Session lookup was verified to hash the raw cookie before database lookup.
-5. Dashboard authentication is enforced on the server rather than only in the client UI.
+2. `db:seed` previously assumed generated clients already existed. It now runs `prisma generate` first.
+3. Session lookup was verified to hash the raw cookie before database lookup.
+4. Dashboard authentication is enforced on the server rather than only in the client UI.
+5. TypeScript CI compatibility issues in seed imports and Web Crypto `BufferSource` typing were corrected on the TASK-004 branch.
 
 ### Follow-up, intentionally outside TASK-004
 
@@ -86,7 +97,17 @@ The seed is development-only and idempotent.
 
 ## Validation
 
-Local verification reported successful by the developer:
+Initial CI validation failed only on the two TypeScript issues documented above. Both have now been corrected.
+
+Required next validation on the updated PR head:
+
+- [ ] `npm run typecheck`
+- [ ] `npm test`
+- [ ] `npm run lint`
+- [ ] `npm run build` / repository CI build gate
+- [ ] GitHub Actions green
+
+Previously verified locally:
 
 - [x] Prisma client generation
 - [x] Development database seed
@@ -94,8 +115,6 @@ Local verification reported successful by the developer:
 - [x] Protected dashboard redirect
 - [x] Session/authentication flow
 - [x] Logout flow
-
-Repository CI status must still be confirmed on the final PR head before merge.
 
 ## Definition of Done
 
@@ -107,8 +126,9 @@ Repository CI status must still be confirmed on the final PR head before merge.
 - [x] Logout integrated
 - [x] Security tests added
 - [x] Development seed added
-- [x] Documentation finalized for PR review
-- [ ] GitHub Actions green on final PR head
+- [x] CI typecheck findings corrected
+- [x] Documentation updated after CI findings
+- [ ] Complete final CI gate green
 - [ ] PR merged to `master`
 
 ## Issue
@@ -117,4 +137,4 @@ GitHub issue #6.
 
 ## Next step
 
-Create the TASK-004 pull request, wait for the complete CI gate, review any CI findings, and merge only after all required checks are green.
+Run the complete CI gate against the updated TASK-004 head. Merge only after all required checks are green.
