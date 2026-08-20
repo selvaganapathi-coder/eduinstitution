@@ -51,16 +51,6 @@ async function main() {
         description: "Development administrator role",
         scope: "TENANT",
         isSystem: true,
-        permissions: {
-          connect: [
-            {
-              roleId_permissionId: {
-                roleId: "__ROLE_ID__",
-                permissionId: permission.id,
-              },
-            },
-          ],
-        },
       },
       create: {
         tenantId: tenant.id,
@@ -68,7 +58,20 @@ async function main() {
         description: "Development administrator role",
         scope: "TENANT",
         isSystem: true,
-        permissions: { create: { permissionId: permission.id } },
+      },
+    });
+
+    await prisma.rolePermission.upsert({
+      where: {
+        roleId_permissionId: {
+          roleId: role.id,
+          permissionId: permission.id,
+        },
+      },
+      update: {},
+      create: {
+        roleId: role.id,
+        permissionId: permission.id,
       },
     });
 
