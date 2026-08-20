@@ -1,6 +1,6 @@
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
-import { PrismaClient } from "../src/generated/prisma/client.ts";
+import { PrismaClient } from "../src/generated/prisma-node/client.ts";
 import { hashPassword } from "../src/server/auth/credentials.ts";
 
 const DEV_EMAIL = "admin@eduinstitution.local";
@@ -16,8 +16,6 @@ async function main() {
   if (!connectionString) {
     throw new Error("DIRECT_DATABASE_URL or DATABASE_URL is required to run the development seed.");
   }
-
-  neonConfig.fetchConnectionCache = true;
 
   const prisma = new PrismaClient({
     adapter: new PrismaNeon({ connectionString }),
