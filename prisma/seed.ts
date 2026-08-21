@@ -46,21 +46,26 @@ async function main() {
     });
 
     // Temporary development-only system role. The full platform-admin product is intentionally deferred.
-    const role = await prisma.role.upsert({
-      where: { tenantId_name: { tenantId: null, name: DEV_ROLE_NAME } },
-      update: {
-        description: "Development-only platform super admin",
-        scope: "SYSTEM",
-        isSystem: true,
-      },
-      create: {
-        tenantId: null,
-        name: DEV_ROLE_NAME,
-        description: "Development-only platform super admin",
-        scope: "SYSTEM",
-        isSystem: true,
-      },
+    const existingRole = await prisma.role.findFirst({
+      where: { tenantId: null, name: DEV_ROLE_NAME, scope: "SYSTEM" },
     });
+    const role = existingRole
+      ? await prisma.role.update({
+          where: { id: existingRole.id },
+          data: {
+            description: "Development-only platform super admin",
+            isSystem: true,
+          },
+        })
+      : await prisma.role.create({
+          data: {
+            tenantId: null,
+            name: DEV_ROLE_NAME,
+            description: "Development-only platform super admin",
+            scope: "SYSTEM",
+            isSystem: true,
+          },
+        });
 
     for (const [code, description] of PERMISSIONS) {
       const permission = await prisma.permission.upsert({
