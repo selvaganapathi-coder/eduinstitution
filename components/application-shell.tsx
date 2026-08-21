@@ -37,7 +37,15 @@ const iconClass = "!text-[18px]";
 const items: MenuItem[] = [
   { key: "dashboard", icon: <AppstoreOutlined className={iconClass} />, label: <Link href="/">Home</Link> },
   { key: "institution", icon: <BankOutlined className={iconClass} />, label: <Link href="/institution">Institution</Link> },
-  { key: "academic", icon: <CalendarOutlined className={iconClass} />, label: <Link href="/academic/years">Academic</Link> },
+  {
+    key: "academic",
+    icon: <CalendarOutlined className={iconClass} />,
+    label: <Link href="/academic/years">Academic</Link>,
+    children: [
+      { key: "academic-years", label: <Link href="/academic/years">Academic years</Link> },
+      { key: "departments", label: <Link href="/academic/departments">Departments & Programs</Link> },
+    ],
+  },
   { key: "students", icon: <TeamOutlined className={iconClass} />, label: "Students" },
   { key: "faculty", icon: <TeamOutlined className={iconClass} />, label: "Faculty / Staff" },
   { key: "attendance", icon: <CheckCircleOutlined className={iconClass} />, label: "Attendance" },
