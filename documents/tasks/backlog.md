@@ -10,8 +10,8 @@
 - TASK-005 — Authentication Completion & Tenant Selection — COMPLETED
 - TASK-006 — Institution Management — COMPLETED
 - TASK-007 — Institution Management Navigation & UI — COMPLETED
-- TASK-008 — Product Architecture, Feature Planning & Responsive UI System — IN PROGRESS
-- TASK-009 — Academic Year / Term Management — BACKLOG
+- TASK-008 — Product Architecture, Feature Planning & Responsive UI System — COMPLETED
+- TASK-009 — Academic Year / Term Management — IN PROGRESS
 - TASK-010 — Institution Capability / Type Configuration — BACKLOG
 - TASK-011 — Academic Structure (Departments / Programs / Courses) — BACKLOG
 - TASK-012 — Student Management — BACKLOG
