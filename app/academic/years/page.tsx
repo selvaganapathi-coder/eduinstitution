@@ -1,18 +1,27 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { Button } from "antd";
+import { Button, Result } from "antd";
 import { ApplicationShell } from "@/components/application-shell";
 import { AcademicYearList } from "@/components/academic/academic-year-list";
 import { Paragraph, Title } from "@/components/ui/typography";
-import { AuthenticationError, TenantAccessError } from "@/src/server/auth/errors";
-import { requireTenantContext } from "@/src/server/auth/tenant-context";
+import { AuthenticationError, AuthorizationError, TenantAccessError } from "@/src/server/auth/errors";
+import { requirePermission } from "@/src/server/auth/permissions";
 
 export default async function AcademicYearsPage() {
   try {
-    await requireTenantContext();
+    await requirePermission("academic_year:view");
   } catch (error) {
     if (error instanceof AuthenticationError || error instanceof TenantAccessError) redirect("/login");
+    if (error instanceof AuthorizationError) {
+      return (
+        <ApplicationShell pageTitle="Academic years" pageContext="Academic setup" selectedKey="academic">
+          <div className="mx-auto max-w-3xl py-10">
+            <Result status="403" title="You don't have access" subTitle="You don't have permission to view academic years. Contact your institution administrator if you need access." />
+          </div>
+        </ApplicationShell>
+      );
+    }
     throw error;
   }
 
