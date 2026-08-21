@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
-import { PrismaClient } from "@/src/generated/prisma/client";
+import { PrismaClient, ProgramStatus } from "@/src/generated/prisma/client";
 import { AuthenticationError, AuthorizationError, TenantAccessError } from "@/src/server/auth/errors";
 import { requirePermission } from "@/src/server/auth/permissions";
 
@@ -21,7 +21,7 @@ function failure(error: unknown, fallback: string) {
   console.error(fallback, error);
   return NextResponse.json({ error: fallback }, { status: 500 });
 }
-const activeProgramCount = { select: { programs: { where: { status: "ACTIVE" } } } };
+const activeProgramCount = { select: { programs: { where: { status: ProgramStatus.ACTIVE } } } };
 
 export async function GET() {
   try {
