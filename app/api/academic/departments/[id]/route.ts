@@ -33,27 +33,30 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const displayOrder = typeof body.displayOrder === "number" && Number.isInteger(body.displayOrder) ? body.displayOrder : 0;
     if (!name) return NextResponse.json({ error: "Enter a department name." }, { status: 400 });
     if (!code) return NextResponse.json({ error: "Enter a department code." }, { status: 400 });
+    if (code.length > 30) return NextResponse.json({ error: "Department code must be 30 characters or fewer." }, { status: 400 });
 
     const prisma = getPrisma();
     const department = await prisma.department.findFirst({ where: { id, tenantId: context.tenantId } });
     if (!department) return NextResponse.json({ error: "Department not found." }, { status: 404 });
     const duplicate = await prisma.department.findFirst({ where: { tenantId: context.tenantId, code, NOT: { id } }, select: { id: true } });
     if (duplicate) return NextResponse.json({ error: "A department with this code already exists." }, { status: 409 });
-    const updated = await prisma.department.update({ where: { id }, data: { name, code, description, displayOrder } });
+    const updated = await prisma.department.update({ where: { id }, data: { name, code, description, displayOrder }, include: { _count: { select: { programs: true } } } });
     return NextResponse.json({ department: updated });
   } catch (error) {
     return failure(error, "Unable to update the department. Please try again.");
   }
 }
 
-export async function POST(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const context = await requirePermission("department:archive");
     const { id } = await params;
     const prisma = getPrisma();
-    const department = await prisma.department.findFirst({ where: { id, tenantId: context.tenantId } });
+    const department = await prisma.department.findFirst({ where: { id, tenantId: context.tenantId }, include: { _count: { select: { programs: true } } } });
     if (!department) return NextResponse.json({ error: "Department not found." }, { status: 404 });
-    const updated = await prisma.department.update({ where: { id }, data: { status: "ARCHIVED" } });
+    if (department.status === "ARCHIVED") return NextResponse.json({ error: "This department is already archived." }, { status: 400 });
+    if (department._count.programs > 0) return NextResponse.json({ error: "Archive the department's programs before archiving this department." }, { status: 409 });
+    const updated = await prisma.department.update({ where: { id }, data: { status: "ARCHIVED" }, include: { _count: { select: { programs: true } } } });
     return NextResponse.json({ department: updated });
   } catch (error) {
     return failure(error, "Unable to archive the department. Please try again.");
