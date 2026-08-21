@@ -23,10 +23,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     const context = await requirePermission("academic_year:view");
     const { id } = await params;
     const prisma = getPrisma();
-    const academicYear = await prisma.academicYear.findFirst({
-      where: { id, tenantId: context.tenantId },
-      include: { terms: { orderBy: { sortOrder: "asc" } } },
-    });
+    const academicYear = await prisma.academicYear.findFirst({ where: { id, tenantId: context.tenantId }, include: { terms: { orderBy: { sortOrder: "asc" } } } });
     if (!academicYear) throw new TenantAccessError("We couldn't find that academic year.");
     return NextResponse.json({ academicYear });
   } catch (error) {
@@ -39,11 +36,11 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const context = await requirePermission("academic_year:update");
     const { id } = await params;
     const body = (await request.json()) as { name?: unknown; startDate?: unknown; endDate?: unknown; action?: unknown };
+    const permission = body.action === "make-current" ? "academic_year:update" : body.action === "archive" ? "academic_year:archive" : "academic_year:update";
+    const context = await requirePermission(permission);
     const prisma = getPrisma();
-
     const existing = await prisma.academicYear.findFirst({ where: { id, tenantId: context.tenantId } });
     if (!existing) throw new TenantAccessError("We couldn't find that academic year.");
 
@@ -63,10 +60,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
     const validated = validateAcademicYearInput(body);
     if (!validated.value) return NextResponse.json({ error: validated.error }, { status: 400 });
-    const academicYear = await prisma.academicYear.update({
-      where: { id },
-      data: validated.value,
-    });
+    const academicYear = await prisma.academicYear.update({ where: { id }, data: validated.value });
     return NextResponse.json({ academicYear });
   } catch (error) {
     if (error instanceof AuthenticationError) return NextResponse.json({ error: error.message }, { status: 401 });
