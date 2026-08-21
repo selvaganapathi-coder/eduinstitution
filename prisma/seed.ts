@@ -1,6 +1,7 @@
+import "dotenv/config";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "../src/generated/prisma-node/client.ts";
-import { hashPassword } from "../src/server/auth/credentials";
+import { hashPassword } from "../src/server/auth/credentials.ts";
 
 const DEV_EMAIL = "admin@eduinstitution.local";
 const DEV_PASSWORD = "ChangeMe123!";
