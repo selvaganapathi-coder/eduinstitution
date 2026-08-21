@@ -5,35 +5,44 @@ import { App, ConfigProvider } from "antd";
 
 const theme = {
   token: {
-    colorPrimary: "#076653",
-    colorInfo: "#076653",
-    colorSuccess: "#076653",
-    colorWarning: "#E3EF26",
-    colorBgLayout: "#FFFDEE",
+    colorPrimary: "#188038",
+    colorInfo: "#1A73E8",
+    colorSuccess: "#188038",
+    colorWarning: "#F9AB00",
+    colorError: "#D93025",
+    colorBgLayout: "#F8FAFD",
     colorBgContainer: "#FFFFFF",
-    colorText: "#06231D",
-    colorTextSecondary: "#52635E",
-    colorBorder: "#DDE8E3",
+    colorText: "#202124",
+    colorTextSecondary: "#5F6368",
+    colorBorder: "#DADCE0",
+    colorBorderSecondary: "#EEF0F1",
     borderRadius: 10,
     controlHeight: 42,
     fontFamily: "var(--font-geist), ui-sans-serif, system-ui, sans-serif",
   },
   components: {
     Layout: {
-      bodyBg: "#FFFDEE",
+      bodyBg: "#F8FAFD",
       headerBg: "#FFFFFF",
-      siderBg: "#06231D",
+      siderBg: "#FFFFFF",
     },
     Menu: {
-      darkItemBg: "#06231D",
-      darkSubMenuItemBg: "#0C342C",
-      darkItemColor: "#D7E7E1",
-      darkItemHoverColor: "#FFFFFF",
-      darkItemSelectedColor: "#06231D",
-      darkItemSelectedBg: "#E3EF26",
+      itemBg: "#FFFFFF",
+      itemColor: "#202124",
+      itemHoverBg: "#F8F9FA",
+      itemSelectedBg: "#E6F4EA",
+      itemSelectedColor: "#137333",
+      itemActiveBg: "#E6F4EA",
     },
     Button: {
       primaryShadow: "none",
+      defaultShadow: "none",
+    },
+    Card: {
+      headerBg: "#FFFFFF",
+    },
+    Alert: {
+      withDescriptionIconSize: 18,
     },
   },
 };
@@ -41,7 +50,9 @@ const theme = {
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <ConfigProvider theme={theme}>
-      <App>{children}</App>
+      <App message={{ top: 76, duration: 4 }} notification={{ placement: "topRight", top: 76 }}>
+        {children}
+      </App>
     </ConfigProvider>
   );
 }
