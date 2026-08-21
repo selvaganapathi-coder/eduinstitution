@@ -4,7 +4,7 @@ import { neonConfig } from "@neondatabase/serverless";
 
 import { PrismaClient } from "@/src/generated/prisma/client";
 import { AuthenticationError, AuthorizationError, TenantAccessError } from "@/src/server/auth/errors";
-import { requirePermission, requirePermissionFromContext } from "@/src/server/auth/authorization";
+import { requirePermissionFromContext } from "@/src/server/auth/authorization";
 import { requireTenantContext } from "@/src/server/auth/tenant-context";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
