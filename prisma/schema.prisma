@@ -1,6 +1,23 @@
-generator client { provider = "prisma-client" output = "../src/generated/prisma" moduleFormat = "esm" runtime = "workerd" importFileExtension = "ts" }
-generator seedClient { provider = "prisma-client" output = "../src/generated/prisma-node" moduleFormat = "esm" runtime = "nodejs" importFileExtension = "ts" }
-datasource db { provider = "postgresql" }
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma"
+  moduleFormat = "esm"
+  runtime = "workerd"
+  importFileExtension = "ts"
+}
+
+generator seedClient {
+  provider = "prisma-client"
+  output = "../src/generated/prisma-node"
+  moduleFormat = "esm"
+  runtime = "nodejs"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
 enum MembershipStatus { ACTIVE INVITED SUSPENDED REVOKED }
 enum RoleScope { SYSTEM TENANT }
 enum AcademicYearStatus { ACTIVE ARCHIVED }
@@ -11,18 +28,223 @@ enum ProgramStatus { ACTIVE ARCHIVED }
 enum ProgramType { DEGREE DIPLOMA CERTIFICATE OTHER }
 enum CourseStatus { ACTIVE ARCHIVED }
 enum CourseType { CORE ELECTIVE PRACTICAL PROJECT OTHER }
-model Tenant { id String @id @default(cuid()) name String slug String @unique institutionTypeId String? createdAt DateTime @default(now()) updatedAt DateTime @updatedAt institutionType InstitutionType? @relation(fields:[institutionTypeId],references:[id],onDelete:SetNull) memberships Membership[] roles Role[] sessions Session[] academicYears AcademicYear[] departments Department[] programs Program[] courses Course[] @@index([createdAt]) @@index([institutionTypeId]) }
-model InstitutionType { id String @id @default(cuid()) code String @unique name String description String? status InstitutionTypeStatus @default(ACTIVE) isSystem Boolean @default(true) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt tenants Tenant[] capabilities InstitutionTypeCapability[] @@index([status,name]) }
-model InstitutionCapability { id String @id @default(cuid()) code String @unique name String description String? createdAt DateTime @default(now()) updatedAt DateTime @updatedAt institutionTypes InstitutionTypeCapability[] @@index([name]) }
-model InstitutionTypeCapability { institutionTypeId String capabilityId String enabled Boolean @default(true) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt institutionType InstitutionType @relation(fields:[institutionTypeId],references:[id],onDelete:Cascade) capability InstitutionCapability @relation(fields:[capabilityId],references:[id],onDelete:Cascade) @@id([institutionTypeId,capabilityId]) @@index([capabilityId]) }
-model User { id String @id @default(cuid()) email String @unique name String? passwordHash String? emailVerified DateTime? createdAt DateTime @default(now()) updatedAt DateTime @updatedAt memberships Membership[] sessions Session[] @@index([createdAt]) }
-model Membership { id String @id @default(cuid()) userId String tenantId String status MembershipStatus @default(ACTIVE) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt user User @relation(fields:[userId],references:[id],onDelete:Cascade) tenant Tenant @relation(fields:[tenantId],references:[id],onDelete:Cascade) roles Role[] @@unique([userId,tenantId]) @@index([tenantId,status]) @@index([userId,status]) }
-model Role { id String @id @default(cuid()) tenantId String? name String description String? scope RoleScope @default(TENANT) isSystem Boolean @default(false) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt tenant Tenant? @relation(fields:[tenantId],references:[id],onDelete:Cascade) memberships Membership[] permissions RolePermission[] @@unique([tenantId,name]) @@index([tenantId,scope]) }
-model Permission { id String @id @default(cuid()) code String @unique description String? createdAt DateTime @default(now()) roles RolePermission[] }
-model RolePermission { roleId String permissionId String role Role @relation(fields:[roleId],references:[id],onDelete:Cascade) permission Permission @relation(fields:[permissionId],references:[id],onDelete:Cascade) @@id([roleId,permissionId]) @@index([permissionId]) }
-model Session { id String @id @default(cuid()) userId String tenantId String tokenHash String @unique expiresAt DateTime createdAt DateTime @default(now()) lastSeenAt DateTime @default(now()) user User @relation(fields:[userId],references:[id],onDelete:Cascade) tenant Tenant @relation(fields:[tenantId],references:[id],onDelete:Cascade) @@index([userId,expiresAt]) @@index([tenantId,expiresAt]) }
-model AcademicYear { id String @id @default(cuid()) tenantId String name String startDate DateTime endDate DateTime isCurrent Boolean @default(false) status AcademicYearStatus @default(ACTIVE) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt tenant Tenant @relation(fields:[tenantId],references:[id],onDelete:Cascade) terms AcademicTerm[] @@unique([tenantId,name]) @@index([tenantId,status]) @@index([tenantId,isCurrent]) }
-model AcademicTerm { id String @id @default(cuid()) academicYearId String name String startDate DateTime endDate DateTime sortOrder Int status AcademicTermStatus @default(ACTIVE) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt academicYear AcademicYear @relation(fields:[academicYearId],references:[id],onDelete:Cascade) @@unique([academicYearId,name]) @@index([academicYearId,status,sortOrder]) }
-model Department { id String @id @default(cuid()) tenantId String name String code String description String? displayOrder Int @default(0) status DepartmentStatus @default(ACTIVE) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt tenant Tenant @relation(fields:[tenantId],references:[id],onDelete:Cascade) programs Program[] @@unique([tenantId,code]) @@index([tenantId,status,displayOrder]) }
-model Program { id String @id @default(cuid()) tenantId String departmentId String name String code String type ProgramType @default(DEGREE) durationMonths Int? description String? status ProgramStatus @default(ACTIVE) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt tenant Tenant @relation(fields:[tenantId],references:[id],onDelete:Cascade) department Department @relation(fields:[departmentId],references:[id],onDelete:Restrict) courses Course[] @@unique([tenantId,code]) @@index([tenantId,status]) @@index([departmentId,status]) }
-model Course { id String @id @default(cuid()) tenantId String programId String name String code String description String? type CourseType @default(CORE) credits Int? weeklyHours Int? displayOrder Int @default(0) status CourseStatus @default(ACTIVE) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt tenant Tenant @relation(fields:[tenantId],references:[id],onDelete:Cascade) program Program @relation(fields:[programId],references:[id],onDelete:Restrict) @@unique([tenantId,code]) @@index([tenantId,status,displayOrder]) @@index([programId,status,displayOrder]) }
+
+model Tenant {
+  id String @id @default(cuid())
+  name String
+  slug String @unique
+  institutionTypeId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  institutionType InstitutionType? @relation(fields: [institutionTypeId], references: [id], onDelete: SetNull)
+  memberships Membership[]
+  roles Role[]
+  sessions Session[]
+  academicYears AcademicYear[]
+  departments Department[]
+  programs Program[]
+  courses Course[]
+  @@index([createdAt])
+  @@index([institutionTypeId])
+}
+
+model InstitutionType {
+  id String @id @default(cuid())
+  code String @unique
+  name String
+  description String?
+  status InstitutionTypeStatus @default(ACTIVE)
+  isSystem Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenants Tenant[]
+  capabilities InstitutionTypeCapability[]
+  @@index([status, name])
+}
+
+model InstitutionCapability {
+  id String @id @default(cuid())
+  code String @unique
+  name String
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  institutionTypes InstitutionTypeCapability[]
+  @@index([name])
+}
+
+model InstitutionTypeCapability {
+  institutionTypeId String
+  capabilityId String
+  enabled Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  institutionType InstitutionType @relation(fields: [institutionTypeId], references: [id], onDelete: Cascade)
+  capability InstitutionCapability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  @@id([institutionTypeId, capabilityId])
+  @@index([capabilityId])
+}
+
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  name String?
+  passwordHash String?
+  emailVerified DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  memberships Membership[]
+  sessions Session[]
+  @@index([createdAt])
+}
+
+model Membership {
+  id String @id @default(cuid())
+  userId String
+  tenantId String
+  status MembershipStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  roles Role[]
+  @@unique([userId, tenantId])
+  @@index([tenantId, status])
+  @@index([userId, status])
+}
+
+model Role {
+  id String @id @default(cuid())
+  tenantId String?
+  name String
+  description String?
+  scope RoleScope @default(TENANT)
+  isSystem Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  memberships Membership[]
+  permissions RolePermission[]
+  @@unique([tenantId, name])
+  @@index([tenantId, scope])
+}
+
+model Permission {
+  id String @id @default(cuid())
+  code String @unique
+  description String?
+  createdAt DateTime @default(now())
+  roles RolePermission[]
+}
+
+model RolePermission {
+  roleId String
+  permissionId String
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  @@id([roleId, permissionId])
+  @@index([permissionId])
+}
+
+model Session {
+  id String @id @default(cuid())
+  userId String
+  tenantId String
+  tokenHash String @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  @@index([userId, expiresAt])
+  @@index([tenantId, expiresAt])
+}
+
+model AcademicYear {
+  id String @id @default(cuid())
+  tenantId String
+  name String
+  startDate DateTime
+  endDate DateTime
+  isCurrent Boolean @default(false)
+  status AcademicYearStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  terms AcademicTerm[]
+  @@unique([tenantId, name])
+  @@index([tenantId, status])
+  @@index([tenantId, isCurrent])
+}
+
+model AcademicTerm {
+  id String @id @default(cuid())
+  academicYearId String
+  name String
+  startDate DateTime
+  endDate DateTime
+  sortOrder Int
+  status AcademicTermStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
+  @@unique([academicYearId, name])
+  @@index([academicYearId, status, sortOrder])
+}
+
+model Department {
+  id String @id @default(cuid())
+  tenantId String
+  name String
+  code String
+  description String?
+  displayOrder Int @default(0)
+  status DepartmentStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  programs Program[]
+  @@unique([tenantId, code])
+  @@index([tenantId, status, displayOrder])
+}
+
+model Program {
+  id String @id @default(cuid())
+  tenantId String
+  departmentId String
+  name String
+  code String
+  type ProgramType @default(DEGREE)
+  durationMonths Int?
+  description String?
+  status ProgramStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  department Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  courses Course[]
+  @@unique([tenantId, code])
+  @@index([tenantId, status])
+  @@index([departmentId, status])
+}
+
+model Course {
+  id String @id @default(cuid())
+  tenantId String
+  programId String
+  name String
+  code String
+  description String?
+  type CourseType @default(CORE)
+  credits Int?
+  weeklyHours Int?
+  displayOrder Int @default(0)
+  status CourseStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  program Program @relation(fields: [programId], references: [id], onDelete: Restrict)
+  @@unique([tenantId, code])
+  @@index([tenantId, status, displayOrder])
+  @@index([programId, status, displayOrder])
+}
