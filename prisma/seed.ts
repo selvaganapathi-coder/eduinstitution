@@ -1,6 +1,7 @@
+import "dotenv/config";
 import { PrismaNeon } from "@prisma/adapter-neon";
-import { PrismaClient } from "../src/generated/prisma-node/client";
-import { hashPassword } from "../src/server/auth/credentials";
+import { PrismaClient } from "../src/generated/prisma-node/client.ts";
+import { hashPassword } from "../src/server/auth/credentials.ts";
 
 const DEV_EMAIL = "admin@eduinstitution.local";
 const DEV_PASSWORD = "ChangeMe123!";
@@ -45,7 +46,6 @@ async function main() {
       create: { email: DEV_EMAIL, name: "Development Super Admin", passwordHash },
     });
 
-    // Temporary development-only system role. The full platform-admin product is intentionally deferred.
     const existingRole = await prisma.role.findFirst({
       where: { tenantId: null, name: DEV_ROLE_NAME, scope: "SYSTEM" },
     });
