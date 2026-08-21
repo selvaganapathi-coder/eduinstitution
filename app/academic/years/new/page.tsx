@@ -4,14 +4,27 @@ import { redirect } from "next/navigation";
 import { ApplicationShell } from "@/components/application-shell";
 import { AcademicYearForm } from "@/components/academic/academic-year-form";
 import { Paragraph, Title } from "@/components/ui/typography";
-import { AuthenticationError, TenantAccessError } from "@/src/server/auth/errors";
-import { requireTenantContext } from "@/src/server/auth/tenant-context";
+import { AuthenticationError, AuthorizationError, TenantAccessError } from "@/src/server/auth/errors";
+import { requirePermission } from "@/src/server/auth/permissions";
 
 export default async function NewAcademicYearPage() {
   try {
-    await requireTenantContext();
+    await requirePermission("academic_year:create");
   } catch (error) {
     if (error instanceof AuthenticationError || error instanceof TenantAccessError) redirect("/login");
+    if (error instanceof AuthorizationError) {
+      return (
+        <ApplicationShell pageTitle="Add academic year" pageContext="Academic setup" selectedKey="academic">
+          <div className="mx-auto max-w-3xl py-10">
+            <div className="rounded-2xl border border-[#dadce0] bg-white p-8 text-center">
+              <Title level={3} className="!mb-2">You don't have access</Title>
+              <Paragraph type="secondary">You don't have permission to add an academic year. Contact your institution administrator if you need access.</Paragraph>
+              <Link href="/academic/years" className="text-[#076653]">Back to academic years</Link>
+            </div>
+          </div>
+        </ApplicationShell>
+      );
+    }
     throw error;
   }
 
