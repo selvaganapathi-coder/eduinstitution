@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { Button } from "antd";
 import { ApplicationShell } from "@/components/application-shell";
 import { AcademicYearForm } from "@/components/academic/academic-year-form";
 import { Paragraph, Title } from "@/components/ui/typography";
