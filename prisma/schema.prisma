@@ -18,16 +18,62 @@ datasource db {
   provider = "postgresql"
 }
 
-enum MembershipStatus { ACTIVE INVITED SUSPENDED REVOKED }
-enum RoleScope { SYSTEM TENANT }
-enum AcademicYearStatus { ACTIVE ARCHIVED }
-enum AcademicTermStatus { ACTIVE ARCHIVED }
-enum InstitutionTypeStatus { ACTIVE ARCHIVED }
-enum DepartmentStatus { ACTIVE ARCHIVED }
-enum ProgramStatus { ACTIVE ARCHIVED }
-enum ProgramType { DEGREE DIPLOMA CERTIFICATE OTHER }
-enum CourseStatus { ACTIVE ARCHIVED }
-enum CourseType { CORE ELECTIVE PRACTICAL PROJECT OTHER }
+enum MembershipStatus {
+  ACTIVE
+  INVITED
+  SUSPENDED
+  REVOKED
+}
+
+enum RoleScope {
+  SYSTEM
+  TENANT
+}
+
+enum AcademicYearStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum AcademicTermStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum InstitutionTypeStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum DepartmentStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum ProgramStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum ProgramType {
+  DEGREE
+  DIPLOMA
+  CERTIFICATE
+  OTHER
+}
+
+enum CourseStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum CourseType {
+  CORE
+  ELECTIVE
+  PRACTICAL
+  PROJECT
+  OTHER
+}
 
 model Tenant {
   id String @id @default(cuid())
