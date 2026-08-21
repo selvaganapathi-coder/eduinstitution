@@ -2,7 +2,7 @@ generator client {
   provider            = "prisma-client"
   output              = "../src/generated/prisma"
   moduleFormat        = "esm"
-  runtime             = "workerd"
+  runtime              = "workerd"
   importFileExtension = "ts"
 }
 
@@ -10,7 +10,7 @@ generator seedClient {
   provider            = "prisma-client"
   output              = "../src/generated/prisma-node"
   moduleFormat        = "esm"
-  runtime             = "nodejs"
+  runtime              = "nodejs"
   importFileExtension = "ts"
 }
 
@@ -40,19 +40,70 @@ enum AcademicTermStatus {
   ARCHIVED
 }
 
-model Tenant {
-  id             String         @id @default(cuid())
-  name           String
-  slug           String         @unique
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+enum InstitutionTypeStatus {
+  ACTIVE
+  ARCHIVED
+}
 
+model Tenant {
+  id                String          @id @default(cuid())
+  name              String
+  slug              String          @unique
+  institutionTypeId String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  institutionType InstitutionType? @relation(fields: [institutionTypeId], references: [id], onDelete: SetNull)
   memberships    Membership[]
   roles          Role[]
   sessions       Session[]
   academicYears  AcademicYear[]
 
   @@index([createdAt])
+  @@index([institutionTypeId])
+}
+
+model InstitutionType {
+  id          String                  @id @default(cuid())
+  code        String                  @unique
+  name        String
+  description String?
+  status      InstitutionTypeStatus   @default(ACTIVE)
+  isSystem    Boolean                 @default(true)
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+
+  tenants     Tenant[]
+  capabilities InstitutionTypeCapability[]
+
+  @@index([status, name])
+}
+
+model InstitutionCapability {
+  id          String                  @id @default(cuid())
+  code        String                  @unique
+  name        String
+  description String?
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+
+  institutionTypes InstitutionTypeCapability[]
+
+  @@index([name])
+}
+
+model InstitutionTypeCapability {
+  institutionTypeId String
+  capabilityId      String
+  enabled           Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  institutionType InstitutionType       @relation(fields: [institutionTypeId], references: [id], onDelete: Cascade)
+  capability      InstitutionCapability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+
+  @@id([institutionTypeId, capabilityId])
+  @@index([capabilityId])
 }
 
 model User {
