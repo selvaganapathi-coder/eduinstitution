@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Dropdown } from "antd";
+import type { MenuProps } from "antd";
+import { MoreVertOutlined } from "@ant-design/icons";
 import { ApplicationShell } from "@/components/application-shell";
 
 type Department = { id: string; name: string; code: string; description: string | null; status: string; _count: { programs: number } };
@@ -47,17 +50,15 @@ export default function DepartmentsPage() {
   }, []);
 
   function startDepartmentEdit(item: Department) {
-    setEditingDepartmentId(item.id); setEditingProgramId(null);
-    setDepartment({ name: item.name, code: item.code, description: item.description ?? "" });
-    setProgram(emptyProgram);
-    setNotice({ kind: "info", text: "You are editing this department. Save your changes when you're ready." });
+    setSelectedId(item.id); setEditingDepartmentId(item.id); setEditingProgramId(null);
+    setDepartment({ name: item.name, code: item.code, description: item.description ?? "" }); setProgram(emptyProgram);
+    setNotice({ kind: "info", text: "Edit the department details, then select Save department." });
   }
 
   function startProgramEdit(item: Program) {
-    setEditingProgramId(item.id); setEditingDepartmentId(null);
-    setProgram({ name: item.name, code: item.code, type: item.type, durationMonths: item.durationMonths?.toString() ?? "" });
-    setDepartment(emptyDepartment);
-    setNotice({ kind: "info", text: "You are editing this program. Save your changes when you're ready." });
+    setSelectedId(item.department.id); setEditingProgramId(item.id); setEditingDepartmentId(null);
+    setProgram({ name: item.name, code: item.code, type: item.type, durationMonths: item.durationMonths?.toString() ?? "" }); setDepartment(emptyDepartment);
+    setNotice({ kind: "info", text: "Edit the program details, then select Save program." });
   }
 
   function cancelEdit() {
@@ -70,7 +71,7 @@ export default function DepartmentsPage() {
       const editing = Boolean(editingDepartmentId);
       const response = await fetch(editing ? `/api/academic/departments/${editingDepartmentId}` : "/api/academic/departments", { method: editing ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(department) });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? `We couldn't ${editing ? "update" : "create"} the department. Please try again.`);
+      if (!response.ok) throw new Error(data.error ?? "We couldn't save the department. Please try again.");
       setDepartments((items) => editing ? items.map((item) => item.id === data.department.id ? data.department : item) : [...items, data.department]);
       setSelectedId(data.department.id); setDepartment(emptyDepartment); setEditingDepartmentId(null);
       setNotice({ kind: "success", text: editing ? "Department updated successfully." : "Department created successfully." });
@@ -78,16 +79,17 @@ export default function DepartmentsPage() {
     finally { setSaving(false); }
   }
 
-  async function archiveDepartment() {
-    if (!selected) return;
-    if (!window.confirm(`Archive ${selected.name}? Existing programs must be archived first.`)) return;
+  async function archiveDepartment(id = selectedId) {
+    const target = departments.find((item) => item.id === id);
+    if (!target) return;
+    if (!window.confirm(`Archive ${target.name}? Programs must be archived first.`)) return;
     setSaving(true); setNotice(null);
     try {
-      const response = await fetch(`/api/academic/departments/${selected.id}`, { method: "DELETE" });
+      const response = await fetch(`/api/academic/departments/${target.id}`, { method: "DELETE" });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "We couldn't archive the department. Please try again.");
-      const remaining = departments.filter((item) => item.id !== selected.id);
-      setDepartments(remaining); setSelectedId(remaining[0]?.id ?? "");
+      const remaining = departments.filter((item) => item.id !== target.id);
+      setDepartments(remaining); setSelectedId(remaining[0]?.id ?? ""); cancelEdit();
       setNotice({ kind: "success", text: "Department archived successfully." });
     } catch (error) { setNotice({ kind: "error", text: error instanceof Error ? error.message : "We couldn't archive the department. Please try again." }); }
     finally { setSaving(false); }
@@ -100,7 +102,7 @@ export default function DepartmentsPage() {
       const editing = Boolean(editingProgramId);
       const response = await fetch(editing ? `/api/academic/programs/${editingProgramId}` : "/api/academic/programs", { method: editing ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...program, departmentId: selectedId, durationMonths: program.durationMonths ? Number(program.durationMonths) : null }) });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? `We couldn't ${editing ? "update" : "create"} the program. Please try again.`);
+      if (!response.ok) throw new Error(data.error ?? "We couldn't save the program. Please try again.");
       setPrograms((items) => editing ? items.map((item) => item.id === data.program.id ? data.program : item) : [...items, data.program]);
       setProgram(emptyProgram); setEditingProgramId(null);
       setNotice({ kind: "success", text: editing ? "Program updated successfully." : "Program created successfully." });
@@ -126,23 +128,40 @@ export default function DepartmentsPage() {
   const selected = departments.find((item) => item.id === selectedId);
   const visible = programs.filter((item) => item.department.id === selectedId);
 
+  const departmentMenu = (item: Department): MenuProps["items"] => [
+    { key: "edit", label: "Edit department", onClick: () => startDepartmentEdit(item) },
+    { type: "divider" },
+    { key: "archive", label: "Archive department", danger: true, onClick: () => void archiveDepartment(item.id) },
+  ];
+  const programMenu = (item: Program): MenuProps["items"] => [
+    { key: "edit", label: "Edit program", onClick: () => startProgramEdit(item) },
+    { type: "divider" },
+    { key: "archive", label: "Archive program", danger: true, onClick: () => void archiveProgram(item) },
+  ];
+
   return <ApplicationShell pageTitle="Departments & programs" pageContext="Organize your institution's academic structure" selectedKey="departments">
-    <div className="mx-auto max-w-6xl space-y-6">
-      <nav className="text-sm text-[#5f6368]"><Link href="/" className="hover:text-[#1a73e8]">Home</Link><span className="mx-2">/</span><span className="text-[#202124]">Departments & programs</span></nav>
-      <div><h1 className="mb-1 text-[28px] font-medium text-[#202124]">Departments & programs</h1><p className="m-0 text-sm text-[#5f6368]">Create departments first, then add the programs offered by each department.</p></div>
-      {notice && <div role="status" className={`rounded-xl border px-4 py-3 text-sm ${notice.kind === "success" ? "border-[#c6e7d0] bg-[#e6f4ea] text-[#137333]" : notice.kind === "error" ? "border-[#f1c6c6] bg-[#fce8e6] text-[#a50e0e]" : "border-[#c6dafc] bg-[#e8f0fe] text-[#174ea6]"}`}>{notice.text}</div>}
-      {loading ? <div className="rounded-2xl border border-[#dadce0] bg-white p-8 text-center text-sm text-[#5f6368]">Loading academic structure...</div> : <div className="grid gap-5 lg:grid-cols-[280px_1fr]">
-        <aside className="rounded-2xl border border-[#dadce0] bg-white p-4">
-          <div className="mb-3 flex items-center justify-between"><h2 className="text-base font-medium">Departments</h2><span className="text-xs text-[#5f6368]">{departments.length}</span></div>
-          {departments.length ? departments.map((item) => <div key={item.id} className="mb-2 flex items-stretch gap-1"><button type="button" onClick={() => { setSelectedId(item.id); cancelEdit(); }} className={`min-w-0 flex-1 rounded-l-xl border px-3 py-3 text-left ${selectedId === item.id ? "border-[#a8c7fa] bg-[#e8f0fe]" : "border-[#dadce0]"}`}><span className="block truncate text-sm font-medium">{item.name}</span><span className="text-xs text-[#5f6368]">{item.code} · {item._count.programs} programs</span></button><button type="button" onClick={() => startDepartmentEdit(item)} aria-label={`Edit ${item.name}`} className="rounded-r-xl border border-l-0 border-[#dadce0] px-3 text-xs font-medium text-[#1a73e8] hover:bg-[#f8f9fa]">Edit</button></div>) : <div className="rounded-xl border border-dashed border-[#dadce0] p-4 text-center text-sm text-[#5f6368]">No active departments yet.</div>}
-          <div className="mt-5 border-t border-[#e8eaed] pt-5"><div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-medium">{editingDepartmentId ? "Edit department" : "Add department"}</h3>{editingDepartmentId && <button type="button" onClick={cancelEdit} className="text-xs text-[#5f6368] hover:text-[#202124]">Cancel</button>}</div><div className="space-y-3"><input value={department.name} onChange={(e) => setDepartment({ ...department, name: e.target.value })} placeholder="Department name" className="h-10 w-full rounded-lg border border-[#dadce0] px-3 text-sm" /><input value={department.code} onChange={(e) => setDepartment({ ...department, code: e.target.value })} placeholder="Code" className="h-10 w-full rounded-lg border border-[#dadce0] px-3 text-sm uppercase" /><textarea value={department.description} onChange={(e) => setDepartment({ ...department, description: e.target.value })} placeholder="Description (optional)" rows={3} className="w-full rounded-lg border border-[#dadce0] px-3 py-2 text-sm" /><button disabled={saving} onClick={() => void createOrUpdateDepartment()} className="h-10 w-full rounded-lg bg-[#188038] text-sm font-medium text-white disabled:opacity-50">{saving ? "Saving..." : editingDepartmentId ? "Save department" : "Create department"}</button></div></div>
-        </aside>
-        <section className="rounded-2xl border border-[#dadce0] bg-white p-5 sm:p-6">
-          {selected ? <>
-            <div className="flex flex-col gap-4 border-b border-[#e8eaed] pb-5 sm:flex-row sm:items-start sm:justify-between"><div><h2 className="text-xl font-medium">{selected.name}</h2><p className="mt-1 text-sm text-[#5f6368]">{selected.description || "Programs offered by this department."}</p><p className="mt-2 text-xs text-[#5f6368]">Code: {selected.code} · {selected._count.programs} programs</p></div><button type="button" disabled={saving} onClick={() => void archiveDepartment()} className="h-9 rounded-lg border border-[#dadce0] px-3 text-sm font-medium text-[#a50e0e] hover:bg-[#fce8e6] disabled:opacity-50">Archive department</button></div>
-            <div className="py-5"><h3 className="mb-3 text-base font-medium">Programs</h3>{visible.length ? visible.map((item) => <div key={item.id} className="mb-2 flex items-center gap-3 rounded-xl border border-[#e8eaed] p-4"><div className="min-w-0 flex-1"><span className="block truncate text-sm font-medium">{item.name}</span><span className="text-xs text-[#5f6368]">{item.code} · {item.type.toLowerCase()}{item.durationMonths ? ` · ${item.durationMonths} months` : ""}</span></div><div className="flex shrink-0 items-center gap-3"><button type="button" onClick={() => startProgramEdit(item)} className="text-sm font-medium text-[#1a73e8] hover:underline">Edit</button><button type="button" disabled={saving} onClick={() => void archiveProgram(item)} className="text-sm font-medium text-[#a50e0e] hover:underline disabled:opacity-50">Archive</button></div></div>) : <div className="rounded-xl border border-dashed border-[#dadce0] bg-[#f8f9fa] p-6 text-center text-sm text-[#5f6368]">No active programs have been added yet.</div>}</div>
-            <div className="border-t border-[#e8eaed] pt-5"><div className="mb-3 flex items-center justify-between"><div><h3 className="text-base font-medium">{editingProgramId ? "Edit program" : "Add program"}</h3><p className="mt-1 text-xs text-[#5f6368]">{editingProgramId ? "Update the program details below." : "Add a program offered by this department."}</p></div>{editingProgramId && <button type="button" onClick={cancelEdit} className="text-xs text-[#5f6368] hover:text-[#202124]">Cancel</button>}</div><div className="grid gap-3 sm:grid-cols-2"><input value={program.name} onChange={(e) => setProgram({ ...program, name: e.target.value })} placeholder="Program name" className="h-10 rounded-lg border border-[#dadce0] px-3 text-sm" /><input value={program.code} onChange={(e) => setProgram({ ...program, code: e.target.value })} placeholder="Program code" className="h-10 rounded-lg border border-[#dadce0] px-3 text-sm uppercase" /><select value={program.type} onChange={(e) => setProgram({ ...program, type: e.target.value })} className="h-10 rounded-lg border border-[#dadce0] px-3 text-sm"><option value="DEGREE">Degree</option><option value="DIPLOMA">Diploma</option><option value="CERTIFICATE">Certificate</option><option value="OTHER">Other</option></select><input type="number" min="1" value={program.durationMonths} onChange={(e) => setProgram({ ...program, durationMonths: e.target.value })} placeholder="Duration in months" className="h-10 rounded-lg border border-[#dadce0] px-3 text-sm" /></div><button disabled={saving} onClick={() => void createOrUpdateProgram()} className="mt-3 h-10 rounded-lg bg-[#188038] px-5 text-sm font-medium text-white disabled:opacity-50">{saving ? "Saving..." : editingProgramId ? "Save program" : "Create program"}</button></div>
-          </> : <div className="py-20 text-center text-sm text-[#5f6368]">Create a department to start building your academic structure.</div>}
+    <div className="mx-auto max-w-6xl">
+      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-[#5f6368]"><Link href="/" className="hover:text-[#1a73e8]">Home</Link><span className="mx-2">/</span><span className="text-[#202124]">Departments & programs</span></nav>
+      <header className="mb-6"><h1 className="m-0 text-[28px] font-normal tracking-[-0.02em] text-[#202124]">Departments & programs</h1><p className="mt-2 mb-0 text-sm text-[#5f6368]">Manage the academic units and programs offered by your institution.</p></header>
+      {notice && <div role="status" className={`mb-5 rounded-lg border px-4 py-3 text-sm ${notice.kind === "success" ? "border-[#c6e7d0] bg-[#e6f4ea] text-[#137333]" : notice.kind === "error" ? "border-[#f1c6c6] bg-[#fce8e6] text-[#a50e0e]" : "border-[#c6dafc] bg-[#e8f0fe] text-[#174ea6]"}`}>{notice.text}</div>}
+      {loading ? <div className="border-y border-[#dadce0] bg-white px-4 py-10 text-center text-sm text-[#5f6368]">Loading academic structure...</div> : <div className="grid gap-8 lg:grid-cols-[300px_1fr]">
+        <section className="min-w-0">
+          <div className="mb-3 flex items-center justify-between"><h2 className="m-0 text-base font-medium text-[#202124]">Departments</h2><span className="text-sm text-[#5f6368]">{departments.length}</span></div>
+          <div className="border-y border-[#dadce0] bg-white">
+            {departments.length ? departments.map((item) => <div key={item.id} className={`group flex items-center border-b border-[#e8eaed] last:border-0 ${selectedId === item.id ? "bg-[#f1f3f4]" : "hover:bg-[#f8f9fa]"}`}>
+              <button type="button" onClick={() => { setSelectedId(item.id); cancelEdit(); }} className="min-w-0 flex-1 px-3 py-3 text-left"><span className="block truncate text-sm font-medium text-[#202124]">{item.name}</span><span className="text-xs text-[#5f6368]">{item.code} · {item._count.programs} {item._count.programs === 1 ? "program" : "programs"}</span></button>
+              <Dropdown trigger={["click"]} menu={{ items: departmentMenu(item) }} placement="bottomRight"><button type="button" aria-label={`More actions for ${item.name}`} className="mr-1 flex h-9 w-9 items-center justify-center rounded-full text-[#5f6368] hover:bg-[#e8eaed] focus:outline-none focus:ring-2 focus:ring-[#1a73e8]"><MoreVertOutlined /></button></Dropdown>
+            </div>) : <div className="px-4 py-8 text-center text-sm text-[#5f6368]">No active departments yet.</div>}
+          </div>
+          <div className="mt-8"><div className="mb-3 flex items-center justify-between"><h2 className="m-0 text-base font-medium text-[#202124]">{editingDepartmentId ? "Edit department" : "Add department"}</h2>{editingDepartmentId && <button type="button" onClick={cancelEdit} className="text-sm text-[#1a73e8] hover:underline">Cancel</button>}</div>
+            <div className="space-y-4"><label className="block"><span className="mb-1 block text-xs font-medium text-[#5f6368]">Department name</span><input value={department.name} onChange={(e) => setDepartment({ ...department, name: e.target.value })} className="h-10 w-full rounded-md border border-[#dadce0] px-3 text-sm text-[#202124] outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8]" /></label><label className="block"><span className="mb-1 block text-xs font-medium text-[#5f6368]">Department code</span><input value={department.code} onChange={(e) => setDepartment({ ...department, code: e.target.value })} className="h-10 w-full rounded-md border border-[#dadce0] px-3 text-sm uppercase text-[#202124] outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8]" /></label><label className="block"><span className="mb-1 block text-xs font-medium text-[#5f6368]">Description <span className="font-normal">(optional)</span></span><textarea value={department.description} onChange={(e) => setDepartment({ ...department, description: e.target.value })} rows={3} className="w-full rounded-md border border-[#dadce0] px-3 py-2 text-sm text-[#202124] outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8]" /></label><button disabled={saving} onClick={() => void createOrUpdateDepartment()} className="h-10 rounded-md bg-[#1a73e8] px-5 text-sm font-medium text-white hover:bg-[#185abc] disabled:cursor-not-allowed disabled:opacity-50">{saving ? "Saving..." : editingDepartmentId ? "Save department" : "Add department"}</button></div>
+          </div>
+        </section>
+        <section className="min-w-0">
+          {selected ? <><div className="flex items-start justify-between border-b border-[#dadce0] pb-5"><div><h2 className="m-0 text-xl font-normal text-[#202124]">{selected.name}</h2><p className="mt-1 mb-0 text-sm text-[#5f6368]">{selected.description || "Programs offered by this department."}</p><p className="mt-2 mb-0 text-xs text-[#5f6368]">Code: {selected.code} · {selected._count.programs} {selected._count.programs === 1 ? "program" : "programs"}</p></div><Dropdown trigger={["click"]} menu={{ items: departmentMenu(selected) }} placement="bottomRight"><button type="button" aria-label={`More actions for ${selected.name}`} className="flex h-10 w-10 items-center justify-center rounded-full text-[#5f6368] hover:bg-[#f1f3f4] focus:outline-none focus:ring-2 focus:ring-[#1a73e8]"><MoreVertOutlined /></button></Dropdown></div>
+            <div className="py-7"><div className="mb-3 flex items-center justify-between"><h3 className="m-0 text-base font-medium text-[#202124]">Programs</h3><span className="text-sm text-[#5f6368]">{visible.length}</span></div>{visible.length ? <div className="divide-y divide-[#e8eaed] border-y border-[#dadce0] bg-white">{visible.map((item) => <div key={item.id} className="flex items-center gap-3 px-3 py-4 hover:bg-[#f8f9fa]"><div className="min-w-0 flex-1"><span className="block truncate text-sm font-medium text-[#202124]">{item.name}</span><span className="text-xs text-[#5f6368]">{item.code} · {item.type.toLowerCase()}{item.durationMonths ? ` · ${item.durationMonths} months` : ""}</span></div><Dropdown trigger={["click"]} menu={{ items: programMenu(item) }} placement="bottomRight"><button type="button" aria-label={`More actions for ${item.name}`} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#5f6368] hover:bg-[#e8eaed] focus:outline-none focus:ring-2 focus:ring-[#1a73e8]"><MoreVertOutlined /></button></Dropdown></div>)}</div> : <div className="border-y border-dashed border-[#dadce0] px-4 py-10 text-center text-sm text-[#5f6368]">No active programs yet. Add a program below.</div>}</div>
+            <div className="border-t border-[#dadce0] pt-7"><div className="mb-4 flex items-center justify-between"><div><h3 className="m-0 text-base font-medium text-[#202124]">{editingProgramId ? "Edit program" : "Add program"}</h3><p className="mt-1 mb-0 text-sm text-[#5f6368]">{editingProgramId ? "Update the program details." : "Add a program offered by this department."}</p></div>{editingProgramId && <button type="button" onClick={cancelEdit} className="text-sm text-[#1a73e8] hover:underline">Cancel</button>}</div><div className="grid gap-4 sm:grid-cols-2"><label className="block"><span className="mb-1 block text-xs font-medium text-[#5f6368]">Program name</span><input value={program.name} onChange={(e) => setProgram({ ...program, name: e.target.value })} className="h-10 w-full rounded-md border border-[#dadce0] px-3 text-sm outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8]" /></label><label className="block"><span className="mb-1 block text-xs font-medium text-[#5f6368]">Program code</span><input value={program.code} onChange={(e) => setProgram({ ...program, code: e.target.value })} className="h-10 w-full rounded-md border border-[#dadce0] px-3 text-sm uppercase outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8]" /></label><label className="block"><span className="mb-1 block text-xs font-medium text-[#5f6368]">Program type</span><select value={program.type} onChange={(e) => setProgram({ ...program, type: e.target.value })} className="h-10 w-full rounded-md border border-[#dadce0] bg-white px-3 text-sm outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8]">{["DEGREE", "DIPLOMA", "CERTIFICATE", "OTHER"].map((value) => <option key={value} value={value}>{value.charAt(0) + value.slice(1).toLowerCase()}</option>)}</select></label><label className="block"><span className="mb-1 block text-xs font-medium text-[#5f6368]">Duration <span className="font-normal">(months)</span></span><input type="number" min="1" value={program.durationMonths} onChange={(e) => setProgram({ ...program, durationMonths: e.target.value })} className="h-10 w-full rounded-md border border-[#dadce0] px-3 text-sm outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8]" /></label></div><button disabled={saving} onClick={() => void createOrUpdateProgram()} className="mt-4 h-10 rounded-md bg-[#1a73e8] px-5 text-sm font-medium text-white hover:bg-[#185abc] disabled:cursor-not-allowed disabled:opacity-50">{saving ? "Saving..." : editingProgramId ? "Save program" : "Add program"}</button></div>
+          </> : <div className="border-y border-[#dadce0] px-6 py-16 text-center text-sm text-[#5f6368]">Select a department to view its programs.</div>}
         </section>
       </div>}
     </div>
