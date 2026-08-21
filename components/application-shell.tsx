@@ -7,7 +7,6 @@ import {
   AppstoreOutlined,
   BankOutlined,
   BarChartOutlined,
-  BookOutlined,
   CalendarOutlined,
   CheckCircleOutlined,
   DollarOutlined,
