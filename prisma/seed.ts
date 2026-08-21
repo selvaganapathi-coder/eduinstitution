@@ -1,11 +1,23 @@
+import "dotenv/config";
 import { PrismaNeon } from "@prisma/adapter-neon";
-import { PrismaClient } from "../src/generated/prisma-node/client";
-import { hashPassword } from "../src/server/auth/credentials";
+import { PrismaClient } from "../src/generated/prisma-node/client.ts";
+import { hashPassword } from "../src/server/auth/credentials.ts";
 
 const DEV_EMAIL = "admin@eduinstitution.local";
 const DEV_PASSWORD = "ChangeMe123!";
 const DEV_TENANT_SLUG = "demo-institution";
-const INSTITUTION_UPDATE_PERMISSION = "institution:update";
+const DEV_ROLE_NAME = "Platform Super Admin";
+const PERMISSIONS = [
+  ["institution:update", "Update the current institution profile"],
+  ["academic_year:view", "View academic years"],
+  ["academic_year:create", "Create academic years"],
+  ["academic_year:update", "Edit academic years"],
+  ["academic_year:archive", "Archive academic years"],
+  ["academic_term:view", "View academic terms"],
+  ["academic_term:create", "Create academic terms"],
+  ["academic_term:update", "Edit academic terms"],
+  ["academic_term:archive", "Archive academic terms"],
+] as const;
 
 async function main() {
   if (process.env.NODE_ENV === "production") {
@@ -17,9 +29,7 @@ async function main() {
     throw new Error("DIRECT_DATABASE_URL or DATABASE_URL is required to run the development seed.");
   }
 
-  const prisma = new PrismaClient({
-    adapter: new PrismaNeon({ connectionString }),
-  });
+  const prisma = new PrismaClient({ adapter: new PrismaNeon({ connectionString }) });
 
   try {
     const passwordHash = await hashPassword(DEV_PASSWORD);
@@ -32,48 +42,44 @@ async function main() {
 
     const user = await prisma.user.upsert({
       where: { email: DEV_EMAIL },
-      update: { name: "Demo Administrator", passwordHash },
-      create: { email: DEV_EMAIL, name: "Demo Administrator", passwordHash },
+      update: { name: "Development Super Admin", passwordHash },
+      create: { email: DEV_EMAIL, name: "Development Super Admin", passwordHash },
     });
 
-    const permission = await prisma.permission.upsert({
-      where: { code: INSTITUTION_UPDATE_PERMISSION },
-      update: { description: "Update the current institution profile" },
-      create: {
-        code: INSTITUTION_UPDATE_PERMISSION,
-        description: "Update the current institution profile",
-      },
+    const existingRole = await prisma.role.findFirst({
+      where: { tenantId: null, name: DEV_ROLE_NAME, scope: "SYSTEM" },
     });
+    const role = existingRole
+      ? await prisma.role.update({
+          where: { id: existingRole.id },
+          data: {
+            description: "Development-only platform super admin",
+            isSystem: true,
+          },
+        })
+      : await prisma.role.create({
+          data: {
+            tenantId: null,
+            name: DEV_ROLE_NAME,
+            description: "Development-only platform super admin",
+            scope: "SYSTEM",
+            isSystem: true,
+          },
+        });
 
-    const role = await prisma.role.upsert({
-      where: { tenantId_name: { tenantId: tenant.id, name: "Administrator" } },
-      update: {
-        description: "Development administrator role",
-        scope: "TENANT",
-        isSystem: true,
-      },
-      create: {
-        tenantId: tenant.id,
-        name: "Administrator",
-        description: "Development administrator role",
-        scope: "TENANT",
-        isSystem: true,
-      },
-    });
+    for (const [code, description] of PERMISSIONS) {
+      const permission = await prisma.permission.upsert({
+        where: { code },
+        update: { description },
+        create: { code, description },
+      });
 
-    await prisma.rolePermission.upsert({
-      where: {
-        roleId_permissionId: {
-          roleId: role.id,
-          permissionId: permission.id,
-        },
-      },
-      update: {},
-      create: {
-        roleId: role.id,
-        permissionId: permission.id,
-      },
-    });
+      await prisma.rolePermission.upsert({
+        where: { roleId_permissionId: { roleId: role.id, permissionId: permission.id } },
+        update: {},
+        create: { roleId: role.id, permissionId: permission.id },
+      });
+    }
 
     const membership = await prisma.membership.upsert({
       where: { userId_tenantId: { userId: user.id, tenantId: tenant.id } },
@@ -86,10 +92,11 @@ async function main() {
       },
     });
 
-    console.log("Development authentication seed ready:");
+    console.log("Development Platform Super Admin seed ready:");
     console.log(`  Email: ${DEV_EMAIL}`);
     console.log(`  Password: ${DEV_PASSWORD}`);
-    console.log(`  Tenant: ${tenant.name} (${tenant.id})`);
+    console.log(`  Role: ${DEV_ROLE_NAME} (SYSTEM)`);
+    console.log(`  Demo tenant: ${tenant.name} (${tenant.id})`);
     console.log(`  Membership: ${membership.id}`);
   } finally {
     await prisma.$disconnect();
