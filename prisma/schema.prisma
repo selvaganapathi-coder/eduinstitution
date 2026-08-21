@@ -45,6 +45,23 @@ enum InstitutionTypeStatus {
   ARCHIVED
 }
 
+enum DepartmentStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum ProgramStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum ProgramType {
+  DEGREE
+  DIPLOMA
+  CERTIFICATE
+  OTHER
+}
+
 model Tenant {
   id                String          @id @default(cuid())
   name              String
@@ -58,6 +75,8 @@ model Tenant {
   roles          Role[]
   sessions       Session[]
   academicYears  AcademicYear[]
+  departments    Department[]
+  programs       Program[]
 
   @@index([createdAt])
   @@index([institutionTypeId])
@@ -226,4 +245,43 @@ model AcademicTerm {
 
   @@unique([academicYearId, name])
   @@index([academicYearId, status, sortOrder])
+}
+
+model Department {
+  id           String           @id @default(cuid())
+  tenantId     String
+  name         String
+  code         String
+  description  String?
+  displayOrder Int              @default(0)
+  status       DepartmentStatus @default(ACTIVE)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  tenant   Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  programs Program[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId, status, displayOrder])
+}
+
+model Program {
+  id             String        @id @default(cuid())
+  tenantId       String
+  departmentId   String
+  name           String
+  code           String
+  type           ProgramType   @default(DEGREE)
+  durationMonths Int?
+  description    String?
+  status         ProgramStatus @default(ACTIVE)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  tenant     Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  department Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+
+  @@unique([tenantId, code])
+  @@index([tenantId, status])
+  @@index([departmentId, status])
 }
