@@ -3,7 +3,20 @@
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { Layout, Menu, Drawer, Button, Grid, Space, Input, Avatar } from "antd";
-import { SearchOutlined, MenuOutlined, BellOutlined } from "@ant-design/icons";
+import {
+  AppstoreOutlined,
+  BankOutlined,
+  BarChartOutlined,
+  BookOutlined,
+  CalendarOutlined,
+  CheckCircleOutlined,
+  DollarOutlined,
+  FileTextOutlined,
+  MenuOutlined,
+  SearchOutlined,
+  TeamOutlined,
+  BellOutlined,
+} from "@ant-design/icons";
 import { Text, Title } from "@/components/ui/typography";
 import type { MenuProps } from "antd";
 const { Header, Sider, Content } = Layout;
@@ -18,16 +31,18 @@ type ApplicationShellProps = {
   selectedKey?: string;
 };
 
+const iconClass = "!text-[18px]";
+
 const items: MenuItem[] = [
-  { key: "dashboard", label: <Link href="/">Dashboard</Link> },
-  { key: "institution", label: <Link href="/institution">Institution</Link> },
-  { key: "academic", label: <Link href="/academic/years">Academic</Link> },
-  { key: "students", label: "Students" },
-  { key: "faculty", label: "Faculty / Staff" },
-  { key: "attendance", label: "Attendance" },
-  { key: "examinations", label: "Examinations" },
-  { key: "fees", label: "Fees" },
-  { key: "reports", label: "Reports" },
+  { key: "dashboard", icon: <AppstoreOutlined className={iconClass} />, label: <Link href="/">Dashboard</Link> },
+  { key: "institution", icon: <BankOutlined className={iconClass} />, label: <Link href="/institution">Institution</Link> },
+  { key: "academic", icon: <CalendarOutlined className={iconClass} />, label: <Link href="/academic/years">Academic</Link> },
+  { key: "students", icon: <TeamOutlined className={iconClass} />, label: "Students" },
+  { key: "faculty", icon: <TeamOutlined className={iconClass} />, label: "Faculty / Staff" },
+  { key: "attendance", icon: <CheckCircleOutlined className={iconClass} />, label: "Attendance" },
+  { key: "examinations", icon: <FileTextOutlined className={iconClass} />, label: "Examinations" },
+  { key: "fees", icon: <DollarOutlined className={iconClass} />, label: "Fees" },
+  { key: "reports", icon: <BarChartOutlined className={iconClass} />, label: "Reports" },
 ];
 
 export function ApplicationShell({ children, pageTitle = "Dashboard", pageContext = "Institution overview", selectedKey = "dashboard" }: ApplicationShellProps) {
@@ -41,7 +56,7 @@ export function ApplicationShell({ children, pageTitle = "Dashboard", pageContex
         <div className="brand-mark" aria-hidden="true">E</div>
         <div><Text className="brand-name">EduInstitution</Text><Text className="brand-subtitle">Learn · Grow · Succeed</Text></div>
       </div>
-      <Menu mode="inline" selectedKeys={[selectedKey]} items={items} className="app-menu" />
+      <Menu mode="inline" selectedKeys={[selectedKey]} items={items} className="app-menu" aria-label="Main navigation" />
     </>
   );
 
