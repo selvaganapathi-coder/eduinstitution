@@ -47,7 +47,7 @@ export default async function Home() {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <span className="stat-label">{stat.title}</span>
-                    <Statistic value={stat.value} suffix={stat.suffix} valueStyle={{ marginTop: 4, fontSize: 28, fontWeight: 700, color: "#202124" }} />
+                    <Statistic value={stat.value} suffix={"suffix" in stat ? stat.suffix : undefined} valueStyle={{ marginTop: 4, fontSize: 28, fontWeight: 700, color: "#202124" }} />
                     <span className="text-xs text-[#5f6368]">No records added yet</span>
                   </div>
                   <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-full ${stat.tone === "green" ? "bg-[#e6f4ea] text-[#188038]" : stat.tone === "blue" ? "bg-[#e8f0fe] text-[#1a73e8]" : stat.tone === "purple" ? "bg-[#f3e8fd] text-[#7e57c2]" : "bg-[#fef7e0] text-[#e37400]"}`}>{stat.icon}</span>
