@@ -75,6 +75,16 @@ CREATE TABLE "RolePermission" (
 );
 CREATE INDEX "RolePermission_permissionId_idx" ON "RolePermission"("permissionId");
 
+CREATE TABLE "_MembershipToRole" (
+  "A" TEXT NOT NULL,
+  "B" TEXT NOT NULL,
+  CONSTRAINT "_MembershipToRole_pkey" PRIMARY KEY ("A", "B"),
+  CONSTRAINT "_MembershipToRole_A_fkey" FOREIGN KEY ("A") REFERENCES "Membership"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT "_MembershipToRole_B_fkey" FOREIGN KEY ("B") REFERENCES "Role"("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE UNIQUE INDEX "_MembershipToRole_AB_unique" ON "_MembershipToRole"("A", "B");
+CREATE INDEX "_MembershipToRole_B_index" ON "_MembershipToRole"("B");
+
 CREATE TABLE "Session" (
   "id" TEXT NOT NULL,
   "userId" TEXT NOT NULL,
