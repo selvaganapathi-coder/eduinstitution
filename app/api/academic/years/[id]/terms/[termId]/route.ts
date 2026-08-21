@@ -18,15 +18,14 @@ function getPrisma() {
   return prisma;
 }
 
-export async function PATCH(_request: Request, { params }: { params: Promise<{ id: string; termId: string }> }) {
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string; termId: string }> }) {
   try {
-    const context = await requirePermission("academic_term:update");
     const { id, termId } = await params;
-    const body = (await _request.json()) as { name?: unknown; startDate?: unknown; endDate?: unknown; sortOrder?: unknown; action?: unknown };
+    const body = (await request.json()) as { name?: unknown; startDate?: unknown; endDate?: unknown; sortOrder?: unknown; action?: unknown };
+    const context = await requirePermission(body.action === "archive" ? "academic_term:archive" : "academic_term:update");
     const prisma = getPrisma();
     const academicYear = await prisma.academicYear.findFirst({ where: { id, tenantId: context.tenantId } });
     if (!academicYear) throw new TenantAccessError("We couldn't find that academic year.");
-
     const existing = await prisma.academicTerm.findFirst({ where: { id: termId, academicYearId: id } });
     if (!existing) throw new TenantAccessError("We couldn't find that term.");
 
@@ -37,12 +36,8 @@ export async function PATCH(_request: Request, { params }: { params: Promise<{ i
 
     const validated = validateAcademicTermInput(body, academicYear);
     if (!validated.value) return NextResponse.json({ error: validated.error }, { status: 400 });
-
     const otherTerms = await prisma.academicTerm.findMany({ where: { academicYearId: id, status: "ACTIVE", id: { not: termId } }, select: { startDate: true, endDate: true } });
-    if (otherTerms.some((term) => datesOverlap(validated.value!.startDate, validated.value!.endDate, term.startDate, term.endDate))) {
-      return NextResponse.json({ error: "This term overlaps another term." }, { status: 400 });
-    }
-
+    if (otherTerms.some((term) => datesOverlap(validated.value!.startDate, validated.value!.endDate, term.startDate, term.endDate))) return NextResponse.json({ error: "This term overlaps another term." }, { status: 400 });
     const term = await prisma.academicTerm.update({ where: { id: termId }, data: validated.value });
     return NextResponse.json({ term });
   } catch (error) {
