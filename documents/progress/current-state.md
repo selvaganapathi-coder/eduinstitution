@@ -6,7 +6,7 @@
 
 ## Project Status
 
-TASK-008 — PRODUCT ARCHITECTURE, FEATURE PLANNING & RESPONSIVE UI SYSTEM IN PROGRESS
+TASK-009 — ACADEMIC YEAR & TERM MANAGEMENT IN PROGRESS
 
 ## Repository
 
@@ -22,22 +22,35 @@ TASK-008 — PRODUCT ARCHITECTURE, FEATURE PLANNING & RESPONSIVE UI SYSTEM IN PR
 - TASK-005 — Authentication Completion & Tenant Selection
 - TASK-006 — Institution Management
 - TASK-007 — Institution Management Navigation & UI
+- TASK-008 — Product Architecture, Feature Planning & Responsive UI System
 
-## TASK-008 Completed Baseline Work
+## TASK-009 Implementation
 
-- Detailed feature-planning contract documented.
-- Field-level specification contract documented.
-- Route/user-flow/permission planning contract documented.
-- Institution compatibility contract documented.
-- Canonical capability/type/terminology architecture documented.
-- Institution capability matrix established as the planning baseline.
-- Server-side capability + permission + tenant security relationship documented.
-- Google-inspired responsive UI contract adopted as the product UX baseline.
-- Mobile-first and accessibility requirements made explicit.
+- Academic year and academic term data model defined for all supported institution categories.
+- Tenant-scoped academic-year list/create/detail/edit/archive workflows added.
+- Current academic year workflow is transactional and clears the previous current year before setting the selected year.
+- Term list/create/edit/archive workflows added under the academic-year route.
+- Date validation and active-term overlap validation added.
+- Academic-year and academic-term permissions added to development seed.
+- `/academic/years` added as the module landing route.
+- `/academic/years/new` added for creation.
+- `/academic/years/[id]` added for details and actions.
+- `/academic/years/[id]/edit` added for editing.
+- `/academic/years/[id]/terms` added for term management.
+- Application shell updated to the approved first-image visual direction: white Google-inspired navigation/header, restrained borders, green EduInstitution primary actions, and mobile drawer navigation.
+- Plain-language UI content used throughout the new academic workflow.
 
-## Institution-Type Baseline
+## Security Contract
 
-The platform is designed as one multi-tenant product with configurable capabilities and module-specific extensions for:
+- Tenant identity is always derived from authenticated `TenantContext`.
+- Academic-year and term IDs are resolved within the authenticated tenant.
+- Protected operations require explicit permissions.
+- Current-year changes use a database transaction.
+- Cross-tenant records are not returned.
+
+## Institution Compatibility
+
+The core AcademicYear / AcademicTerm model is shared by:
 
 - School
 - Engineering College
@@ -46,55 +59,33 @@ The platform is designed as one multi-tenant product with configurable capabilit
 - University
 - Polytechnic
 - Training / Vocational Institute
-- Coaching / Learning Institute
 - Other education institutions
 
-Institution-specific behavior must not fork authentication, tenancy, shared user models, or core authorization.
+Institution-specific labels such as `Term` or `Semester` remain a terminology/configuration concern rather than separate data models.
 
 ## UI Baseline
 
-The UI direction is formally defined as a Google-inspired enterprise interface:
+The first generated EduInstitution dashboard image is the visual reference for implementation:
 
-- clean white/neutral surfaces
-- restrained borders
-- minimal elevation
-- strong information hierarchy
-- familiar controls
-- plain-language content
-- clear primary actions
-- consistent breadcrumbs/local navigation
-- product green identity with restrained blue utility accents
-- mobile-first responsive layouts
-- accessible, touch-friendly interactions
-
-See `documents/architecture/ui-design-system.md`.
-
-## Architecture Baseline
-
-See `documents/architecture/capability-architecture.md` for:
-
-- canonical institution type codes
-- capability codes
-- type-to-capability matrix
-- terminology strategy
-- route visibility rules
-- server-side capability/permission contract
-- extension rules
-- migration strategy
-- testing strategy
-
-## Next Task Candidates
-
-1. TASK-009 — Academic Year / Term Management
-2. TASK-010 — Institution Capability / Type Configuration
-3. TASK-011 — Academic Structure
-
-Before implementation, the selected task must declare its dependencies using the TASK-008 planning contract.
+- clean white application shell
+- Google-inspired neutral palette
+- EduInstitution green brand identity
+- restrained blue utility/link accents
+- thin borders and minimal shadows
+- clear information hierarchy
+- plain-language labels
+- desktop + mobile parity
 
 ## Validation
 
-TASK-008 is documentation/architecture work only. No application runtime behavior has been changed.
+Pending GitHub CI validation for TASK-009:
+
+- `npm run test`
+- `npm run lint`
+- `npm run typecheck`
+- `npm run build`
+- `npm run build:cloudflare`
 
 ## Next Action
 
-Review the TASK-008 architecture baseline, then begin the next implementation task only after its detailed feature plan is complete.
+Run CI, fix actual failures, perform security/UI review, and merge only after every required gate is green.
