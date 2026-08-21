@@ -5,6 +5,7 @@ import { hashPassword } from "../src/server/auth/credentials";
 const DEV_EMAIL = "admin@eduinstitution.local";
 const DEV_PASSWORD = "ChangeMe123!";
 const DEV_TENANT_SLUG = "demo-institution";
+const DEV_ROLE_NAME = "Platform Super Admin";
 const PERMISSIONS = [
   ["institution:update", "Update the current institution profile"],
   ["academic_year:view", "View academic years"],
@@ -18,23 +19,56 @@ const PERMISSIONS = [
 ] as const;
 
 async function main() {
-  if (process.env.NODE_ENV === "production") throw new Error("The development seed must not run in production.");
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("The development seed must not run in production.");
+  }
+
   const connectionString = process.env.DIRECT_DATABASE_URL ?? process.env.DATABASE_URL;
-  if (!connectionString) throw new Error("DIRECT_DATABASE_URL or DATABASE_URL is required to run the development seed.");
+  if (!connectionString) {
+    throw new Error("DIRECT_DATABASE_URL or DATABASE_URL is required to run the development seed.");
+  }
 
   const prisma = new PrismaClient({ adapter: new PrismaNeon({ connectionString }) });
+
   try {
     const passwordHash = await hashPassword(DEV_PASSWORD);
-    const tenant = await prisma.tenant.upsert({ where: { slug: DEV_TENANT_SLUG }, update: { name: "Demo Institution" }, create: { name: "Demo Institution", slug: DEV_TENANT_SLUG } });
-    const user = await prisma.user.upsert({ where: { email: DEV_EMAIL }, update: { name: "Demo Administrator", passwordHash }, create: { email: DEV_EMAIL, name: "Demo Administrator", passwordHash } });
+
+    const tenant = await prisma.tenant.upsert({
+      where: { slug: DEV_TENANT_SLUG },
+      update: { name: "Demo Institution" },
+      create: { name: "Demo Institution", slug: DEV_TENANT_SLUG },
+    });
+
+    const user = await prisma.user.upsert({
+      where: { email: DEV_EMAIL },
+      update: { name: "Development Super Admin", passwordHash },
+      create: { email: DEV_EMAIL, name: "Development Super Admin", passwordHash },
+    });
+
+    // Temporary development-only system role. The full platform-admin product is intentionally deferred.
     const role = await prisma.role.upsert({
-      where: { tenantId_name: { tenantId: tenant.id, name: "Administrator" } },
-      update: { description: "Development administrator role", scope: "TENANT", isSystem: true },
-      create: { tenantId: tenant.id, name: "Administrator", description: "Development administrator role", scope: "TENANT", isSystem: true },
+      where: { tenantId_name: { tenantId: null, name: DEV_ROLE_NAME } },
+      update: {
+        description: "Development-only platform super admin",
+        scope: "SYSTEM",
+        isSystem: true,
+      },
+      create: {
+        tenantId: null,
+        name: DEV_ROLE_NAME,
+        description: "Development-only platform super admin",
+        scope: "SYSTEM",
+        isSystem: true,
+      },
     });
 
     for (const [code, description] of PERMISSIONS) {
-      const permission = await prisma.permission.upsert({ where: { code }, update: { description }, create: { code, description } });
+      const permission = await prisma.permission.upsert({
+        where: { code },
+        update: { description },
+        create: { code, description },
+      });
+
       await prisma.rolePermission.upsert({
         where: { roleId_permissionId: { roleId: role.id, permissionId: permission.id } },
         update: {},
@@ -45,17 +79,26 @@ async function main() {
     const membership = await prisma.membership.upsert({
       where: { userId_tenantId: { userId: user.id, tenantId: tenant.id } },
       update: { status: "ACTIVE", roles: { set: [{ id: role.id }] } },
-      create: { userId: user.id, tenantId: tenant.id, status: "ACTIVE", roles: { connect: [{ id: role.id }] } },
+      create: {
+        userId: user.id,
+        tenantId: tenant.id,
+        status: "ACTIVE",
+        roles: { connect: [{ id: role.id }] },
+      },
     });
 
-    console.log("Development authentication seed ready:");
+    console.log("Development Platform Super Admin seed ready:");
     console.log(`  Email: ${DEV_EMAIL}`);
     console.log(`  Password: ${DEV_PASSWORD}`);
-    console.log(`  Tenant: ${tenant.name} (${tenant.id})`);
+    console.log(`  Role: ${DEV_ROLE_NAME} (SYSTEM)`);
+    console.log(`  Demo tenant: ${tenant.name} (${tenant.id})`);
     console.log(`  Membership: ${membership.id}`);
   } finally {
     await prisma.$disconnect();
   }
 }
 
-main().catch((error) => { console.error(error); process.exitCode = 1; });
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
