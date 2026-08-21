@@ -3,6 +3,7 @@ import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
 import { PrismaClient } from "@/src/generated/prisma/client";
 import { AuthenticationError, AuthorizationError, TenantAccessError } from "@/src/server/auth/errors";
+
 import { requirePermission } from "@/src/server/auth/permissions";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
@@ -21,6 +22,7 @@ function failure(error: unknown, fallback: string) {
   console.error(fallback, error);
   return NextResponse.json({ error: fallback }, { status: 500 });
 }
+const activeProgramCount = { select: { programs: { where: { status: "ACTIVE" } } } };
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -40,7 +42,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (!department) return NextResponse.json({ error: "Department not found." }, { status: 404 });
     const duplicate = await prisma.department.findFirst({ where: { tenantId: context.tenantId, code, NOT: { id } }, select: { id: true } });
     if (duplicate) return NextResponse.json({ error: "A department with this code already exists." }, { status: 409 });
-    const updated = await prisma.department.update({ where: { id }, data: { name, code, description, displayOrder }, include: { _count: { select: { programs: true } } } });
+    const updated = await prisma.department.update({ where: { id }, data: { name, code, description, displayOrder }, include: activeProgramCount });
     return NextResponse.json({ department: updated });
   } catch (error) {
     return failure(error, "Unable to update the department. Please try again.");
@@ -52,11 +54,11 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
     const context = await requirePermission("department:archive");
     const { id } = await params;
     const prisma = getPrisma();
-    const department = await prisma.department.findFirst({ where: { id, tenantId: context.tenantId }, include: { _count: { select: { programs: true } } } });
+    const department = await prisma.department.findFirst({ where: { id, tenantId: context.tenantId }, include: activeProgramCount });
     if (!department) return NextResponse.json({ error: "Department not found." }, { status: 404 });
     if (department.status === "ARCHIVED") return NextResponse.json({ error: "This department is already archived." }, { status: 400 });
     if (department._count.programs > 0) return NextResponse.json({ error: "Archive the department's programs before archiving this department." }, { status: 409 });
-    const updated = await prisma.department.update({ where: { id }, data: { status: "ARCHIVED" }, include: { _count: { select: { programs: true } } } });
+    const updated = await prisma.department.update({ where: { id }, data: { status: "ARCHIVED" }, include: activeProgramCount });
     return NextResponse.json({ department: updated });
   } catch (error) {
     return failure(error, "Unable to archive the department. Please try again.");
