@@ -1,10 +1,13 @@
+-- CreateEnum
+CREATE TYPE "InstitutionTypeStatus" AS ENUM ('ACTIVE', 'ARCHIVED');
+
 -- CreateTable
 CREATE TABLE "InstitutionType" (
     "id" TEXT NOT NULL,
     "code" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
-    "status" TEXT NOT NULL DEFAULT 'ACTIVE',
+    "status" "InstitutionTypeStatus" NOT NULL DEFAULT 'ACTIVE',
     "isSystem" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
