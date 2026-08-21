@@ -16,14 +16,25 @@ export function AcademicYearDetails({ id }: { id: string }) {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  async function load() {
-    const response = await fetch(`/api/academic/years/${id}`, { cache: "no-store" });
-    const result = (await response.json()) as { academicYear?: AcademicYear; error?: string };
-    if (!response.ok || !result.academicYear) throw new Error(result.error ?? "Unable to load the academic year");
-    setYear(result.academicYear);
-  }
+  useEffect(() => {
+    let cancelled = false;
 
-  useEffect(() => { load().catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "Unable to load the academic year")).finally(() => setLoading(false)); }, [id]);
+    async function loadYear() {
+      try {
+        const response = await fetch(`/api/academic/years/${id}`, { cache: "no-store" });
+        const result = (await response.json()) as { academicYear?: AcademicYear; error?: string };
+        if (!response.ok || !result.academicYear) throw new Error(result.error ?? "Unable to load the academic year");
+        if (!cancelled) setYear(result.academicYear);
+      } catch (reason: unknown) {
+        if (!cancelled) setError(reason instanceof Error ? reason.message : "Unable to load the academic year");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    void loadYear();
+    return () => { cancelled = true; };
+  }, [id]);
 
   async function action(actionName: "make-current" | "archive") {
     setWorking(true); setError(""); setMessage("");
