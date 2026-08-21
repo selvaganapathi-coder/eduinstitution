@@ -15,28 +15,35 @@ export default function InstitutionTypePage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ kind: "success" | "error" | "info"; text: string } | null>(null);
 
-  async function load() {
-    setLoading(true);
-    try {
-      const [typesResponse, currentResponse] = await Promise.all([
-        fetch("/api/platform/institution-types", { cache: "no-store" }),
-        fetch("/api/institution/type", { cache: "no-store" }),
-      ]);
-      const typesData = await typesResponse.json();
-      const currentData = await currentResponse.json();
-      if (!typesResponse.ok) throw new Error(typesData.error ?? "Unable to load institution types.");
-      if (!currentResponse.ok) throw new Error(currentData.error ?? "Unable to load the current institution type.");
-      setTypes(typesData.institutionTypes);
-      setCurrent(currentData.institutionType);
-      setSelectedId(currentData.institutionType?.id ?? "");
-    } catch (error) {
-      setMessage({ kind: "error", text: error instanceof Error ? error.message : "We couldn't load the institution type. Please try again." });
-    } finally {
-      setLoading(false);
-    }
-  }
+  useEffect(() => {
+    let cancelled = false;
 
-  useEffect(() => { void load(); }, []);
+    async function load() {
+      try {
+        const [typesResponse, currentResponse] = await Promise.all([
+          fetch("/api/platform/institution-types", { cache: "no-store" }),
+          fetch("/api/institution/type", { cache: "no-store" }),
+        ]);
+        const typesData = await typesResponse.json();
+        const currentData = await currentResponse.json();
+        if (!typesResponse.ok) throw new Error(typesData.error ?? "Unable to load institution types.");
+        if (!currentResponse.ok) throw new Error(currentData.error ?? "Unable to load the current institution type.");
+        if (cancelled) return;
+        setTypes(typesData.institutionTypes);
+        setCurrent(currentData.institutionType);
+        setSelectedId(currentData.institutionType?.id ?? "");
+      } catch (error) {
+        if (!cancelled) {
+          setMessage({ kind: "error", text: error instanceof Error ? error.message : "We couldn't load the institution type. Please try again." });
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    void load();
+    return () => { cancelled = true; };
+  }, []);
 
   async function save() {
     if (!selectedId || selectedId === current?.id) return;
