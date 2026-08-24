@@ -1,38 +1,30 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-
+import { CalendarOutlined } from "@ant-design/icons";
+import { Result } from "antd";
 import { ApplicationShell } from "@/components/application-shell";
 import { AcademicYearForm } from "@/components/academic/academic-year-form";
-import { Paragraph, Title } from "@/components/ui/typography";
 import { AuthenticationError, AuthorizationError, TenantAccessError } from "@/src/server/auth/errors";
 import { requirePermission } from "@/src/server/auth/permissions";
 
 export default async function NewAcademicYearPage() {
-  try {
-    await requirePermission("academic_year:create");
-  } catch (error) {
+  try { await requirePermission("academic_year:create"); }
+  catch (error) {
     if (error instanceof AuthenticationError || error instanceof TenantAccessError) redirect("/login");
-    if (error instanceof AuthorizationError) {
-      return (
-        <ApplicationShell pageTitle="Add academic year" pageContext="Academic setup" selectedKey="academic">
-          <div className="mx-auto max-w-3xl py-10">
-            <div className="rounded-2xl border border-[#dadce0] bg-white p-8 text-center">
-              <Title level={3} className="!mb-2">You don&apos;t have access</Title>
-              <Paragraph type="secondary">You don&apos;t have permission to add an academic year. Contact your institution administrator if you need access.</Paragraph>
-              <Link href="/academic/years" className="text-[#076653]">Back to academic years</Link>
-            </div>
-          </div>
-        </ApplicationShell>
-      );
-    }
+    if (error instanceof AuthorizationError) return <ApplicationShell pageTitle="Add academic year" pageContext="Academic setup" selectedKey="academic"><Result status="403" title="You don't have access" subTitle="You don't have permission to add an academic year." /></ApplicationShell>;
     throw error;
   }
 
   return (
-    <ApplicationShell pageTitle="Add academic year" pageContext="Set up a new academic year" selectedKey="academic">
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-5 text-xs text-[#5f6368]"><Link href="/academic/years" className="hover:text-[#1a73e8]">Academic years</Link><span className="mx-2">/</span><span className="text-[#202124]">Add academic year</span></div>
-        <div className="mb-7"><Title level={2} className="!mb-1 !text-[28px] !font-normal">Add academic year</Title><Paragraph type="secondary" className="!mb-0">Choose the dates your institution will use for this academic year.</Paragraph></div>
+    <ApplicationShell pageTitle="Add academic year" pageContext="Create a new academic period" selectedKey="academic">
+      <div className="management-page management-form-page">
+        <div className="management-breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/academic/years">Academic years</Link><span>/</span><strong>Add academic year</strong></div>
+        <section className="management-page-hero">
+          <div className="management-page-hero-copy">
+            <div className="management-hero-icon management-hero-icon-blue"><CalendarOutlined /></div>
+            <div><h1>Add academic year</h1><p>Create the teaching period your institution uses for classes, terms, and academic records.</p></div>
+          </div>
+        </section>
         <AcademicYearForm />
       </div>
     </ApplicationShell>

@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-
+import { CalendarOutlined, InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Result } from "antd";
 import { ApplicationShell } from "@/components/application-shell";
 import { AcademicYearList } from "@/components/academic/academic-year-list";
-import { Paragraph, Title } from "@/components/ui/typography";
 import { AuthenticationError, AuthorizationError, TenantAccessError } from "@/src/server/auth/errors";
 import { requirePermission } from "@/src/server/auth/permissions";
 
@@ -15,7 +14,7 @@ export default async function AcademicYearsPage() {
     if (error instanceof AuthenticationError || error instanceof TenantAccessError) redirect("/login");
     if (error instanceof AuthorizationError) {
       return (
-        <ApplicationShell pageTitle="Academic years" pageContext="Academic setup" selectedKey="academic">
+        <ApplicationShell pageTitle="Academic years" pageContext="Create and manage academic years and terms" selectedKey="academic">
           <div className="mx-auto max-w-3xl py-10">
             <Result status="403" title="You don't have access" subTitle="You don't have permission to view academic years. Contact your institution administrator if you need access." />
           </div>
@@ -26,15 +25,37 @@ export default async function AcademicYearsPage() {
   }
 
   return (
-    <ApplicationShell pageTitle="Academic years" pageContext="Manage your academic years" selectedKey="academic">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-5 text-xs text-[#5f6368]"><Link href="/" className="hover:text-[#1a73e8]">Dashboard</Link><span className="mx-2">/</span><span className="text-[#202124]">Academic years</span></div>
-        <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div><Title level={2} className="!mb-1 !text-[28px] !font-normal">Academic years</Title><Paragraph type="secondary" className="!mb-0">Set the years and terms your institution uses for teaching and records.</Paragraph></div>
-          <Link href="/academic/years/new"><Button type="primary" size="large">Add academic year</Button></Link>
-        </div>
+    <ApplicationShell pageTitle="Academic years" pageContext="Create and manage academic years and terms" selectedKey="academic">
+      <main className="academic-years-page">
+        <section className="academic-years-intro">
+          <div className="academic-years-title-group">
+            <span className="academic-years-title-icon"><CalendarOutlined /></span>
+            <div>
+              <h1>Academic years</h1>
+              <p>Create and manage the academic years your institution uses for classes, terms and academic planning.</p>
+            </div>
+          </div>
+          <Link href="/academic/years/new">
+            <Button type="primary" size="large" icon={<PlusOutlined />} className="academic-years-create-button">
+              Add academic year
+            </Button>
+          </Link>
+        </section>
+
+        <section className="academic-years-help" aria-label="Academic year setup guide">
+          <div className="academic-years-help-icon"><InfoCircleOutlined /></div>
+          <div className="academic-years-help-copy">
+            <h2>How academic years work</h2>
+            <p>Create an academic year, add the terms your institution uses, then make the year currently in use <strong>Current</strong>.</p>
+          </div>
+          <div className="academic-years-example">
+            <span><CalendarOutlined /> Example: 2026–2027</span>
+            <small>01 Jun 2026 – 31 May 2027</small>
+          </div>
+        </section>
+
         <AcademicYearList />
-      </div>
+      </main>
     </ApplicationShell>
   );
 }

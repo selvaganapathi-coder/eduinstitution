@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CalendarOutlined, RightOutlined } from "@ant-design/icons";
-import { Alert, Button, Card, Empty, Skeleton, Tag } from "antd";
+import { CalendarOutlined, CheckCircleOutlined, ClockCircleOutlined, MoreOutlined, RightOutlined, BookOutlined, InboxOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { Alert, Button, Card, Skeleton, Tag } from "antd";
 
 type AcademicYear = {
   id: string;
@@ -19,6 +19,36 @@ function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric" }).format(new Date(value));
 }
 
+function getYearState(year: AcademicYear) {
+  if (year.isCurrent) {
+    return {
+      label: "Current",
+      className: "academic-year-state-current",
+      statusLabel: "Active",
+      statusText: "Current year",
+      StatusIcon: CheckCircleOutlined,
+    };
+  }
+
+  if (year.status === "ARCHIVED") {
+    return {
+      label: "Archived",
+      className: "academic-year-state-archived",
+      statusLabel: "Archived",
+      statusText: "Completed",
+      StatusIcon: InboxOutlined,
+    };
+  }
+
+  return {
+    label: "Active",
+    className: "academic-year-state-active",
+    statusLabel: "Active",
+    statusText: "Ready to use",
+    StatusIcon: ClockCircleOutlined,
+  };
+}
+
 export function AcademicYearList() {
   const [years, setYears] = useState<AcademicYear[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,42 +58,114 @@ export function AcademicYearList() {
     fetch("/api/academic/years", { cache: "no-store" })
       .then(async (response) => {
         const result = (await response.json()) as { academicYears?: AcademicYear[] };
-        if (!response.ok) throw new Error("We couldn't load the academic years. Please try again.");
+        if (!response.ok) throw new Error();
         setYears(result.academicYears ?? []);
       })
       .catch(() => setError("We couldn't load the academic years. Please try again."))
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3"><Card className="!rounded-2xl !border-[#dadce0]"><Skeleton active /></Card><Card className="!rounded-2xl !border-[#dadce0]"><Skeleton active /></Card></div>;
+  if (loading) {
+    return (
+      <div className="academic-year-list-grid">
+        {[1, 2, 3].map((item) => (
+          <Card key={item} className="academic-year-card">
+            <Skeleton active paragraph={{ rows: 6 }} />
+          </Card>
+        ))}
+      </div>
+    );
+  }
 
   if (error) {
-    return <Alert className="feedback-error !rounded-xl" type="error" showIcon message="We couldn't load your academic years." description="Please try again. If the problem continues, contact your institution administrator." action={<Button size="small" onClick={() => window.location.reload()}>Try again</Button>} />;
+    return (
+      <Alert
+        className="feedback-error !rounded-xl"
+        type="error"
+        showIcon
+        message="We couldn't load your academic years."
+        description="Please try again. If the problem continues, contact your institution administrator."
+        action={<Button size="small" onClick={() => window.location.reload()}>Try again</Button>}
+      />
+    );
   }
 
   if (years.length === 0) {
     return (
-      <Card className="!rounded-2xl !border-[#dadce0] !shadow-none">
-        <Empty image={<CalendarOutlined className="!text-4xl !text-[#188038]" />} description={false}>
-          <div className="mx-auto max-w-md"><h3 className="text-base font-medium text-[#202124]">No academic years have been added yet</h3><p className="mt-1 text-sm leading-6 text-[#5f6368]">Add your first academic year to define the teaching period used by your institution.</p><Link href="/academic/years/new"><Button type="primary">Add academic year</Button></Link></div>
-        </Empty>
+      <Card className="academic-empty">
+        <div className="academic-empty-icon"><CalendarOutlined /></div>
+        <h3>Create your first academic year</h3>
+        <p>Start with the academic year your institution is using now. For example, <strong>2026–2027</strong>. You can add semesters or other terms after saving it.</p>
+        <Link href="/academic/years/new"><Button type="primary" size="large">Add academic year</Button></Link>
       </Card>
     );
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-      {years.map((year) => (
-        <Card key={year.id} className="!rounded-2xl !border-[#dadce0] !shadow-[0_1px_2px_rgba(60,64,67,.06)]" styles={{ body: { padding: 20 } }}>
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0"><p className="mb-1 text-xs text-[#5f6368]">Academic year</p><h3 className="m-0 truncate text-lg font-medium text-[#202124]">{year.name}</h3></div>
-            {year.isCurrent ? <Tag color="success" className="!rounded-full">Current</Tag> : null}
-          </div>
-          <div className="mt-5 grid grid-cols-2 gap-3 rounded-xl bg-[#f8f9fa] p-3"><div><p className="mb-1 text-xs text-[#5f6368]">Starts</p><p className="m-0 text-sm font-medium text-[#202124]">{formatDate(year.startDate)}</p></div><div><p className="mb-1 text-xs text-[#5f6368]">Ends</p><p className="m-0 text-sm font-medium text-[#202124]">{formatDate(year.endDate)}</p></div></div>
-          <p className="mt-4 text-sm text-[#5f6368]">{year._count.terms} {year._count.terms === 1 ? "term" : "terms"}</p>
-          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2"><Link href={`/academic/years/${year.id}`} className="text-sm font-medium text-[#1a73e8]">View details <RightOutlined className="text-[10px]" /></Link><Link href={`/academic/years/${year.id}/terms`} className="text-sm font-medium text-[#1a73e8]">Manage terms</Link></div>
-        </Card>
-      ))}
-    </div>
+    <section className="academic-years-content" aria-label="Academic years">
+      <div className="academic-year-list-grid">
+        {years.map((year) => {
+          const termCount = year._count.terms;
+          const state = getYearState(year);
+          const StatusIcon = state.StatusIcon;
+
+          return (
+            <Card key={year.id} className={`academic-year-card ${year.isCurrent ? "current" : ""}`} styles={{ body: { padding: 22 } }}>
+              <div className="academic-year-card-state-row">
+                <Tag className={`academic-year-state ${state.className}`}>{state.label}</Tag>
+                <Button type="text" size="small" icon={<MoreOutlined />} className="academic-year-more-button" aria-label={`More options for ${year.name}`} />
+              </div>
+
+              <div className="academic-year-card-main">
+                <span className={`academic-year-calendar-icon ${state.className}`}><CalendarOutlined /></span>
+                <div>
+                  <h2>{year.name}</h2>
+                  <p>{formatDate(year.startDate)} – {formatDate(year.endDate)}</p>
+                </div>
+              </div>
+
+              <div className="academic-year-card-metrics">
+                <div className="academic-year-metric">
+                  <BookOutlined />
+                  <div>
+                    <span>Terms</span>
+                    <strong>{termCount}</strong>
+                    <small>{termCount === 1 ? "Term" : termCount === 0 ? "Not added" : "Terms"}</small>
+                  </div>
+                </div>
+                <div className="academic-year-metric academic-year-metric-status">
+                  <StatusIcon />
+                  <div>
+                    <span>Status</span>
+                    <strong>{state.statusLabel}</strong>
+                    <small>{state.statusText}</small>
+                  </div>
+                </div>
+              </div>
+
+              <div className="academic-year-card-footer">
+                <Link href={`/academic/years/${year.id}`} className="academic-year-view-link">
+                  View details <RightOutlined />
+                </Link>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+
+      <div className="academic-years-add-more">
+        <span className="academic-years-add-more-icon"><CalendarOutlined /></span>
+        <div>
+          <h3>Need another academic year?</h3>
+          <p>Add a new academic year when you are ready to continue your institution&apos;s academic planning.</p>
+        </div>
+        <Link href="/academic/years/new"><Button icon={<CalendarOutlined />}>Add academic year</Button></Link>
+      </div>
+
+      <div className="academic-years-tip">
+        <InfoCircleOutlined />
+        <span><strong>Tip:</strong> Set one academic year as Current before using it for attendance, examinations and other academic features.</span>
+      </div>
+    </section>
   );
 }

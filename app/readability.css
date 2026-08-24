@@ -1,0 +1,107 @@
+/* Global readability correction: keep small secondary UI text visible. */
+:root { --ui-muted-readable: #4b5563; --ui-muted-strong-readable: #3c4043; --ui-label-readable: #374151; }
+.ant-typography.ant-typography-secondary,.ant-form-item-extra,.ant-form-item-explain,.ant-empty-description,.ant-input::placeholder,.ant-select-selection-placeholder,.ant-input-textarea textarea::placeholder { color: var(--ui-muted-readable) !important; }
+.ant-form-item-label > label { color: var(--ui-label-readable) !important; font-weight: 600; }
+.navigation-label,.dashboard-section-caption,.dashboard-stat-helper,.dashboard-quick-arrow,.dashboard-step-arrow,.management-page-description,.management-card-heading p,.management-card-meta,.management-date-grid span,.term-main > span,.department-row small,.program-row small,.management-next-box p,.management-guide-box p,.management-empty-state p,.term-modal-intro span,.management-breadcrumb,.page-context { color: var(--ui-muted-readable) !important; }
+.management-overline,.management-next-label,.dashboard-stat-label,.header-icon,.mobile-menu-button { color: var(--ui-muted-strong-readable) !important; }
+
+/* Shared academic management layout. */
+.academic-year-list-grid { display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:18px !important; width:100%; }
+.academic-year-card { height:100%; min-height:320px; border:1px solid #e5e7eb !important; border-radius:18px !important; background:#fff !important; box-shadow:0 2px 8px rgba(31,41,55,.04) !important; }
+.academic-empty { padding:46px 20px !important; border:1px dashed #cfd8d2 !important; border-radius:18px !important; background:#fff !important; text-align:center; }
+.academic-empty-icon { display:grid; place-items:center; width:58px; height:58px; margin:0 auto 14px; border-radius:18px; background:#e6f4ea; color:#137333; font-size:25px; }
+.academic-empty h3 { margin:0 0 6px; color:#202124; font-size:18px; }
+.academic-empty p { max-width:500px; margin:0 auto 20px; color:#4b5563; line-height:1.65; }
+.academic-form-layout { display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:20px; align-items:start; }
+.academic-form-card,.academic-side-card { border:1px solid #e3e8e4 !important; border-radius:18px !important; box-shadow:0 2px 8px rgba(60,64,67,.04) !important; }
+.academic-form-card .ant-card-body { padding:26px !important; }
+.academic-form-heading { display:flex; align-items:flex-start; gap:14px; margin-bottom:24px; }
+.academic-form-heading-icon { display:grid; place-items:center; width:44px; height:44px; border-radius:14px; background:#e6f4ea; color:#137333; font-size:20px; }
+.academic-form-heading h2 { margin:0 0 4px; color:#202124; font-size:20px; }
+.academic-form-heading p { margin:0; color:#4b5563; font-size:13px; line-height:1.6; }
+.academic-example-card { border-color:#d7e8dc !important; background:#f8fcf9 !important; }
+.academic-example-value { padding:14px; border:1px solid #dcebe0; border-radius:14px; background:#fff; }
+.academic-example-value strong { display:block; color:#202124; font-size:17px; }
+.academic-example-value span { display:block; margin-top:4px; color:#4b5563; font-size:12px; }
+.academic-detail-summary { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; padding:24px; border:1px solid #e3e8e4; border-radius:18px; background:#fff; }
+.academic-detail-name { display:flex; align-items:center; gap:14px; }
+.academic-detail-name h2 { margin:0; color:#202124; font-size:28px; letter-spacing:-.03em; }
+.academic-detail-period { margin:8px 0 0 58px; color:#4b5563; font-size:13px; }
+.academic-detail-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; }
+.academic-detail-actions .ant-btn { border-radius:10px; }
+.academic-terms-panel { border:1px solid #e3e8e4; border-radius:18px; background:#fff; overflow:hidden; }
+.academic-terms-panel-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:20px 22px; border-bottom:1px solid #edf0ee; }
+.academic-terms-panel-head h2 { margin:0 0 4px; color:#202124; font-size:18px; }
+.academic-terms-panel-head p { margin:0; color:#4b5563; font-size:13px; }
+.term-list { display:grid; gap:10px; padding:14px; }
+.term-row { display:grid; grid-template-columns:44px minmax(0,1fr) auto; align-items:center; gap:14px; padding:14px; border:1px solid #edf0ee; border-radius:14px; background:#fff; }
+.term-order { display:grid; place-items:center; width:40px; height:40px; border-radius:12px; background:#eef6f0; color:#137333; font-size:12px; font-weight:800; }
+.term-main { min-width:0; }
+.term-title-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.term-title-row strong { color:#202124; }
+.term-main > span { display:block; margin-top:3px; font-size:12px; }
+.term-actions { display:flex; align-items:center; gap:8px; }
+.term-row-arrow { color:#80868b; }
+.academic-term-year-strip { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 18px; border:1px solid #dbe7de; border-radius:16px; background:#f7fbf8; }
+.academic-term-year-strip span { color:#5f6368; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+.academic-term-year-strip strong { display:block; margin-top:3px; color:#202124; }
+
+/* Academic Years list: reference-aligned EduInstitution UI. */
+.academic-years-page { display:grid; gap:22px; }
+.academic-years-intro { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:6px 0 2px; }
+.academic-years-title-group { display:flex; align-items:center; gap:16px; min-width:0; }
+.academic-years-title-icon { display:grid; place-items:center; flex:0 0 auto; width:58px; height:58px; border-radius:18px; background:#eaf5ec; color:#137333; font-size:25px; }
+.academic-years-title-group h1 { margin:0; color:#202124; font-size:30px; font-weight:700; letter-spacing:-.035em; }
+.academic-years-title-group p { max-width:760px; margin:6px 0 0; color:#4b5563; font-size:14px; line-height:1.6; }
+.academic-years-create-button.ant-btn { height:48px; padding-inline:22px; border-radius:12px; font-weight:700; box-shadow:0 8px 18px rgba(19,115,51,.16); }
+.academic-years-help { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:16px; padding:20px 24px; border:1px solid #b9d0ea; border-radius:16px; background:linear-gradient(90deg,#f6fbff 0%,#fbfdff 100%); }
+.academic-years-help-icon { display:grid; place-items:center; width:42px; height:42px; border-radius:14px; background:#e8f0fe; color:#1967d2; font-size:20px; }
+.academic-years-help-copy h2 { margin:0 0 5px; color:#202124; font-size:16px; font-weight:700; }
+.academic-years-help-copy p { margin:0; color:#4b5563; font-size:13px; line-height:1.65; }
+.academic-years-help-copy strong { color:#202124; }
+.academic-years-example { display:grid; gap:6px; min-width:250px; padding-left:24px; border-left:1px solid #dbe7f4; }
+.academic-years-example span { display:flex; align-items:center; gap:8px; color:#185abc; font-size:13px; font-weight:700; }
+.academic-years-example small { color:#5f6368; font-size:12px; }
+.academic-years-content { display:grid; gap:22px; }
+.academic-year-list-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:18px !important; }
+.academic-year-card { overflow:hidden; min-height:0; border-color:#e1e7e2 !important; box-shadow:0 3px 12px rgba(60,64,67,.05) !important; transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease; }
+.academic-year-card:hover { transform:translateY(-2px); border-color:#c7dbcc !important; box-shadow:0 14px 28px rgba(60,64,67,.10) !important; }
+.academic-year-card.current { border-color:#b7d8c0 !important; box-shadow:0 10px 28px rgba(24,128,56,.09) !important; }
+.academic-year-card .ant-card-body { height:100%; display:flex; flex-direction:column; }
+.academic-year-card-state-row { display:flex; align-items:center; justify-content:space-between; min-height:30px; }
+.academic-year-state { margin:0 !important; padding:4px 10px !important; border:0 !important; border-radius:999px !important; font-size:11px !important; font-weight:700 !important; line-height:1.35 !important; }
+.academic-year-state-current { background:#e6f4ea !important; color:#137333 !important; }
+.academic-year-state-active { background:#e8f0fe !important; color:#1967d2 !important; }
+.academic-year-state-archived { background:#f1f3f4 !important; color:#5f6368 !important; }
+.academic-year-more-button.ant-btn { color:#5f6368 !important; border-radius:8px; }
+.academic-year-card-main { display:flex; align-items:center; gap:14px; margin-top:16px; }
+.academic-year-calendar-icon { display:grid; place-items:center; flex:0 0 auto; width:62px; height:62px; border-radius:18px; font-size:26px; }
+.academic-year-calendar-icon.academic-year-state-current { background:#eaf5ec !important; color:#137333 !important; }
+.academic-year-calendar-icon.academic-year-state-active { background:#edf3fe !important; color:#1967d2 !important; }
+.academic-year-calendar-icon.academic-year-state-archived { background:#f5f6f7 !important; color:#5f6368 !important; }
+.academic-year-card-main h2 { margin:0; color:#202124; font-size:23px; font-weight:700; letter-spacing:-.025em; }
+.academic-year-card-main p { margin:5px 0 0; color:#4b5563; font-size:12px; line-height:1.5; }
+.academic-year-card-metrics { display:grid; grid-template-columns:1fr 1fr; gap:0; margin-top:24px; padding:16px 0; border-top:1px solid #edf0ee; border-bottom:1px solid #edf0ee; }
+.academic-year-metric { display:flex; align-items:center; gap:12px; padding:0 18px 0 0; color:#4b5563; }
+.academic-year-metric-status { padding:0 0 0 20px; border-left:1px solid #e5e7eb; }
+.academic-year-metric > svg { flex:0 0 auto; font-size:22px; color:#3c5368; }
+.academic-year-metric > div { display:grid; gap:2px; min-width:0; }
+.academic-year-metric span { color:#5f6368; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.academic-year-metric strong { color:#202124; font-size:17px; line-height:1.2; }
+.academic-year-metric small { color:#5f6368; font-size:11px; line-height:1.35; }
+.academic-year-card-footer { display:flex; align-items:center; justify-content:space-between; padding-top:18px; }
+.academic-year-view-link { display:inline-flex; align-items:center; gap:8px; color:#137333 !important; font-size:13px; font-weight:700; }
+.academic-year-view-link:hover { color:#0f6b2f !important; }
+.academic-year-view-link svg { font-size:11px; }
+.academic-years-add-more { display:flex; align-items:center; justify-content:center; gap:18px; padding:24px 28px; border:1px dashed #c9d6cd; border-radius:18px; background:#fff; }
+.academic-years-add-more-icon { display:grid; place-items:center; flex:0 0 auto; width:72px; height:72px; border-radius:50%; background:#eaf5ec; color:#137333; font-size:30px; }
+.academic-years-add-more h3 { margin:0 0 5px; color:#202124; font-size:17px; font-weight:700; }
+.academic-years-add-more p { margin:0; color:#4b5563; font-size:13px; line-height:1.55; }
+.academic-years-add-more .ant-btn { height:42px; border-color:#9fc6a9; color:#137333; border-radius:10px; font-weight:700; }
+.academic-years-tip { display:flex; align-items:center; gap:12px; padding:15px 18px; border:1px solid #cce3d2; border-radius:12px; background:#f7fbf8; color:#3c4043; font-size:13px; }
+.academic-years-tip > svg { flex:0 0 auto; color:#137333; font-size:18px; }
+.academic-years-tip strong { color:#137333; }
+
+@media (max-width:1100px) { .academic-year-list-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; } .academic-form-layout { grid-template-columns:1fr; } .academic-years-help { grid-template-columns:auto 1fr; } .academic-years-example { grid-column:1/-1; min-width:0; padding:12px 0 0 58px; border-left:0; border-top:1px solid #dbe7f4; } }
+@media (max-width:760px) { .academic-years-intro { align-items:stretch; flex-direction:column; } .academic-years-create-button.ant-btn { width:100%; } .academic-years-title-icon { width:50px; height:50px; border-radius:15px; font-size:22px; } .academic-years-title-group h1 { font-size:26px; } .academic-years-help { grid-template-columns:1fr; padding:18px; } .academic-years-help-icon { width:38px; height:38px; } .academic-years-example { grid-column:auto; padding:12px 0 0; } .academic-year-list-grid { grid-template-columns:1fr !important; } .academic-years-add-more { align-items:flex-start; flex-direction:column; } .academic-years-add-more .ant-btn { width:100%; } .academic-detail-summary { grid-template-columns:1fr; } .academic-detail-actions { justify-content:flex-start; } .academic-detail-period { margin-left:0; } .term-row { grid-template-columns:40px minmax(0,1fr); } .term-actions { grid-column:1/-1; padding-top:4px; flex-wrap:wrap; } .term-row-arrow { display:none; } }
+@media (max-width:520px) { .academic-year-card-metrics { grid-template-columns:1fr; gap:14px; } .academic-year-metric-status { padding:14px 0 0; border-left:0; border-top:1px solid #e5e7eb; } .academic-year-card-main h2 { font-size:21px; } .academic-redesign-title { font-size:28px; } .academic-terms-panel-head { flex-direction:column; } .academic-term-year-strip { align-items:flex-start; flex-direction:column; } }

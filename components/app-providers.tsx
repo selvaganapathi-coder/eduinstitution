@@ -50,7 +50,18 @@ const theme = {
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <ConfigProvider theme={theme}>
-      <App message={{ top: 76, duration: 4 }} notification={{ placement: "topRight", top: 76 }}>
+      <App
+        message={{ duration: 4, maxCount: 4 }}
+        notification={{
+          placement: "bottomRight",
+          bottom: 24,
+          duration: 4,
+          maxCount: 4,
+          showProgress: true,
+          pauseOnHover: true,
+          stack: { threshold: 3 },
+        }}
+      >
         {children}
       </App>
     </ConfigProvider>
