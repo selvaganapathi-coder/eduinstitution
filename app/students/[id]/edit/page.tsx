@@ -1,0 +1,1 @@
+import { StudentFormPage } from "@/components/students/student-form-page"; export default async function EditStudentPage({params}:{params:Promise<{id:string}>}){const {id}=await params;return <StudentFormPage studentId={id}/>;}
