@@ -17,11 +17,11 @@
 10. Course & Subject Management — completed as TASK-013
 11. Academic UI Redesign & Scalable Data Management — completed as TASK-014
 12. Student Management — completed as TASK-015
-13. Faculty / Staff — next major module candidate
+13. Faculty / Staff — completed as TASK-016
 
 ## Phase 2 — Operations
 
-14. Attendance
+14. Attendance — next major module candidate
 15. Timetable
 16. Examinations
 17. Results / Internal Assessment
@@ -43,7 +43,7 @@
 
 ## Current Direction
 
-The Academic Core foundation and the current EduInstitution UI redesign are established through TASK-014.
+The Academic Core and core people-management foundation are established through TASK-016.
 
 The completed task sequence is:
 
@@ -53,7 +53,9 @@ The completed task sequence is:
 - TASK-012 — Departments & Programs
 - TASK-013 — Course & Subject Management
 - TASK-014 — UI Redesign & Scalable Data Management
+- TASK-015 — Student Management
+- TASK-016 — Faculty / Staff Management
 
-Student Management is completed as TASK-015. The next task should be selected after inspecting the latest merged `master` implementation and task dependencies. Faculty / Staff is the current next major vertical-slice candidate, but the next engineering session must verify existing code and documentation before starting.
+The next task should be selected after inspecting the latest merged `master` implementation and task dependencies. Attendance is the current next major vertical-slice candidate because Student and Faculty / Staff management foundations are now available, but the next engineering session must verify existing code and documentation before starting.
 
 The order remains provisional and must be re-evaluated when dependencies or requirements change.

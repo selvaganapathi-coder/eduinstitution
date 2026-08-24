@@ -2,6 +2,25 @@
 
 ## 2026-08-24
 
+### TASK-016 — Faculty / Staff Management
+
+- Added the first production-oriented Faculty / Staff Management vertical slice.
+- Added tenant-scoped Faculty / Staff list, server-side search, filtering, pagination, summary metrics, and archive workflow.
+- Added dedicated `/staff/new` and `/staff/[id]/edit` workflows instead of a side drawer.
+- Added Teaching and Non-Teaching staff support with department and employment information.
+- Added staff statuses for Active, Inactive, On Leave, and Archived records.
+- Added staff photo upload and update workflow.
+- Added tenant-isolated server-side CRUD behavior and RBAC enforcement.
+- Added redirect-safe bottom-right notifications for create and update workflows.
+- Aligned the Faculty / Staff list and form UI with the approved EduInstitution reference design, including responsive behavior.
+- Merged through pull request #61.
+- User-reported final lint, typecheck, build, UI, and functionality checks were green before merge.
+
+### Documentation Recovery — TASK-016
+
+- Updated project state, roadmap, and changelog to reflect the actual merged TASK-016 implementation.
+
+
 ### TASK-015 — Student Management
 
 - Added the first production-oriented Student Management vertical slice.
