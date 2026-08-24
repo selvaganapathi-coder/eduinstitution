@@ -48,3 +48,197 @@
 .mobile-menu-button {
   color: var(--ui-muted-strong-readable) !important;
 }
+
+/* Academic Years: enforce the new management design even when older base CSS is cached. */
+.academic-year-list-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  width: 100%;
+}
+
+.academic-year-card {
+  height: 100%;
+  min-height: 320px;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 18px !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(31, 41, 55, 0.04) !important;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.academic-year-card:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5d1 !important;
+  box-shadow: 0 12px 28px rgba(31, 41, 55, 0.09) !important;
+}
+
+.academic-year-card .ant-card-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.management-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.management-card-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.management-card-title > div {
+  min-width: 0;
+}
+
+.management-card-title p {
+  margin: 0 0 4px !important;
+  color: #4b5563 !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+}
+
+.management-card-title h3 {
+  margin: 0 !important;
+  color: #1f2937 !important;
+  font-size: 21px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em;
+}
+
+.management-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  font-size: 20px;
+}
+
+.management-card-icon-blue {
+  color: #1a73e8;
+  background: #e8f0fe;
+}
+
+.management-current-tag,
+.management-status-tag {
+  margin: 0 !important;
+  padding: 4px 9px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+.management-current-tag {
+  color: #137333 !important;
+  background: #e6f4ea !important;
+}
+
+.management-status-tag {
+  color: #374151 !important;
+  background: #f3f4f6 !important;
+}
+
+.management-date-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.management-date-grid > div {
+  padding: 12px;
+  border: 1px solid #eef0f1;
+  border-radius: 12px;
+  background: #f8faf9;
+}
+
+.management-date-grid span,
+.management-card-meta {
+  color: #4b5563 !important;
+  font-size: 11px !important;
+}
+
+.management-date-grid span {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.management-date-grid strong {
+  color: #1f2937 !important;
+  font-size: 12px;
+}
+
+.management-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 16px;
+  line-height: 1.5;
+}
+
+.management-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.management-card-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #137333 !important;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.management-card-actions a:last-child {
+  color: #1a73e8 !important;
+}
+
+.management-guide-box,
+.management-next-box {
+  border-radius: 16px !important;
+  border: 1px solid #dbeafe !important;
+  background: #f8fbff !important;
+  color: #374151 !important;
+}
+
+.management-guide-box p,
+.management-next-box p {
+  color: #4b5563 !important;
+}
+
+@media (max-width: 1100px) {
+  .academic-year-list-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .academic-year-list-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .academic-year-card {
+    min-height: auto;
+  }
+
+  .management-date-grid {
+    grid-template-columns: 1fr;
+  }
+}
