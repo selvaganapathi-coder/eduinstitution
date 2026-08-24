@@ -173,6 +173,8 @@ export async function POST(request: Request) {
     if (dateOfBirth && Number.isNaN(dateOfBirth.getTime())) return NextResponse.json({ error: "Enter a valid date of birth." }, { status: 400 });
     if (admissionDate && Number.isNaN(admissionDate.getTime())) return NextResponse.json({ error: "Enter a valid admission date." }, { status: 400 });
     if (photoUrl && (!photoUrl.startsWith("data:image/") || photoUrl.length > 3_000_000)) return NextResponse.json({ error: "Student photo must be a valid image up to 2MB." }, { status: 400 });
+    if (admissionDate && Number.isNaN(admissionDate.getTime())) return NextResponse.json({ error: "Enter a valid admission date." }, { status: 400 });
+    if (photoUrl && (!photoUrl.startsWith("data:image/") || photoUrl.length > 3_000_000)) return NextResponse.json({ error: "Student photo must be a valid image up to 2MB." }, { status: 400 });
 
     const prisma = getPrisma();
     const [academicYear, department, program, duplicateStudent, duplicateEnrollment] = await Promise.all([
