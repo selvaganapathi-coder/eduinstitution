@@ -279,6 +279,7 @@ model Department {
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   programs Program[]
   studentEnrollments StudentEnrollment[]
+  staffMembers StaffMember[]
   @@unique([tenantId, code])
   @@index([tenantId, status, displayOrder])
 }
