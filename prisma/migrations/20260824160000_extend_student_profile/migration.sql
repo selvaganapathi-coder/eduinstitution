@@ -1,0 +1,23 @@
+-- AlterTable
+ALTER TABLE "Student"
+ADD COLUMN "middleName" TEXT,
+ADD COLUMN "alternatePhone" TEXT,
+ADD COLUMN "gender" TEXT,
+ADD COLUMN "bloodGroup" TEXT,
+ADD COLUMN "nationality" TEXT,
+ADD COLUMN "religion" TEXT,
+ADD COLUMN "category" TEXT,
+ADD COLUMN "motherTongue" TEXT,
+ADD COLUMN "addressLine1" TEXT,
+ADD COLUMN "addressLine2" TEXT,
+ADD COLUMN "city" TEXT,
+ADD COLUMN "state" TEXT,
+ADD COLUMN "postalCode" TEXT,
+ADD COLUMN "country" TEXT,
+ADD COLUMN "guardianName" TEXT,
+ADD COLUMN "guardianRelation" TEXT,
+ADD COLUMN "guardianPhone" TEXT,
+ADD COLUMN "guardianEmail" TEXT,
+ADD COLUMN "admissionDate" TIMESTAMP(3),
+ADD COLUMN "admissionType" TEXT,
+ADD COLUMN "quota" TEXT;
