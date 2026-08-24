@@ -80,6 +80,18 @@ enum StudentStatus {
   ARCHIVED
 }
 
+enum StaffType {
+  TEACHING
+  NON_TEACHING
+}
+
+enum StaffStatus {
+  ACTIVE
+  INACTIVE
+  ON_LEAVE
+  ARCHIVED
+}
+
 enum StudentEnrollmentStatus {
   ACTIVE
   COMPLETED
@@ -104,6 +116,7 @@ model Tenant {
   courses Course[]
   students Student[]
   studentEnrollments StudentEnrollment[]
+  staffMembers StaffMember[]
   @@index([createdAt])
   @@index([institutionTypeId])
 }
@@ -376,4 +389,36 @@ model StudentEnrollment {
   @@index([tenantId, departmentId, status])
   @@index([tenantId, programId, status])
   @@index([studentId, status])
+}
+
+
+model StaffMember {
+  id String @id @default(cuid())
+  tenantId String
+  employeeNumber String
+  firstName String
+  lastName String
+  email String?
+  phone String?
+  photoUrl String?
+  dateOfBirth DateTime?
+  gender String?
+  address String?
+  staffType StaffType
+  designation String
+  departmentId String?
+  employmentType String
+  joiningDate DateTime
+  roleName String?
+  accessLevel String?
+  status StaffStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  department Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  @@unique([tenantId, employeeNumber])
+  @@index([tenantId, status, lastName, firstName])
+  @@index([tenantId, staffType, status])
+  @@index([tenantId, departmentId, status])
+  @@index([tenantId, email])
 }
