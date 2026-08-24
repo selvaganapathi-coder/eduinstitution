@@ -2,6 +2,14 @@
 
 ## 2026-08-24
 
+### Documentation Recovery — TASK-010 through TASK-012
+
+- Recovered and documented the previously completed but undocumented task sequence from actual merged Git history.
+- Added TASK-010 — UI Design System & Production Feedback.
+- Added TASK-011 — Institution Types & Capabilities.
+- Added TASK-012 — Departments & Programs.
+- Updated current project state and roadmap so the completed task sequence is explicit through TASK-014.
+
 ### TASK-014 — UI Redesign & Scalable Data Management
 
 - Merged the UI redesign and scalable data management work to `master`.
