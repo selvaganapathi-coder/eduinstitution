@@ -2,17 +2,25 @@
 
 ## Date
 
-2026-08-21
+2026-08-24
 
 ## Project Status
 
-TASK-009 — ACADEMIC YEAR & TERM MANAGEMENT IN PROGRESS
+TASK-014 — UI REDESIGN & SCALABLE DATA MANAGEMENT MERGED
+
+Latest merged commit:
+
+`551826abac1956aa8629607980eb65cb78bf7558`
 
 ## Repository
 
 `selvaganapathi-coder/eduinstitution`
 
-## Completed Foundation
+Primary branch:
+
+`master`
+
+## Completed Work
 
 - TASK-000 — Architecture Bootstrap
 - TASK-001 — Application Foundation & Design System
@@ -23,69 +31,91 @@ TASK-009 — ACADEMIC YEAR & TERM MANAGEMENT IN PROGRESS
 - TASK-006 — Institution Management
 - TASK-007 — Institution Management Navigation & UI
 - TASK-008 — Product Architecture, Feature Planning & Responsive UI System
+- TASK-009 — Academic Year & Term Management
+- TASK-010 through TASK-013 — Academic structure work, including departments, programs, courses, and subjects
+- TASK-014 — UI Redesign & Scalable Data Management
 
-## TASK-009 Implementation
+## Current Academic Year & Term State
 
-- Academic year and academic term data model defined for all supported institution categories.
-- Tenant-scoped academic-year list/create/detail/edit/archive workflows added.
-- Current academic year workflow is transactional and clears the previous current year before setting the selected year.
-- Term list/create/edit/archive workflows added under the academic-year route.
-- Date validation and active-term overlap validation added.
-- Academic-year and academic-term permissions added to development seed.
-- `/academic/years` added as the module landing route.
-- `/academic/years/new` added for creation.
-- `/academic/years/[id]` added for details and actions.
-- `/academic/years/[id]/edit` added for editing.
-- `/academic/years/[id]/terms` added for term management.
-- Application shell updated to the approved first-image visual direction: white Google-inspired navigation/header, restrained borders, green EduInstitution primary actions, and mobile drawer navigation.
-- Plain-language UI content used throughout the new academic workflow.
+The Academic Year and Term workflows are implemented and merged. Existing business logic was preserved while the UI was redesigned around the approved EduInstitution application style.
 
-## Security Contract
+Implemented routes:
 
-- Tenant identity is always derived from authenticated `TenantContext`.
-- Academic-year and term IDs are resolved within the authenticated tenant.
-- Protected operations require explicit permissions.
-- Current-year changes use a database transaction.
-- Cross-tenant records are not returned.
+- `/academic/years`
+- `/academic/years/new`
+- `/academic/years/[id]`
+- `/academic/years/[id]/edit`
+- `/academic/years/[id]/terms`
 
-## Institution Compatibility
+Implemented workflows:
 
-The core AcademicYear / AcademicTerm model is shared by:
+- Tenant-scoped academic-year list/create/detail/edit/archive flows.
+- Current academic year workflow using a transaction to clear the previous current year before setting the new one.
+- Term list/create/edit/reorder/archive flows under an academic year.
+- Date validation and active-term overlap validation.
+- Academic-year and academic-term permission checks.
+- Tenant isolation for academic-year and term access.
 
-- School
-- Engineering College
-- Pharmacy College
-- Arts & Science College
-- University
-- Polytechnic
-- Training / Vocational Institute
-- Other education institutions
+## Current UI System
 
-Institution-specific labels such as `Term` or `Semester` remain a terminology/configuration concern rather than separate data models.
+The application uses the EduInstitution management UI direction:
 
-## UI Baseline
+- Google-inspired white and neutral application shell.
+- EduInstitution green for primary actions and institutional identity.
+- Semantic accent colors for information, warning, and supporting actions.
+- Thin borders and restrained shadows.
+- Clear page headers with one primary title and short description.
+- Plain-language labels and actions.
+- Example values and contextual tips where a workflow is unfamiliar.
+- Bottom-right notifications for success, error, warning, and information feedback.
+- Responsive desktop, tablet, and mobile layouts.
+- Darker secondary text for readability; small text must not use very pale gray.
 
-The first generated EduInstitution dashboard image is the visual reference for implementation:
+## Navigation Behavior
 
-- clean white application shell
-- Google-inspired neutral palette
-- EduInstitution green brand identity
-- restrained blue utility/link accents
-- thin borders and minimal shadows
-- clear information hierarchy
-- plain-language labels
-- desktop + mobile parity
+Academic navigation is route-aware:
 
-## Validation
+- The Academic submenu opens automatically when the current route belongs to Academic.
+- It does not remain globally open on unrelated pages.
+- Users can still manually expand and collapse the section.
 
-Pending GitHub CI validation for TASK-009:
+## Academic Year UI Completion
 
-- `npm run test`
-- `npm run lint`
-- `npm run typecheck`
-- `npm run build`
-- `npm run build:cloudflare`
+The Academic Years and Terms UI was rebuilt and aligned to the approved reference direction without changing the underlying API, database schema, permissions, routes, or business rules.
+
+The final UI includes:
+
+- Reference-aligned Academic Years page layout.
+- Academic Year cards with clear status, dates, term count, and actions.
+- Creation, detail, edit, and term-management UI consistency.
+- Guidance and examples for easier institution administrator onboarding.
+- Empty/loading/error/success states.
+- Responsive layouts.
+- Alignment and readability corrections.
+- Fixed missing `InfoCircleOutlined` import that caused a runtime error.
+
+## Validation Status
+
+The latest implementation was locally verified with the user reporting all required checks green after the final Academic Year UI correction.
+
+The next engineering session must re-check repository health and GitHub Actions rather than assuming historical green status.
+
+## Important Continuation Rules
+
+Before future implementation:
+
+1. Inspect the latest merged repository state.
+2. Read relevant task and progress documentation.
+3. Fetch the latest file before editing.
+4. Verify imports before using components or icons.
+5. Do not overwrite a file with a stale SHA.
+6. Treat a GitHub `409` as a stale-write signal: refetch and reapply cleanly.
+7. Do not claim a change is implemented unless the repository write succeeded.
+8. Preserve APIs, routes, database schema, permissions, and business logic for UI-only tasks.
+9. Review desktop and mobile alignment before completion.
+10. Keep small secondary text readable.
+11. Do not force the Academic navigation section open outside Academic routes.
 
 ## Next Action
 
-Run CI, fix actual failures, perform security/UI review, and merge only after every required gate is green.
+Start the next focused feature from the current `master` state. Inspect the roadmap and actual repository implementation first, then choose the next logical Academic Core vertical slice without assuming the next task from older documentation.
