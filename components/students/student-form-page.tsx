@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { Avatar, Button, Input, Select, Spin, notification } from "antd";
 import { ArrowLeftOutlined, SaveOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
@@ -23,7 +23,7 @@ export function StudentFormPage({studentId}:{studentId?:string}) {
   const [programs,setPrograms]=useState<Program[]>([]);
   const [loading,setLoading]=useState(true);
   const [saving,setSaving]=useState(false);
-  const notify=(type:"success"|"error"|"warning"|"info",message:string)=>api[type]({message,placement:"bottomRight",duration:4,className:`edu-notification edu-notification-${type}`});
+  const notify=useCallback((type:"success"|"error"|"warning"|"info",message:string)=>api[type]({message,placement:"bottomRight",duration:4,className:`edu-notification edu-notification-${type}`}),[api]);
 
   useEffect(()=>{let cancelled=false;void Promise.all([
     fetch("/api/academic/years",{cache:"no-store"}),fetch("/api/academic/departments",{cache:"no-store"}),fetch("/api/academic/programs",{cache:"no-store"}),
@@ -39,7 +39,7 @@ export function StudentFormPage({studentId}:{studentId?:string}) {
     else setForm((x)=>({...x,academicYearId:(yd.academicYears??[]).find((y:AcademicYear)=>y.isCurrent)?.id??(yd.academicYears??[])[0]?.id??""}));
     setLoading(false);
   }).catch((error:unknown)=>{if(!cancelled){notify("error",error instanceof Error?error.message:"Unable to load student information.");setLoading(false);}});
-  return()=>{cancelled=true;};},[studentId]);
+  return()=>{cancelled=true;};},[studentId,notify]);
 
   const visiblePrograms=useMemo(()=>programs.filter(p=>!form.departmentId||p.department.id===form.departmentId),[form.departmentId,programs]);
   const set=(key:keyof FormState,value:string)=>setForm(x=>({...x,[key]:value}));
@@ -84,4 +84,4 @@ export function StudentFormPage({studentId}:{studentId?:string}) {
     </div>
   </ApplicationShell>;
 }
-function Field({label,required,children}:{label:string;required?:boolean;children:React.ReactNode}){return <label className="student-field"><span>{label}{required&&<b> *</b>}</span>{children}</label>;}
+function Field({label,required,children}:{label:string;required?:boolean;children:ReactNode}){return <label className="student-field"><span>{label}{required&&<b> *</b>}</span>{children}</label>;}
