@@ -30,6 +30,7 @@ type ApplicationShellProps = {
   pageTitle?: string;
   pageContext?: string;
   selectedKey?: string;
+  showPageContext?: boolean;
 };
 
 const iconClass = "!text-[18px]";
@@ -56,7 +57,7 @@ const items: MenuItem[] = [
   { key: "reports", icon: <BarChartOutlined className={`${iconClass} nav-icon nav-icon-blue`} />, label: "Reports" },
 ];
 
-export function ApplicationShell({ children, pageTitle = "Home", pageContext = "Institution overview", selectedKey = "dashboard" }: ApplicationShellProps) {
+export function ApplicationShell({ children, pageTitle = "Home", pageContext = "Institution overview", selectedKey = "dashboard", showPageContext = true }: ApplicationShellProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openKeys, setOpenKeys] = useState<string[]>(() => academicChildKeys.includes(selectedKey) ? ["academic"] : []);
   const screens = useBreakpoint();
@@ -112,12 +113,12 @@ export function ApplicationShell({ children, pageTitle = "Home", pageContext = "
           </Space>
         </Header>
 
-        <div className="page-context-bar">
+        {showPageContext ? <div className="page-context-bar">
           <div className="page-context-inner">
             <Title level={4} className="page-title">{pageTitle}</Title>
             <Text className="page-context">{pageContext}</Text>
           </div>
-        </div>
+        </div> : null}
 
         <Content className="app-content">{children}</Content>
       </Layout>
