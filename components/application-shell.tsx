@@ -50,7 +50,7 @@ const items: MenuItem[] = [
     ],
   },
   { key: "students", icon: <TeamOutlined className={`${iconClass} nav-icon nav-icon-purple`} />, label: <Link href="/students">Students</Link> },
-  { key: "faculty", icon: <TeamOutlined className={`${iconClass} nav-icon nav-icon-purple`} />, label: "Faculty / Staff" },
+  { key: "faculty", icon: <TeamOutlined className={`${iconClass} nav-icon nav-icon-purple`} />, label: <Link href="/staff">Faculty / Staff</Link> },
   { key: "attendance", icon: <CheckCircleOutlined className={`${iconClass} nav-icon nav-icon-green`} />, label: "Attendance" },
   { key: "examinations", icon: <FileTextOutlined className={`${iconClass} nav-icon nav-icon-blue`} />, label: "Examinations" },
   { key: "fees", icon: <DollarOutlined className={`${iconClass} nav-icon nav-icon-orange`} />, label: "Fees" },
