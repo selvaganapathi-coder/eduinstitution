@@ -6,11 +6,11 @@
 
 ## Project Status
 
-TASK-015 — STUDENT MANAGEMENT IMPLEMENTED AND VALIDATED ON FEATURE BRANCH
+TASK-016 — FACULTY / STAFF MANAGEMENT MERGED AND VALIDATED
 
 Latest merged commit:
 
-`551826abac1956aa8629607980eb65cb78bf7558`
+`989c10ae780ddbc1371ff78cabd2d6c981e7a16b`
 
 ## Repository
 
@@ -38,6 +38,7 @@ Primary branch:
 - TASK-013 — Course & Subject Management
 - TASK-014 — UI Redesign & Scalable Data Management
 - TASK-015 — Student Management
+- TASK-016 — Faculty / Staff Management
 
 ## Academic Foundation Status
 
@@ -133,6 +134,22 @@ TASK-015 implements the first Student Management vertical slice with:
 
 Validation was manually and automatically verified by the user as all green.
 
+## Faculty / Staff Management Status
+
+TASK-016 implements the first Faculty / Staff Management vertical slice with:
+
+- Tenant-scoped Faculty / Staff list, search, filtering, pagination, summary metrics, and archive workflow.
+- Dedicated `/staff/new` and `/staff/[id]/edit` pages instead of a side drawer.
+- Teaching and Non-Teaching staff support.
+- Department association and employment information.
+- Staff status support for Active, Inactive, On Leave, and Archived records.
+- Staff photo upload and update workflow.
+- Tenant-isolated server-side CRUD behavior and RBAC enforcement.
+- Bottom-right notifications and redirect-safe success feedback.
+- Responsive Faculty / Staff UI aligned with the approved EduInstitution reference design.
+
+Validation and manual functionality checks were reported green before merge.
+
 ## Next Action
 
-After TASK-015 is merged, start the next focused feature from the latest `master` state. The roadmap currently identifies Faculty / Staff as the next major module candidate, but the next session must inspect dependencies, documentation, and repository state before implementation.
+Before starting the next feature, inspect the latest merged `master`, current schema, dependencies, and repository health. The next recommended major vertical slice is Attendance Management, but the exact scope must be planned from repository evidence before implementation.
