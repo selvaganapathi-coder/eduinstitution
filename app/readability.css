@@ -1,0 +1,50 @@
+/* Global readability correction: keep small secondary UI text visible. */
+:root {
+  --ui-muted-readable: #4b5563;
+  --ui-muted-strong-readable: #3c4043;
+  --ui-label-readable: #374151;
+}
+
+.ant-typography.ant-typography-secondary,
+.ant-form-item-extra,
+.ant-form-item-explain,
+.ant-empty-description,
+.ant-input::placeholder,
+.ant-select-selection-placeholder,
+.ant-input-textarea textarea::placeholder {
+  color: var(--ui-muted-readable) !important;
+}
+
+.ant-form-item-label > label {
+  color: var(--ui-label-readable) !important;
+  font-weight: 600;
+}
+
+.navigation-label,
+.dashboard-section-caption,
+.dashboard-stat-helper,
+.dashboard-quick-arrow,
+.dashboard-step-arrow,
+.management-page-description,
+.management-card-heading p,
+.management-card-meta,
+.management-date-grid span,
+.term-main > span,
+.department-row small,
+.program-row small,
+.management-next-box p,
+.management-guide-box p,
+.management-empty-state p,
+.term-modal-intro span,
+.management-breadcrumb,
+.page-context {
+  color: var(--ui-muted-readable) !important;
+}
+
+.management-overline,
+.management-next-label,
+.dashboard-stat-label,
+.header-icon,
+.mobile-menu-button {
+  color: var(--ui-muted-strong-readable) !important;
+}
