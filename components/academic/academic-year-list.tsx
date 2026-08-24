@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CalendarOutlined, CheckCircleOutlined, ClockCircleOutlined, MoreOutlined, RightOutlined, BookOutlined, InboxOutlined } from "@ant-design/icons";
+import { CalendarOutlined, CheckCircleOutlined, ClockCircleOutlined, MoreOutlined, RightOutlined, BookOutlined, InboxOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Alert, Button, Card, Skeleton, Tag } from "antd";
 
 type AcademicYear = {
