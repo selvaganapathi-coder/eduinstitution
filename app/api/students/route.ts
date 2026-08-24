@@ -134,7 +134,29 @@ export async function POST(request: Request) {
     const lastName = typeof body.lastName === "string" ? body.lastName.trim() : "";
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() || null : null;
     const phone = typeof body.phone === "string" ? body.phone.trim() || null : null;
+    const optionalString = (key: string) => typeof body[key] === "string" ? String(body[key]).trim() || null : null;
+    const middleName = optionalString("middleName");
+    const alternatePhone = optionalString("alternatePhone");
+    const gender = optionalString("gender");
+    const bloodGroup = optionalString("bloodGroup");
+    const nationality = optionalString("nationality");
+    const religion = optionalString("religion");
+    const category = optionalString("category");
+    const motherTongue = optionalString("motherTongue");
+    const addressLine1 = optionalString("addressLine1");
+    const addressLine2 = optionalString("addressLine2");
+    const city = optionalString("city");
+    const state = optionalString("state");
+    const postalCode = optionalString("postalCode");
+    const country = optionalString("country");
+    const guardianName = optionalString("guardianName");
+    const guardianRelation = optionalString("guardianRelation");
+    const guardianPhone = optionalString("guardianPhone");
+    const guardianEmail = optionalString("guardianEmail");
+    const admissionType = optionalString("admissionType");
+    const quota = optionalString("quota");
     const photoUrl = typeof body.photoUrl === "string" ? body.photoUrl.trim() || null : null;
+    const admissionDate = typeof body.admissionDate === "string" && body.admissionDate ? new Date(body.admissionDate) : null;
     const academicYearId = typeof body.academicYearId === "string" ? body.academicYearId : "";
     const departmentId = typeof body.departmentId === "string" ? body.departmentId : "";
     const programId = typeof body.programId === "string" ? body.programId : "";
@@ -149,6 +171,8 @@ export async function POST(request: Request) {
     if (!programId) return NextResponse.json({ error: "Select a program." }, { status: 400 });
     if (!enrollmentNumber) return NextResponse.json({ error: "Enter an enrollment number." }, { status: 400 });
     if (dateOfBirth && Number.isNaN(dateOfBirth.getTime())) return NextResponse.json({ error: "Enter a valid date of birth." }, { status: 400 });
+    if (admissionDate && Number.isNaN(admissionDate.getTime())) return NextResponse.json({ error: "Enter a valid admission date." }, { status: 400 });
+    if (photoUrl && (!photoUrl.startsWith("data:image/") || photoUrl.length > 3_000_000)) return NextResponse.json({ error: "Student photo must be a valid image up to 2MB." }, { status: 400 });
 
     const prisma = getPrisma();
     const [academicYear, department, program, duplicateStudent, duplicateEnrollment] = await Promise.all([
@@ -170,10 +194,31 @@ export async function POST(request: Request) {
         tenantId: context.tenantId,
         studentNumber,
         firstName,
+        middleName,
         lastName,
         email,
         phone,
+        alternatePhone,
         dateOfBirth,
+        gender,
+        bloodGroup,
+        nationality,
+        religion,
+        category,
+        motherTongue,
+        addressLine1,
+        addressLine2,
+        city,
+        state,
+        postalCode,
+        country,
+        guardianName,
+        guardianRelation,
+        guardianPhone,
+        guardianEmail,
+        admissionDate,
+        admissionType,
+        quota,
         photoUrl,
         enrollments: {
           create: {
