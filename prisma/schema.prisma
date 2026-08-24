@@ -317,10 +317,31 @@ model Student {
   tenantId String
   studentNumber String
   firstName String
+  middleName String?
   lastName String
   email String?
   phone String?
+  alternatePhone String?
   dateOfBirth DateTime?
+  gender String?
+  bloodGroup String?
+  nationality String?
+  religion String?
+  category String?
+  motherTongue String?
+  addressLine1 String?
+  addressLine2 String?
+  city String?
+  state String?
+  postalCode String?
+  country String?
+  guardianName String?
+  guardianRelation String?
+  guardianPhone String?
+  guardianEmail String?
+  admissionDate DateTime?
+  admissionType String?
+  quota String?
   photoUrl String?
   status StudentStatus @default(ACTIVE)
   createdAt DateTime @default(now())
