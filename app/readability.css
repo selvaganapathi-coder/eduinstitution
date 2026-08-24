@@ -5,240 +5,104 @@
   --ui-label-readable: #374151;
 }
 
-.ant-typography.ant-typography-secondary,
-.ant-form-item-extra,
-.ant-form-item-explain,
-.ant-empty-description,
-.ant-input::placeholder,
-.ant-select-selection-placeholder,
-.ant-input-textarea textarea::placeholder {
-  color: var(--ui-muted-readable) !important;
-}
+.ant-typography.ant-typography-secondary,.ant-form-item-extra,.ant-form-item-explain,.ant-empty-description,.ant-input::placeholder,.ant-select-selection-placeholder,.ant-input-textarea textarea::placeholder { color: var(--ui-muted-readable) !important; }
+.ant-form-item-label > label { color: var(--ui-label-readable) !important; font-weight: 600; }
+.navigation-label,.dashboard-section-caption,.dashboard-stat-helper,.dashboard-quick-arrow,.dashboard-step-arrow,.management-page-description,.management-card-heading p,.management-card-meta,.management-date-grid span,.term-main > span,.department-row small,.program-row small,.management-next-box p,.management-guide-box p,.management-empty-state p,.term-modal-intro span,.management-breadcrumb,.page-context { color: var(--ui-muted-readable) !important; }
+.management-overline,.management-next-label,.dashboard-stat-label,.header-icon,.mobile-menu-button { color: var(--ui-muted-strong-readable) !important; }
 
-.ant-form-item-label > label {
-  color: var(--ui-label-readable) !important;
-  font-weight: 600;
-}
+/* Legacy management support. */
+.academic-year-list-grid { display: grid !important; grid-template-columns: repeat(3,minmax(0,1fr)) !important; gap: 18px !important; width: 100%; }
+.academic-year-card { height: 100%; min-height: 320px; border: 1px solid #e5e7eb !important; border-radius: 18px !important; background: #fff !important; box-shadow: 0 2px 8px rgba(31,41,55,.04) !important; }
+.management-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.management-card-title { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.management-card-title > div { min-width: 0; }
+.management-card-title p { margin: 0 0 4px !important; color: #4b5563 !important; font-size: 10px !important; font-weight: 800 !important; letter-spacing: .08em !important; }
+.management-card-title h3 { margin: 0 !important; color: #1f2937 !important; font-size: 21px !important; font-weight: 700 !important; }
+.management-card-icon { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 46px; height: 46px; border-radius: 14px; font-size: 20px; }
+.management-card-icon-blue { color: #1a73e8; background: #e8f0fe; }
+.management-current-tag,.management-status-tag { margin: 0 !important; padding: 4px 9px !important; border: 0 !important; border-radius: 999px !important; font-size: 11px !important; font-weight: 700 !important; }
+.management-current-tag { color: #137333 !important; background: #e6f4ea !important; }
+.management-status-tag { color: #374151 !important; background: #f3f4f6 !important; }
+.management-date-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin-top: 18px; }
+.management-date-grid > div { padding: 12px; border: 1px solid #eef0f1; border-radius: 12px; background: #f8faf9; }
+.management-date-grid span,.management-card-meta { color: #4b5563 !important; font-size: 11px !important; }
+.management-date-grid span { display: block; margin-bottom: 4px; font-weight: 600; }
+.management-date-grid strong { color: #1f2937 !important; font-size: 12px; }
+.management-card-meta { display: flex; flex-direction: column; gap: 3px; margin-top: 16px; line-height: 1.5; }
+.management-card-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: auto; padding-top: 18px; }
+.management-card-actions a { display: inline-flex; align-items: center; gap: 6px; color: #137333 !important; font-size: 12px; font-weight: 700; }
+.management-card-actions a:last-child { color: #1a73e8 !important; }
+.management-guide-box,.management-next-box { border-radius: 16px !important; border: 1px solid #dbeafe !important; background: #f8fbff !important; color: #374151 !important; }
+.management-guide-box p,.management-next-box p { color: #4b5563 !important; }
 
-.navigation-label,
-.dashboard-section-caption,
-.dashboard-stat-helper,
-.dashboard-quick-arrow,
-.dashboard-step-arrow,
-.management-page-description,
-.management-card-heading p,
-.management-card-meta,
-.management-date-grid span,
-.term-main > span,
-.department-row small,
-.program-row small,
-.management-next-box p,
-.management-guide-box p,
-.management-empty-state p,
-.term-modal-intro span,
-.management-breadcrumb,
-.page-context {
-  color: var(--ui-muted-readable) !important;
-}
-
-.management-overline,
-.management-next-label,
-.dashboard-stat-label,
-.header-icon,
-.mobile-menu-button {
-  color: var(--ui-muted-strong-readable) !important;
-}
-
-/* Academic Years: enforce the new management design even when older base CSS is cached. */
-.academic-year-list-grid {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 18px !important;
-  width: 100%;
-}
-
-.academic-year-card {
-  height: 100%;
-  min-height: 320px;
-  border: 1px solid #e5e7eb !important;
-  border-radius: 18px !important;
-  background: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(31, 41, 55, 0.04) !important;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-}
-
-.academic-year-card:hover {
-  transform: translateY(-2px);
-  border-color: #cbd5d1 !important;
-  box-shadow: 0 12px 28px rgba(31, 41, 55, 0.09) !important;
-}
-
-.academic-year-card .ant-card-body {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.management-card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.management-card-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.management-card-title > div {
-  min-width: 0;
-}
-
-.management-card-title p {
-  margin: 0 0 4px !important;
-  color: #4b5563 !important;
-  font-size: 10px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.08em !important;
-}
-
-.management-card-title h3 {
-  margin: 0 !important;
-  color: #1f2937 !important;
-  font-size: 21px !important;
-  font-weight: 700 !important;
-  letter-spacing: -0.02em;
-}
-
-.management-card-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  font-size: 20px;
-}
-
-.management-card-icon-blue {
-  color: #1a73e8;
-  background: #e8f0fe;
-}
-
-.management-current-tag,
-.management-status-tag {
-  margin: 0 !important;
-  padding: 4px 9px !important;
-  border: 0 !important;
-  border-radius: 999px !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-}
-
-.management-current-tag {
-  color: #137333 !important;
-  background: #e6f4ea !important;
-}
-
-.management-status-tag {
-  color: #374151 !important;
-  background: #f3f4f6 !important;
-}
-
-.management-date-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.management-date-grid > div {
-  padding: 12px;
-  border: 1px solid #eef0f1;
-  border-radius: 12px;
-  background: #f8faf9;
-}
-
-.management-date-grid span,
-.management-card-meta {
-  color: #4b5563 !important;
-  font-size: 11px !important;
-}
-
-.management-date-grid span {
-  display: block;
-  margin-bottom: 4px;
-  font-weight: 600;
-}
-
-.management-date-grid strong {
-  color: #1f2937 !important;
-  font-size: 12px;
-}
-
-.management-card-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  margin-top: 16px;
-  line-height: 1.5;
-}
-
-.management-card-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: auto;
-  padding-top: 18px;
-}
-
-.management-card-actions a {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: #137333 !important;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.management-card-actions a:last-child {
-  color: #1a73e8 !important;
-}
-
-.management-guide-box,
-.management-next-box {
-  border-radius: 16px !important;
-  border: 1px solid #dbeafe !important;
-  background: #f8fbff !important;
-  color: #374151 !important;
-}
-
-.management-guide-box p,
-.management-next-box p {
-  color: #4b5563 !important;
-}
-
-@media (max-width: 1100px) {
-  .academic-year-list-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
-
-@media (max-width: 700px) {
-  .academic-year-list-grid {
-    grid-template-columns: 1fr !important;
-    gap: 14px !important;
-  }
-
-  .academic-year-card {
-    min-height: auto;
-  }
-
-  .management-date-grid {
-    grid-template-columns: 1fr;
-  }
-}
+/* Academic Years + Terms: redesign from scratch, presentation layer only. */
+.academic-redesign { display: grid; gap: 24px; }
+.academic-redesign-hero { position: relative; overflow: hidden; padding: 30px; border: 1px solid #dfe7e1; border-radius: 20px; background: linear-gradient(135deg,#fff 0%,#f4fbf6 100%); box-shadow: 0 10px 30px rgba(31,72,46,.06); }
+.academic-redesign-hero::after { content:""; position:absolute; width:260px; height:260px; right:-95px; top:-145px; border-radius:50%; background:rgba(24,128,56,.08); }
+.academic-redesign-eyebrow { position:relative; z-index:1; display:inline-flex; align-items:center; gap:8px; color:#137333; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.academic-redesign-hero-main { position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+.academic-redesign-title { margin:8px 0 6px; color:#202124; font-size:clamp(28px,4vw,38px); font-weight:700; letter-spacing:-.035em; }
+.academic-redesign-description { max-width:690px; margin:0; color:#4b5563; font-size:14px; line-height:1.7; }
+.academic-redesign-primary.ant-btn { height:46px; border-radius:12px; font-weight:650; box-shadow:0 7px 16px rgba(24,128,56,.18); }
+.academic-redesign-guide { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.55fr); gap:16px; }
+.academic-redesign-guide-card { padding:18px 20px; border:1px solid #dbe7de; border-radius:16px; background:#fff; }
+.academic-redesign-guide-card.info { background:#f7fbf8; }
+.academic-redesign-guide-icon { display:inline-grid; place-items:center; width:38px; height:38px; border-radius:12px; background:#e6f4ea; color:#137333; font-size:18px; }
+.academic-redesign-guide-card h3 { margin:10px 0 4px; color:#202124; font-size:15px; font-weight:700; }
+.academic-redesign-guide-card p { margin:0; color:#4b5563; font-size:13px; line-height:1.65; }
+.academic-redesign-guide-card strong { color:#202124; }
+.academic-year-list-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:16px !important; }
+.academic-year-card { overflow:hidden; min-height:0; border-color:#e3e8e4 !important; box-shadow:0 2px 8px rgba(60,64,67,.045) !important; transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease; }
+.academic-year-card:hover { transform:translateY(-2px); border-color:#c9dfcf !important; box-shadow:0 14px 30px rgba(60,64,67,.09) !important; }
+.academic-year-card.current { border-color:#b8d9c1 !important; box-shadow:0 8px 26px rgba(24,128,56,.09) !important; }
+.academic-year-card .ant-card-body { height:100%; display:flex; flex-direction:column; }
+.academic-year-card-summary { min-height:48px; margin:18px 0; color:#4b5563; font-size:13px; line-height:1.65; }
+.academic-year-dates { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:12px; border:1px solid #edf0ee; border-radius:14px; background:#fafcfb; }
+.academic-year-dates span { display:block; margin-bottom:4px; color:#6b7280; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
+.academic-year-dates strong { color:#202124; font-size:12px; }
+.academic-year-meta { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:14px; color:#4b5563; font-size:12px; }
+.academic-year-actions { display:grid; grid-template-columns:1fr auto; gap:10px; margin-top:18px; }
+.academic-year-actions .ant-btn { height:38px; border-radius:10px; font-weight:600; }
+.academic-status-current { margin-inline-end:0 !important; border:0 !important; border-radius:999px !important; background:#e6f4ea !important; color:#137333 !important; font-weight:700; }
+.academic-status-active { margin-inline-end:0 !important; border:0 !important; border-radius:999px !important; background:#eef5ff !important; color:#1967d2 !important; font-weight:700; }
+.academic-status-archived { margin-inline-end:0 !important; border:0 !important; border-radius:999px !important; background:#f1f3f4 !important; color:#5f6368 !important; font-weight:700; }
+.academic-empty { padding:46px 20px !important; border:1px dashed #cfd8d2 !important; border-radius:18px !important; background:#fff !important; text-align:center; }
+.academic-empty-icon { display:grid; place-items:center; width:58px; height:58px; margin:0 auto 14px; border-radius:18px; background:#e6f4ea; color:#137333; font-size:25px; }
+.academic-empty h3 { margin:0 0 6px; color:#202124; font-size:18px; }
+.academic-empty p { max-width:500px; margin:0 auto 20px; color:#4b5563; line-height:1.65; }
+.academic-form-layout { display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:20px; align-items:start; }
+.academic-form-card,.academic-side-card { border:1px solid #e3e8e4 !important; border-radius:18px !important; box-shadow:0 2px 8px rgba(60,64,67,.04) !important; }
+.academic-form-card .ant-card-body { padding:26px !important; }
+.academic-form-heading { display:flex; align-items:flex-start; gap:14px; margin-bottom:24px; }
+.academic-form-heading-icon { display:grid; place-items:center; width:44px; height:44px; border-radius:14px; background:#e6f4ea; color:#137333; font-size:20px; }
+.academic-form-heading h2 { margin:0 0 4px; color:#202124; font-size:20px; }
+.academic-form-heading p { margin:0; color:#4b5563; font-size:13px; line-height:1.6; }
+.academic-example-card { border-color:#d7e8dc !important; background:#f8fcf9 !important; }
+.academic-example-value { padding:14px; border:1px solid #dcebe0; border-radius:14px; background:#fff; }
+.academic-example-value strong { display:block; color:#202124; font-size:17px; }
+.academic-example-value span { display:block; margin-top:4px; color:#4b5563; font-size:12px; }
+.academic-detail-summary { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; padding:24px; border:1px solid #e3e8e4; border-radius:18px; background:#fff; }
+.academic-detail-name { display:flex; align-items:center; gap:14px; }
+.academic-detail-name h2 { margin:0; color:#202124; font-size:28px; letter-spacing:-.03em; }
+.academic-detail-period { margin:8px 0 0 58px; color:#4b5563; font-size:13px; }
+.academic-detail-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; }
+.academic-detail-actions .ant-btn { border-radius:10px; }
+.academic-terms-panel { border:1px solid #e3e8e4; border-radius:18px; background:#fff; overflow:hidden; }
+.academic-terms-panel-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:20px 22px; border-bottom:1px solid #edf0ee; }
+.academic-terms-panel-head h2 { margin:0 0 4px; color:#202124; font-size:18px; }
+.academic-terms-panel-head p { margin:0; color:#4b5563; font-size:13px; }
+.term-list { display:grid; gap:10px; padding:14px; }
+.term-row { display:grid; grid-template-columns:44px minmax(0,1fr) auto; align-items:center; gap:14px; padding:14px; border:1px solid #edf0ee; border-radius:14px; background:#fff; }
+.term-order { display:grid; place-items:center; width:40px; height:40px; border-radius:12px; background:#eef6f0; color:#137333; font-size:12px; font-weight:800; }
+.term-main { min-width:0; }
+.term-title-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.term-title-row strong { color:#202124; }
+.term-main > span { display:block; margin-top:3px; font-size:12px; }
+.term-actions { display:flex; align-items:center; gap:8px; }
+.term-row-arrow { color:#80868b; }
+.academic-term-year-strip { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 18px; border:1px solid #dbe7de; border-radius:16px; background:#f7fbf8; }
+.academic-term-year-strip span { color:#5f6368; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+.academic-term-year-strip strong { display:block; margin-top:3px; color:#202124; }
+@media (max-width:1100px) { .academic-year-list-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; } .academic-form-layout { grid-template-columns:1fr; } .academic-redesign-guide { grid-template-columns:1fr; } }
+@media (max-width:760px) { .academic-redesign-hero { padding:22px; } .academic-redesign-hero-main { align-items:flex-start; flex-direction:column; } .academic-redesign-primary.ant-btn { width:100%; } .academic-year-list-grid { grid-template-columns:1fr !important; } .academic-detail-summary { grid-template-columns:1fr; } .academic-detail-actions { justify-content:flex-start; } .academic-detail-period { margin-left:0; } .term-row { grid-template-columns:40px minmax(0,1fr); } .term-actions { grid-column:1/-1; padding-top:4px; flex-wrap:wrap; } .term-row-arrow { display:none; } }
+@media (max-width:520px) { .academic-year-dates { grid-template-columns:1fr; } .academic-year-actions { grid-template-columns:1fr; } .academic-redesign-title { font-size:28px; } .academic-terms-panel-head { flex-direction:column; } .academic-term-year-strip { align-items:flex-start; flex-direction:column; } }
