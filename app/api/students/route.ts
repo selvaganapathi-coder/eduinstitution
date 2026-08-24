@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
-import { PrismaClient } from "@/src/generated/prisma/client";
+import { PrismaClient, Prisma, StudentEnrollmentStatus, StudentStatus } from "@/src/generated/prisma/client";
 import { AuthenticationError, AuthorizationError, TenantAccessError } from "@/src/server/auth/errors";
 import { requirePermission } from "@/src/server/auth/permissions";
 
@@ -42,7 +42,7 @@ export async function GET(request: Request) {
     const academicYearId = params.get("academicYearId")?.trim();
     const departmentId = params.get("departmentId")?.trim();
     const programId = params.get("programId")?.trim();
-    const status = params.get("status") === "ARCHIVED" ? "ARCHIVED" : "ACTIVE";
+    const status = params.get("status") === "ARCHIVED" ? StudentStatus.ARCHIVED : StudentStatus.ACTIVE;
     const prisma = getPrisma();
 
     const enrollmentFilters = {
@@ -51,18 +51,28 @@ export async function GET(request: Request) {
       ...(programId ? { programId } : {}),
     };
 
-    const where = {
+    const where: Prisma.StudentWhereInput = {
       tenantId: context.tenantId,
       status,
-      ...(Object.keys(enrollmentFilters).length > 0 ? { enrollments: { some: { tenantId: context.tenantId, status: "ACTIVE", ...enrollmentFilters } } } : {}),
+      ...(Object.keys(enrollmentFilters).length > 0
+        ? {
+            enrollments: {
+              some: {
+                tenantId: context.tenantId,
+                status: StudentEnrollmentStatus.ACTIVE,
+                ...enrollmentFilters,
+              },
+            },
+          }
+        : {}),
       ...(search
         ? {
             OR: [
-              { firstName: { contains: search, mode: "insensitive" as const } },
-              { lastName: { contains: search, mode: "insensitive" as const } },
-              { studentNumber: { contains: search, mode: "insensitive" as const } },
-              { email: { contains: search, mode: "insensitive" as const } },
-              { phone: { contains: search, mode: "insensitive" as const } },
+              { firstName: { contains: search, mode: "insensitive" } },
+              { lastName: { contains: search, mode: "insensitive" } },
+              { studentNumber: { contains: search, mode: "insensitive" } },
+              { email: { contains: search, mode: "insensitive" } },
+              { phone: { contains: search, mode: "insensitive" } },
             ],
           }
         : {}),
@@ -86,7 +96,7 @@ export async function GET(request: Request) {
           status: true,
           createdAt: true,
           enrollments: {
-            where: { tenantId: context.tenantId, status: "ACTIVE", ...enrollmentFilters },
+            where: { tenantId: context.tenantId, status: StudentEnrollmentStatus.ACTIVE, ...enrollmentFilters },
             orderBy: [{ academicYear: { startDate: "desc" } }, { createdAt: "desc" }],
             take: 1,
             select: {
