@@ -1,0 +1,1 @@
+import { StudentFormPage } from "@/components/students/student-form-page"; export default function NewStudentPage(){return <StudentFormPage/>;}

@@ -75,6 +75,18 @@ enum CourseType {
   OTHER
 }
 
+enum StudentStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum StudentEnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  WITHDRAWN
+  ARCHIVED
+}
+
 model Tenant {
   id String @id @default(cuid())
   name String
@@ -90,6 +102,8 @@ model Tenant {
   departments Department[]
   programs Program[]
   courses Course[]
+  students Student[]
+  studentEnrollments StudentEnrollment[]
   @@index([createdAt])
   @@index([institutionTypeId])
 }
@@ -218,6 +232,7 @@ model AcademicYear {
   updatedAt DateTime @updatedAt
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   terms AcademicTerm[]
+  studentEnrollments StudentEnrollment[]
   @@unique([tenantId, name])
   @@index([tenantId, status])
   @@index([tenantId, isCurrent])
@@ -250,6 +265,7 @@ model Department {
   updatedAt DateTime @updatedAt
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   programs Program[]
+  studentEnrollments StudentEnrollment[]
   @@unique([tenantId, code])
   @@index([tenantId, status, displayOrder])
 }
@@ -269,6 +285,7 @@ model Program {
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   department Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
   courses Course[]
+  studentEnrollments StudentEnrollment[]
   @@unique([tenantId, code])
   @@index([tenantId, status])
   @@index([departmentId, status])
@@ -293,4 +310,70 @@ model Course {
   @@unique([tenantId, code])
   @@index([tenantId, status, displayOrder])
   @@index([programId, status, displayOrder])
+}
+
+model Student {
+  id String @id @default(cuid())
+  tenantId String
+  studentNumber String
+  firstName String
+  middleName String?
+  lastName String
+  email String?
+  phone String?
+  alternatePhone String?
+  dateOfBirth DateTime?
+  gender String?
+  bloodGroup String?
+  nationality String?
+  religion String?
+  category String?
+  motherTongue String?
+  addressLine1 String?
+  addressLine2 String?
+  city String?
+  state String?
+  postalCode String?
+  country String?
+  guardianName String?
+  guardianRelation String?
+  guardianPhone String?
+  guardianEmail String?
+  admissionDate DateTime?
+  admissionType String?
+  quota String?
+  photoUrl String?
+  status StudentStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  enrollments StudentEnrollment[]
+  @@unique([tenantId, studentNumber])
+  @@index([tenantId, status, lastName, firstName])
+  @@index([tenantId, email])
+  @@index([tenantId, phone])
+}
+
+model StudentEnrollment {
+  id String @id @default(cuid())
+  tenantId String
+  studentId String
+  academicYearId String
+  departmentId String
+  programId String
+  enrollmentNumber String
+  status StudentEnrollmentStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id], onDelete: Restrict)
+  department Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  program Program @relation(fields: [programId], references: [id], onDelete: Restrict)
+  @@unique([tenantId, enrollmentNumber])
+  @@unique([studentId, academicYearId])
+  @@index([tenantId, status, academicYearId])
+  @@index([tenantId, departmentId, status])
+  @@index([tenantId, programId, status])
+  @@index([studentId, status])
 }

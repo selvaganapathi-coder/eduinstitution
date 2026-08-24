@@ -2,6 +2,19 @@
 
 ## 2026-08-24
 
+### TASK-015 — Student Management
+
+- Added the first production-oriented Student Management vertical slice.
+- Added tenant-scoped student list, server-side search, filtering, pagination, summary metrics, and student actions.
+- Added dedicated `/students/new` and `/students/[id]/edit` workflows instead of a side drawer.
+- Recreated the approved EduInstitution Student UI while preserving application design consistency.
+- Added student photo file upload with preview, removal, JPG/PNG/WEBP support, and a 2MB limit.
+- Added extended personal, admission, contact, and parent/guardian student profile fields.
+- Added Prisma migration `20260824160000_extend_student_profile` for the expanded Student model.
+- Added semantic bottom-right notification backgrounds for success, error, warning, and information states.
+- Fixed the create/update redirect flow so success notifications survive navigation and remain visible on the Students list.
+- User-reported validation is green and manual create, update, photo, redirect, notification, and responsive workflows are working.
+
 ### Documentation Recovery — TASK-010 through TASK-012
 
 - Recovered and documented the previously completed but undocumented task sequence from actual merged Git history.

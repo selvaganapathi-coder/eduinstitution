@@ -16,8 +16,8 @@
 9. Departments & Programs — completed as TASK-012
 10. Course & Subject Management — completed as TASK-013
 11. Academic UI Redesign & Scalable Data Management — completed as TASK-014
-12. Student Management — next major core module candidate
-13. Faculty / Staff — pending major module
+12. Student Management — completed as TASK-015
+13. Faculty / Staff — next major module candidate
 
 ## Phase 2 — Operations
 
@@ -54,6 +54,6 @@ The completed task sequence is:
 - TASK-013 — Course & Subject Management
 - TASK-014 — UI Redesign & Scalable Data Management
 
-The next task should be selected after inspecting the current `master` implementation and task dependencies. Student Management is the current next major vertical-slice candidate, but the next engineering session must verify existing code and documentation before starting.
+Student Management is completed as TASK-015. The next task should be selected after inspecting the latest merged `master` implementation and task dependencies. Faculty / Staff is the current next major vertical-slice candidate, but the next engineering session must verify existing code and documentation before starting.
 
 The order remains provisional and must be re-evaluated when dependencies or requirements change.
