@@ -32,14 +32,29 @@ Primary branch:
 - TASK-007 — Institution Management Navigation & UI
 - TASK-008 — Product Architecture, Feature Planning & Responsive UI System
 - TASK-009 — Academic Year & Term Management
-- TASK-010 through TASK-013 — Academic structure work, including departments, programs, courses, and subjects
+- TASK-010 — UI Design System & Production Feedback
+- TASK-011 — Institution Types & Capabilities
+- TASK-012 — Departments & Programs
+- TASK-013 — Course & Subject Management
 - TASK-014 — UI Redesign & Scalable Data Management
 
-## Current Academic Year & Term State
+## Academic Foundation Status
 
-The Academic Year and Term workflows are implemented and merged. Existing business logic was preserved while the UI was redesigned around the approved EduInstitution application style.
+The current Academic Core foundation includes:
 
-Implemented routes:
+- Tenant-scoped Academic Years and Terms.
+- Current Academic Year workflow.
+- Term create, edit, reorder, archive, date validation, and overlap validation.
+- Institution Types and Capabilities.
+- Institution type assignment and capability-aware setup.
+- Departments and Programs with tenant-scoped APIs, permissions, edit, and archive workflows.
+- Course and Subject management foundation.
+
+### Academic Year & Term UI
+
+The Academic Years and Terms UI was rebuilt to the approved EduInstitution application style while preserving existing APIs, routes, permissions, database schema, and business rules.
+
+Implemented routes include:
 
 - `/academic/years`
 - `/academic/years/new`
@@ -47,14 +62,15 @@ Implemented routes:
 - `/academic/years/[id]/edit`
 - `/academic/years/[id]/terms`
 
-Implemented workflows:
+The final UI includes:
 
-- Tenant-scoped academic-year list/create/detail/edit/archive flows.
-- Current academic year workflow using a transaction to clear the previous current year before setting the new one.
-- Term list/create/edit/reorder/archive flows under an academic year.
-- Date validation and active-term overlap validation.
-- Academic-year and academic-term permission checks.
-- Tenant isolation for academic-year and term access.
+- Reference-aligned Academic Years page layout.
+- Clear year status, dates, term count, and action hierarchy.
+- Creation, detail, edit, and term-management consistency.
+- Guidance, examples, and contextual tips.
+- Empty, loading, error, and success states.
+- Responsive layouts.
+- Alignment and readability corrections.
 
 ## Current UI System
 
@@ -79,24 +95,9 @@ Academic navigation is route-aware:
 - It does not remain globally open on unrelated pages.
 - Users can still manually expand and collapse the section.
 
-## Academic Year UI Completion
-
-The Academic Years and Terms UI was rebuilt and aligned to the approved reference direction without changing the underlying API, database schema, permissions, routes, or business rules.
-
-The final UI includes:
-
-- Reference-aligned Academic Years page layout.
-- Academic Year cards with clear status, dates, term count, and actions.
-- Creation, detail, edit, and term-management UI consistency.
-- Guidance and examples for easier institution administrator onboarding.
-- Empty/loading/error/success states.
-- Responsive layouts.
-- Alignment and readability corrections.
-- Fixed missing `InfoCircleOutlined` import that caused a runtime error.
-
 ## Validation Status
 
-The latest implementation was locally verified with the user reporting all required checks green after the final Academic Year UI correction.
+The latest Academic Year UI implementation was locally verified with the user reporting all required checks green after the final runtime correction.
 
 The next engineering session must re-check repository health and GitHub Actions rather than assuming historical green status.
 
@@ -118,4 +119,4 @@ Before future implementation:
 
 ## Next Action
 
-Start the next focused feature from the current `master` state. Inspect the roadmap and actual repository implementation first, then choose the next logical Academic Core vertical slice without assuming the next task from older documentation.
+Start the next focused feature from the current `master` state. Inspect the roadmap, task documents, and actual repository implementation first. The current roadmap identifies Student Management as the next major core module candidate, but the next session must verify dependencies and existing code before implementation.
