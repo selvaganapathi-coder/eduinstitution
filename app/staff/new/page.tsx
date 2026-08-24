@@ -1,0 +1,1 @@
+import { StaffFormPage } from "@/components/staff/staff-form-page"; export default function NewStaffPage(){return <StaffFormPage/>;}
