@@ -33,6 +33,7 @@ type ApplicationShellProps = {
 };
 
 const iconClass = "!text-[18px]";
+const academicChildKeys = ["academic-years", "departments", "courses"];
 
 const items: MenuItem[] = [
   { key: "dashboard", icon: <AppstoreOutlined className={`${iconClass} nav-icon nav-icon-green`} />, label: <Link href="/">Home</Link> },
@@ -57,6 +58,7 @@ const items: MenuItem[] = [
 
 export function ApplicationShell({ children, pageTitle = "Home", pageContext = "Institution overview", selectedKey = "dashboard" }: ApplicationShellProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [openKeys, setOpenKeys] = useState<string[]>(() => academicChildKeys.includes(selectedKey) ? ["academic"] : []);
   const screens = useBreakpoint();
   const desktop = screens.md;
 
@@ -70,7 +72,15 @@ export function ApplicationShell({ children, pageTitle = "Home", pageContext = "
         </div>
       </div>
       <div className="navigation-label">WORKSPACE</div>
-      <Menu mode="inline" selectedKeys={[selectedKey]} defaultOpenKeys={["academic"]} items={items} className="app-menu" aria-label="Main navigation" />
+      <Menu
+        mode="inline"
+        selectedKeys={[selectedKey]}
+        openKeys={openKeys}
+        onOpenChange={setOpenKeys}
+        items={items}
+        className="app-menu"
+        aria-label="Main navigation"
+      />
     </div>
   );
 
