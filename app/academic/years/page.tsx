@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CalendarOutlined, PlusOutlined } from "@ant-design/icons";
-import { Alert, Button, Result } from "antd";
+import { CalendarOutlined, CheckCircleFilled, InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Result } from "antd";
 import { ApplicationShell } from "@/components/application-shell";
 import { AcademicYearList } from "@/components/academic/academic-year-list";
-import { Paragraph, Title } from "@/components/ui/typography";
 import { AuthenticationError, AuthorizationError, TenantAccessError } from "@/src/server/auth/errors";
 import { requirePermission } from "@/src/server/auth/permissions";
 
@@ -17,22 +16,34 @@ export default async function AcademicYearsPage() {
   }
 
   return (
-    <ApplicationShell pageTitle="Academic years" pageContext="Create and manage the academic periods used by your institution" selectedKey="academic">
-      <div className="management-page academic-years-page">
-        <div className="management-breadcrumb"><Link href="/">Home</Link><span>/</span><span>Academic</span><span>/</span><strong>Academic years</strong></div>
-        <section className="management-page-hero">
-          <div className="management-page-hero-copy">
-            <div className="management-hero-icon management-hero-icon-blue"><CalendarOutlined /></div>
-            <div><Title level={2} className="!mb-1 !text-[30px] !font-semibold">Academic years</Title><Paragraph type="secondary" className="!mb-0 management-page-description">Create the years your institution uses for classes, terms, records, and academic planning.</Paragraph></div>
+    <ApplicationShell pageTitle="Academic years" pageContext="Set up your institution's teaching years and terms" selectedKey="academic">
+      <main className="academic-redesign">
+        <section className="academic-redesign-hero">
+          <div className="academic-redesign-eyebrow"><CalendarOutlined /> Academic setup</div>
+          <div className="academic-redesign-hero-main">
+            <div>
+              <h1 className="academic-redesign-title">Academic years</h1>
+              <p className="academic-redesign-description">Create the academic years your institution uses. After creating a year, add terms such as Semester 1 and Semester 2.</p>
+            </div>
+            <Link href="/academic/years/new"><Button type="primary" icon={<PlusOutlined />} className="academic-redesign-primary">Add academic year</Button></Link>
           </div>
-          <Link href="/academic/years/new"><Button type="primary" size="large" icon={<PlusOutlined />}>Add academic year</Button></Link>
         </section>
-        <div className="management-info-grid">
-          <Alert className="feedback-info management-guide-box" type="info" showIcon message="How academic years work" description="Example: You can create “2026–2027” and then add terms such as Semester 1 and Semester 2. Mark the year currently in use as Current." />
-          <div className="management-next-box"><span className="management-next-label">NEXT STEP</span><strong>Add terms inside each academic year</strong><p>Terms help you organize semesters or other teaching periods.</p></div>
-        </div>
+
+        <section className="academic-redesign-guide">
+          <div className="academic-redesign-guide-card info">
+            <span className="academic-redesign-guide-icon"><InfoCircleOutlined /></span>
+            <h3>How it works</h3>
+            <p>Create <strong>2026–2027</strong>, set its start and end dates, then add terms inside it. Mark the year currently being used by your institution as <strong>Current</strong>.</p>
+          </div>
+          <div className="academic-redesign-guide-card">
+            <span className="academic-redesign-guide-icon"><CheckCircleFilled /></span>
+            <h3>Simple setup order</h3>
+            <p><strong>1.</strong> Add academic year &nbsp; <strong>2.</strong> Add terms &nbsp; <strong>3.</strong> Use them for academic records</p>
+          </div>
+        </section>
+
         <AcademicYearList />
-      </div>
+      </main>
     </ApplicationShell>
   );
 }
