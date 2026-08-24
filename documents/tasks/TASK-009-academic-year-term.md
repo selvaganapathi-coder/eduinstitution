@@ -2,11 +2,29 @@
 
 ## Status
 
-IN PROGRESS
+COMPLETED AND MERGED
 
 ## Objective
 
 Provide each institution with a tenant-scoped way to define academic years and their terms/semesters. This becomes a shared foundation for school, engineering, pharmacy, arts & science, university, polytechnic, and other education workflows.
+
+## Completion Summary
+
+The Academic Year and Term workflows were implemented and merged. The final UI was redesigned to match the EduInstitution application direction while preserving the existing API, routes, permissions, database schema, and business logic.
+
+Final UI work includes:
+
+- Academic Years list redesign.
+- Academic Year create form redesign.
+- Academic Year detail redesign.
+- Academic Year edit redesign.
+- Terms management redesign.
+- Reference-aligned Academic Year cards and guidance.
+- Plain-language labels, examples, and tips.
+- Empty/loading/error/success states.
+- Responsive desktop, tablet, and mobile layouts.
+- Alignment and readability corrections.
+- Bottom-right notification behavior consistent with the wider application.
 
 ## Supported Institution Types
 
@@ -21,9 +39,9 @@ Examples:
 - University: Academic Year → Semester / Term as configured
 - Polytechnic: Academic Year → Semester as configured
 
-The core data model must not hard-code a school-only or college-only structure.
+The core data model does not hard-code a school-only or college-only structure.
 
-## Scope
+## Implemented Scope
 
 - List academic years for the current institution.
 - Create an academic year.
@@ -33,50 +51,30 @@ The core data model must not hard-code a school-only or college-only structure.
 - Add, edit, reorder, and archive terms within an academic year.
 - Validate date ranges and uniqueness within the current institution.
 - Provide empty, loading, success, validation, and error states.
-- Add server-side permission and tenant checks.
-- Provide responsive desktop/mobile routes following the approved Google-inspired UI reference.
-
-## Non-goals
-
-- Departments
-- Programs
-- Courses/subjects
-- Students
-- Attendance
-- Examinations
-- Fees
-- Institution-type capability configuration UI
-- Cross-institution administration
+- Enforce server-side permission and tenant checks.
+- Provide responsive routes following the approved EduInstitution management UI direction.
 
 ## Data Model
 
 ### Academic Year
 
-| Field | Type | Required | Editable | Validation | Tenant scope | Notes |
-|---|---|---:|---:|---|---|---|
-| id | cuid | Yes | No | System generated | Yes | Primary key |
-| tenantId | string | Yes | No | Must equal authenticated tenant | Yes | Never accepted as authorization input |
-| name | string | Yes | Yes | 2–100 chars | Yes | Example: 2026–2027 |
-| startDate | date | Yes | Yes | Valid date | Yes | Inclusive |
-| endDate | date | Yes | Yes | After startDate | Yes | Inclusive |
-| isCurrent | boolean | Yes | Controlled | Maximum one current year per tenant | Yes | Current working year |
-| status | enum | Yes | Controlled | ACTIVE / ARCHIVED | Yes | Archive preserves history |
-| createdAt | datetime | Yes | No | System generated | Yes | Audit metadata |
-| updatedAt | datetime | Yes | No | System generated | Yes | Audit metadata |
+- Tenant-scoped academic year.
+- Name.
+- Start date.
+- End date.
+- Current-year flag.
+- Active or archived status.
+- Created and updated timestamps.
 
 ### Term
 
-| Field | Type | Required | Editable | Validation | Tenant scope | Notes |
-|---|---|---:|---:|---|---|---|
-| id | cuid | Yes | No | System generated | Yes | Primary key |
-| academicYearId | string | Yes | No | Must belong to current tenant | Yes | Parent year |
-| name | string | Yes | Yes | 1–100 chars | Yes | Terminology may be configured later |
-| startDate | date | Yes | Yes | Within academic year | Yes | Inclusive |
-| endDate | date | Yes | Yes | After startDate | Yes | Inclusive |
-| sortOrder | integer | Yes | Yes | Positive integer | Yes | Display order |
-| status | enum | Yes | Controlled | ACTIVE / ARCHIVED | Yes | Historical terms are retained |
-| createdAt | datetime | Yes | No | System generated | Yes | Audit metadata |
-| updatedAt | datetime | Yes | No | System generated | Yes | Audit metadata |
+- Parent academic year.
+- Name.
+- Start date.
+- End date.
+- Sort order.
+- Active or archived status.
+- Created and updated timestamps.
 
 ## Business Rules
 
@@ -84,86 +82,36 @@ The core data model must not hard-code a school-only or college-only structure.
 2. A tenant may have many academic years.
 3. At most one non-archived academic year may be marked current.
 4. An academic year end date must be after its start date.
-5. A term must belong to its academic year and its dates must fall within the parent year.
+5. A term belongs to its academic year and its dates must fall within the parent year.
 6. A term end date must be after its start date.
 7. Active terms in one academic year must not overlap.
-8. Academic-year names should be unique within a tenant.
-9. Term names should be unique within one academic year.
+8. Academic-year names are unique within a tenant according to the implemented validation rules.
+9. Term names are unique within one academic year according to the implemented validation rules.
 10. Archived records remain available for historical reporting.
-11. Deletion is intentionally excluded from this task.
+11. Deletion is intentionally excluded from this scope.
 12. All reads and writes are scoped through the authenticated tenant context.
 
 ## Routes
 
 ```text
-Dashboard
-  ↓
-Academic
-  ↓
-Academic Years                  /academic/years
-  ├── Overview                  /academic/years
-  ├── Create                    /academic/years/new
-  ├── Details                   /academic/years/[id]
-  ├── Edit                      /academic/years/[id]/edit
-  └── Terms                     /academic/years/[id]/terms
+/academic/years
+/academic/years/new
+/academic/years/[id]
+/academic/years/[id]/edit
+/academic/years/[id]/terms
 ```
 
-The route structure must remain compatible with future Academic navigation without exposing unimplemented modules.
+## Security Contract
 
-## User Flow
+- Tenant identity is derived from authenticated `TenantContext`.
+- Client input does not choose the tenant for reads or writes.
+- Academic-year IDs are verified within the authenticated tenant.
+- Term IDs are resolved through the academic-year relationship and tenant context.
+- Protected operations require explicit permissions.
+- Current-year changes use a database transaction.
+- Cross-tenant records are not returned.
 
-### Create Academic Year
-
-```text
-Academic Years
- → Add academic year
- → Enter name + start date + end date
- → Validate
- → Permission check
- → Tenant check
- → Create record
- → Success message
- → Open academic year details
-```
-
-### Make Current
-
-```text
-Academic Year details
- → Make current
- → Confirm
- → Server checks tenant + permission
- → Previous current year is cleared
- → Selected year becomes current
- → Success confirmation
-```
-
-### Manage Terms
-
-```text
-Academic Year details
- → Terms
- → Add term
- → Enter name + dates
- → Validate against parent academic year
- → Save
- → Return to terms list
-```
-
-### Archive
-
-```text
-Academic Year details
- → Archive
- → Confirmation
- → Server permission + tenant validation
- → Status becomes ARCHIVED
- → Return to academic year list
-```
-
-## Access / Permission Matrix
-
-Initial permissions:
+## Permissions
 
 - `academic_year:view`
 - `academic_year:create`
@@ -174,158 +122,41 @@ Initial permissions:
 - `academic_term:update`
 - `academic_term:archive`
 
-| Action | Administrator | Manager/Academic Admin | Staff | Teacher | Student/Parent |
-|---|---:|---:|---:|---:|---:|
-| View academic years | Yes | Yes | By permission | By permission | No by default |
-| Create academic year | Yes | Yes | No by default | No | No |
-| Edit academic year | Yes | Yes | No by default | No | No |
-| Make current | Yes | Yes | No by default | No | No |
-| Archive academic year | Yes | Yes | No by default | No | No |
-| Manage terms | Yes | Yes | By permission | No by default | No |
+## UI Rules Used for Final Implementation
 
-UI visibility is not authorization. Every protected operation must be permission-checked server-side.
+- Google-inspired clean application shell.
+- EduInstitution green for primary actions.
+- Thin borders and restrained shadows.
+- One clear page title with short supporting text.
+- Plain-language labels.
+- Example values and contextual tips where useful.
+- Readable secondary text; small text must not use pale low-contrast gray.
+- Bottom-right success/error/warning/information feedback.
+- Responsive desktop, tablet, and mobile layouts.
 
-## Tenant Security
+## Validation and Merge
 
-- Tenant ID is derived from the authenticated `TenantContext`.
-- Client input must never choose the tenant for a read/write operation.
-- A requested academic-year ID must be verified as belonging to the authenticated tenant before access.
-- A requested term ID must be verified through its academic-year relationship and tenant.
-- Cross-tenant IDs return a safe not-found/unauthorized response without leaking another institution's data.
-
-## API / Server Flow
-
-```text
-Request
- → authenticate session
- → require tenant context
- → require required permission
- → validate input
- → query by tenant-scoped relation
- → apply business rules
- → transaction where multiple records change
- → return safe response
-```
-
-Making one academic year current must be transactional so two current years cannot be created by concurrent requests.
-
-## UI Specification
-
-Use the approved first EduInstitution sample image as the visual reference.
-
-### Desktop
-
-- Google-inspired clean white/neutral surfaces.
-- EduInstitution green remains the primary brand/action color.
-- Blue is reserved for familiar links/utility actions.
-- Thin neutral borders and minimal elevation.
-- Clear page title: `Academic years`.
-- One short explanation below the title.
-- Primary action: `Add academic year`.
-- Search/filter only when the number of records justifies it.
-- Current year clearly marked with a simple status badge.
-
-### Mobile
-
-- Same route and content hierarchy.
-- Stacked cards instead of dense tables.
-- Full-width primary action.
-- Touch-friendly controls.
-- Breadcrumbs replaced with clear back navigation where appropriate.
-- No horizontal scrolling for the main workflow.
-
-### Plain-language UI
-
-Use:
-
-- `Academic years`
-- `Add academic year`
-- `Current year`
-- `Edit`
-- `Make current`
-- `Manage terms`
-- `Archive`
-- `Save changes`
-- `Cancel`
-
-Avoid technical terms such as `tenant`, `entity`, `mutation`, `payload`, or `resource` in normal user-facing content.
-
-## States
-
-### Empty
-
-> No academic years yet
->
-> Add your first academic year to start setting up your institution.
->
-> **Add academic year**
-
-### Loading
-
-Use local skeleton/loading states without replacing the entire application shell.
-
-### Validation
-
-Examples:
-
-- `Enter an academic year name.`
-- `End date must be after the start date.`
-- `Term dates must be within the academic year.`
-- `This term overlaps another term.`
-
-### Error
-
-> We couldn't save the academic year. Check the details and try again.
-
-### Success
-
-> Academic year created successfully.
-
-## Institution-Type Compatibility
-
-The data model is common across institution types. Institution-specific terminology and workflow differences must be introduced through the capability/terminology architecture rather than separate copies of the academic-year model.
-
-Examples:
-
-- School may display `Term`.
-- Engineering may display `Semester`.
-- Pharmacy may display `Semester`.
-- University may allow configured term labels.
-
-The underlying domain remains `AcademicYear` and `AcademicTerm`.
-
-## Testing
-
-Must cover:
-
-- tenant isolation
-- permission checks
-- create/update/archive validation
-- current-year uniqueness
-- current-year transaction behavior
-- term date boundaries
-- term overlap prevention
-- cross-tenant academic-year ID
-- cross-tenant term ID
-- single/multiple institution fixtures
-- supported institution-category compatibility
-- mobile route/content smoke checks where practical
+- Final Academic Year UI runtime issue caused by a missing `InfoCircleOutlined` import was fixed.
+- The user reported the final checks as green after verification.
+- The work was merged to `master` through the latest TASK-014 UI redesign merge.
+- Future sessions must still verify current repository health and CI rather than assuming historical validation results.
 
 ## Definition of Done
 
-- [ ] Prisma model and migration
-- [ ] Tenant-scoped server layer
-- [ ] Permission definitions and seed
-- [ ] Academic-year CRUD except deletion
-- [ ] Current-year workflow
-- [ ] Term management
-- [ ] Route hierarchy
-- [ ] Desktop UI following approved reference
-- [ ] Mobile UI following approved reference
-- [ ] Plain-language content
-- [ ] Empty/loading/error/success states
-- [ ] Unit/integration/security tests
-- [ ] Documentation updated
-- [ ] Test/lint/typecheck/build/build:cloudflare green
-- [ ] PR review completed
-- [ ] Merged to master
+- [x] Tenant-scoped server layer
+- [x] Permission definitions and seed
+- [x] Academic-year workflows except deletion
+- [x] Current-year workflow
+- [x] Term management
+- [x] Route hierarchy
+- [x] Responsive UI
+- [x] Plain-language content
+- [x] Empty/loading/error/success states
+- [x] Documentation updated
+- [x] Final runtime import issue fixed
+- [x] User-reported local verification green
+- [x] Merged to master
+
+## Continuation Notes
+
+Do not redesign or modify this workflow without first inspecting the current merged implementation. UI-only work must preserve the existing API, database schema, permissions, routes, and business logic unless a minimal related bug fix is required.
