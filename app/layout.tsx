@@ -4,6 +4,7 @@ import { Geist } from "next/font/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { AppProviders } from "@/components/app-providers";
 import "./globals.css";
+import "./readability.css";
 
 const geist = Geist({
   variable: "--font-geist",
