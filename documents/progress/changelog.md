@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-08-24
+
+### TASK-014 — UI Redesign & Scalable Data Management
+
+- Merged the UI redesign and scalable data management work to `master`.
+- Standardized the EduInstitution management application shell and readability direction.
+- Improved small-text contrast so secondary text, labels, metadata, helper text, and placeholders remain visible.
+- Corrected Academic navigation so the submenu opens automatically only for Academic routes and remains closed on unrelated routes unless manually expanded.
+- Rebuilt the Academic Years UI from scratch while preserving existing APIs, routes, permissions, database schema, and business logic.
+- Rebuilt the Academic Year create, detail, edit, and Term management UI to use one consistent design language.
+- Added clearer examples, contextual tips, plain-language guidance, empty/loading/error/success states, and responsive layouts.
+- Added reference-aligned Academic Year cards with clear status, date range, term count, and action hierarchy.
+- Fixed the missing `InfoCircleOutlined` import that caused a runtime error in the Academic Years list.
+- Final implementation merged through pull request #59.
+
+### Engineering Lessons Carried Forward
+
+- Fetch the latest file SHA before every GitHub update.
+- On `409`, refetch and reapply rather than retrying a stale write.
+- Verify imports before using a component or icon.
+- Do not report intended work as implemented work.
+- UI-only tasks must preserve existing business logic unless a minimal related bug fix is required.
+- Check alignment and responsive behavior on desktop and mobile before completion.
+
 ## 2026-08-18
 
 ### Foundation Validation
@@ -22,11 +46,3 @@
 - TASK-000 and initial development backlog.
 - Testing strategy and roadmap.
 - Current project state.
-
-### Not Yet Implemented
-
-- Authentication
-- Authorization / RBAC
-- Multi-tenant runtime enforcement
-- R2 upload/download implementation
-- Business modules
