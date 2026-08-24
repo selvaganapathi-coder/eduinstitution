@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CalendarOutlined, EditOutlined, SettingOutlined } from "@ant-design/icons";
-import { Alert, Button, Empty, Modal, Tag } from "antd";
+import { Alert, Button, Modal, Tag } from "antd";
 
 type Term = { id: string; name: string; startDate: string; endDate: string; sortOrder: number; status: string };
 type AcademicYear = { id: string; name: string; startDate: string; endDate: string; isCurrent: boolean; status: string; terms: Term[] };
@@ -52,7 +52,6 @@ export function AcademicYearDetails({ id }: { id: string }) {
     <div className="academic-redesign">
       {error ? <Alert type="error" showIcon message={error} /> : null}
       {message ? <Alert type="success" showIcon message={message} /> : null}
-
       <section className="academic-detail-summary">
         <div>
           <div className="academic-detail-name"><span className="management-card-icon management-card-icon-blue"><CalendarOutlined /></span><div><Tag className={statusClass}>{status}</Tag><h2>{year.name}</h2></div></div>
@@ -65,13 +64,9 @@ export function AcademicYearDetails({ id }: { id: string }) {
           {!year.isCurrent && year.status === "ACTIVE" ? <Button danger loading={working} onClick={() => Modal.confirm({ title: "Archive this academic year?", content: "The record will stay available for historical reference, but it will no longer be active.", okText: "Archive", okButtonProps: { danger: true }, onOk: () => action("archive") })}>Archive</Button> : null}
         </div>
       </section>
-
       <section className="academic-terms-panel">
-        <div className="academic-terms-panel-head">
-          <div><h2>Terms</h2><p>Semesters or teaching periods inside {year.name}.</p></div>
-          <Link href={`/academic/years/${id}/terms`}><Button type="primary">Manage terms</Button></Link>
-        </div>
-        {year.terms.length === 0 ? <div className="academic-empty"><div className="academic-empty-icon"><CalendarOutlined /></div><h3>No terms added yet</h3><p>Example: add Semester 1 and Semester 2. You can manage their dates and display order from the terms page.</p><Link href={`/academic/years/${id}/terms`}><Button type="primary">Add first term</Button></Link></div> : <div className="term-list">{year.terms.map((term) => <div key={term.id} className="term-row"><div className="term-order">{String(term.sortOrder).padStart(2,"0")}</div><div className="term-main"><div className="term-title-row"><strong>{term.name}</strong><Tag className={term.status === "ACTIVE" ? "academic-status-active" : "academic-status-archived"}>{term.status === "ACTIVE" ? "Active" : "Archived"}</Tag></div><span>{date(term.startDate)} – {date(term.endDate)}</span></div></div>)}</div>}
+        <div className="academic-terms-panel-head"><div><h2>Terms</h2><p>Semesters or teaching periods inside {year.name}.</p></div><Link href={`/academic/years/${id}/terms`}><Button type="primary">Manage terms</Button></Link></div>
+        {year.terms.length === 0 ? <div className="academic-empty"><div className="academic-empty-icon"><CalendarOutlined /></div><h3>No terms added yet</h3><p>Example: add Semester 1 and Semester 2. You can manage their dates and display order from the terms page.</p><Link href={`/academic/years/${id}/terms`}><Button type="primary">Add first term</Button></Link></div> : <div className="term-list">{year.terms.map((term) => <div key={term.id} className="term-row"><div className="term-order">{String(term.sortOrder).padStart(2, "0")}</div><div className="term-main"><div className="term-title-row"><strong>{term.name}</strong><Tag className={term.status === "ACTIVE" ? "academic-status-active" : "academic-status-archived"}>{term.status === "ACTIVE" ? "Active" : "Archived"}</Tag></div><span>{date(term.startDate)} – {date(term.endDate)}</span></div></div>)}</div>}
       </section>
     </div>
   );
