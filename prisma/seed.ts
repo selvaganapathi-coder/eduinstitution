@@ -58,6 +58,10 @@ const PERMISSIONS = [
   ["student:create", "Create student records"],
   ["student:update", "Edit student records"],
   ["student:archive", "Archive student records"],
+  ["staff:view", "View faculty and staff records"],
+  ["staff:create", "Create faculty and staff records"],
+  ["staff:update", "Edit faculty and staff records"],
+  ["staff:archive", "Archive faculty and staff records"],
 ] as const;
 
 async function main() {
