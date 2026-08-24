@@ -54,6 +54,10 @@ const PERMISSIONS = [
   ["academic_term:create", "Create academic terms"],
   ["academic_term:update", "Edit academic terms"],
   ["academic_term:archive", "Archive academic terms"],
+  ["student:view", "View student records"],
+  ["student:create", "Create student records"],
+  ["student:update", "Edit student records"],
+  ["student:archive", "Archive student records"],
 ] as const;
 
 async function main() {
