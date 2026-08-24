@@ -6,7 +6,7 @@
 
 ## Project Status
 
-TASK-014 — UI REDESIGN & SCALABLE DATA MANAGEMENT MERGED
+TASK-015 — STUDENT MANAGEMENT IMPLEMENTED AND VALIDATED ON FEATURE BRANCH
 
 Latest merged commit:
 
@@ -37,6 +37,7 @@ Primary branch:
 - TASK-012 — Departments & Programs
 - TASK-013 — Course & Subject Management
 - TASK-014 — UI Redesign & Scalable Data Management
+- TASK-015 — Student Management
 
 ## Academic Foundation Status
 
@@ -117,6 +118,21 @@ Before future implementation:
 10. Keep small secondary text readable.
 11. Do not force the Academic navigation section open outside Academic routes.
 
+## Student Management Status
+
+TASK-015 implements the first Student Management vertical slice with:
+
+- Tenant-scoped student list, search, filtering, pagination, and summary metrics.
+- Dedicated create and edit pages following the approved EduInstitution management UI.
+- Student photo file upload with JPG, PNG, and WEBP support, preview, removal, and a 2MB limit.
+- Extended personal, admission, contact, and parent/guardian profile fields.
+- Tenant-scoped server-side create, read, update, search, and filter behavior.
+- Post-redirect flash notifications so successful create/update messages remain visible after navigation.
+- Semantic bottom-right notification backgrounds for success, error, warning, and information states.
+- Prisma migration `20260824160000_extend_student_profile`.
+
+Validation was manually and automatically verified by the user as all green.
+
 ## Next Action
 
-Start the next focused feature from the current `master` state. Inspect the roadmap, task documents, and actual repository implementation first. The current roadmap identifies Student Management as the next major core module candidate, but the next session must verify dependencies and existing code before implementation.
+After TASK-015 is merged, start the next focused feature from the latest `master` state. The roadmap currently identifies Faculty / Staff as the next major module candidate, but the next session must inspect dependencies, documentation, and repository state before implementation.
