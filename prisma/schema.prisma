@@ -18,86 +18,20 @@ datasource db {
   provider = "postgresql"
 }
 
-enum MembershipStatus {
-  ACTIVE
-  INVITED
-  SUSPENDED
-  REVOKED
-}
-
-enum RoleScope {
-  SYSTEM
-  TENANT
-}
-
-enum AcademicYearStatus {
-  ACTIVE
-  ARCHIVED
-}
-
-enum AcademicTermStatus {
-  ACTIVE
-  ARCHIVED
-}
-
-enum InstitutionTypeStatus {
-  ACTIVE
-  ARCHIVED
-}
-
-enum DepartmentStatus {
-  ACTIVE
-  ARCHIVED
-}
-
-enum ProgramStatus {
-  ACTIVE
-  ARCHIVED
-}
-
-enum ProgramType {
-  DEGREE
-  DIPLOMA
-  CERTIFICATE
-  OTHER
-}
-
-enum CourseStatus {
-  ACTIVE
-  ARCHIVED
-}
-
-enum CourseType {
-  CORE
-  ELECTIVE
-  PRACTICAL
-  PROJECT
-  OTHER
-}
-
-enum StudentStatus {
-  ACTIVE
-  ARCHIVED
-}
-
-enum StaffType {
-  TEACHING
-  NON_TEACHING
-}
-
-enum StaffStatus {
-  ACTIVE
-  INACTIVE
-  ON_LEAVE
-  ARCHIVED
-}
-
-enum StudentEnrollmentStatus {
-  ACTIVE
-  COMPLETED
-  WITHDRAWN
-  ARCHIVED
-}
+enum MembershipStatus { ACTIVE INVITED SUSPENDED REVOKED }
+enum RoleScope { SYSTEM TENANT }
+enum AcademicYearStatus { ACTIVE ARCHIVED }
+enum AcademicTermStatus { ACTIVE ARCHIVED }
+enum InstitutionTypeStatus { ACTIVE ARCHIVED }
+enum DepartmentStatus { ACTIVE ARCHIVED }
+enum ProgramStatus { ACTIVE ARCHIVED }
+enum ProgramType { DEGREE DIPLOMA CERTIFICATE OTHER }
+enum CourseStatus { ACTIVE ARCHIVED }
+enum CourseType { CORE ELECTIVE PRACTICAL PROJECT OTHER }
+enum StudentStatus { ACTIVE ARCHIVED }
+enum StaffType { TEACHING NON_TEACHING }
+enum StaffStatus { ACTIVE INACTIVE ON_LEAVE ARCHIVED }
+enum StudentEnrollmentStatus { ACTIVE COMPLETED WITHDRAWN ARCHIVED }
 
 model Tenant {
   id String @id @default(cuid())
@@ -117,6 +51,7 @@ model Tenant {
   students Student[]
   studentEnrollments StudentEnrollment[]
   staffMembers StaffMember[]
+  attendanceScopes StaffAttendanceScope[]
   @@index([createdAt])
   @@index([institutionTypeId])
 }
@@ -281,6 +216,7 @@ model Department {
   programs Program[]
   studentEnrollments StudentEnrollment[]
   staffMembers StaffMember[]
+  attendanceScopes StaffAttendanceScope[]
   @@unique([tenantId, code])
   @@index([tenantId, status, displayOrder])
 }
@@ -301,6 +237,7 @@ model Program {
   department Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
   courses Course[]
   studentEnrollments StudentEnrollment[]
+  attendanceScopes StaffAttendanceScope[]
   @@unique([tenantId, code])
   @@index([tenantId, status])
   @@index([departmentId, status])
@@ -419,9 +356,29 @@ model StaffMember {
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   membership Membership? @relation(fields: [membershipId], references: [id], onDelete: SetNull)
   department Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  attendanceScopes StaffAttendanceScope[]
   @@unique([tenantId, employeeNumber])
   @@index([tenantId, status, lastName, firstName])
   @@index([tenantId, staffType, status])
   @@index([tenantId, departmentId, status])
   @@index([tenantId, email])
+}
+
+model StaffAttendanceScope {
+  id String @id @default(cuid())
+  tenantId String
+  staffMemberId String
+  departmentId String?
+  programId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  staffMember StaffMember @relation(fields: [staffMemberId], references: [id], onDelete: Cascade)
+  department Department? @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  program Program? @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, staffMemberId])
+  @@index([tenantId, departmentId])
+  @@index([tenantId, programId])
 }
