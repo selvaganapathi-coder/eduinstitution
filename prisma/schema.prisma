@@ -181,6 +181,7 @@ model Membership {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   roles Role[]
+  staffMember StaffMember?
   @@unique([userId, tenantId])
   @@index([tenantId, status])
   @@index([userId, status])
@@ -392,10 +393,10 @@ model StudentEnrollment {
   @@index([studentId, status])
 }
 
-
 model StaffMember {
   id String @id @default(cuid())
   tenantId String
+  membershipId String? @unique
   employeeNumber String
   firstName String
   lastName String
@@ -416,6 +417,7 @@ model StaffMember {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  membership Membership? @relation(fields: [membershipId], references: [id], onDelete: SetNull)
   department Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
   @@unique([tenantId, employeeNumber])
   @@index([tenantId, status, lastName, firstName])
