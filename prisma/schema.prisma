@@ -40,6 +40,27 @@ enum AcademicTermStatus {
   ARCHIVED
 }
 
+enum AcademicGroupType {
+  CLASS
+  SECTION
+  COHORT
+  BATCH
+  SEMESTER
+  GROUP
+}
+
+enum AcademicGroupStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum StudentAcademicGroupMembershipStatus {
+  ACTIVE
+  COMPLETED
+  WITHDRAWN
+  ARCHIVED
+}
+
 enum InstitutionTypeStatus {
   ACTIVE
   ARCHIVED
@@ -116,6 +137,8 @@ model Tenant {
   roles Role[]
   sessions Session[]
   academicYears AcademicYear[]
+  academicGroups AcademicGroup[]
+  studentAcademicGroupMemberships StudentAcademicGroupMembership[]
   departments Department[]
   programs Program[]
   courses Course[]
@@ -254,6 +277,7 @@ model AcademicYear {
   updatedAt DateTime @updatedAt
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   terms AcademicTerm[]
+  academicGroups AcademicGroup[]
   studentEnrollments StudentEnrollment[]
   @@unique([tenantId, name])
   @@index([tenantId, status])
@@ -273,6 +297,46 @@ model AcademicTerm {
   academicYear AcademicYear @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
   @@unique([academicYearId, name])
   @@index([academicYearId, status, sortOrder])
+}
+
+model AcademicGroup {
+  id String @id @default(cuid())
+  tenantId String
+  academicYearId String
+  parentGroupId String?
+  type AcademicGroupType
+  name String
+  code String?
+  sortOrder Int @default(0)
+  status AcademicGroupStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
+  parentGroup AcademicGroup? @relation("AcademicGroupHierarchy", fields: [parentGroupId], references: [id], onDelete: Restrict)
+  childGroups AcademicGroup[] @relation("AcademicGroupHierarchy")
+  memberships StudentAcademicGroupMembership[]
+  @@unique([tenantId, academicYearId, type, name])
+  @@index([tenantId, academicYearId, status, sortOrder])
+  @@index([tenantId, parentGroupId, status, sortOrder])
+}
+
+model StudentAcademicGroupMembership {
+  id String @id @default(cuid())
+  tenantId String
+  studentId String
+  academicGroupId String
+  status StudentAcademicGroupMembershipStatus @default(ACTIVE)
+  startDate DateTime @default(now())
+  endDate DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  academicGroup AcademicGroup @relation(fields: [academicGroupId], references: [id], onDelete: Cascade)
+  @@unique([studentId, academicGroupId])
+  @@index([tenantId, studentId, status])
+  @@index([tenantId, academicGroupId, status])
 }
 
 model Department {
@@ -374,6 +438,7 @@ model Student {
   membership Membership? @relation(fields: [membershipId], references: [id], onDelete: SetNull)
   guardians StudentGuardian[]
   enrollments StudentEnrollment[]
+  academicGroupMemberships StudentAcademicGroupMembership[]
   @@unique([tenantId, studentNumber])
   @@index([tenantId, status, lastName, firstName])
   @@index([tenantId, email])
