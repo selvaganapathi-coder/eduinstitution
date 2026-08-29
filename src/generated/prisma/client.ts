@@ -13,12 +13,12 @@
 globalThis['__dirname'] = '/'
 
 import * as runtime from "@prisma/client/runtime/wasm-compiler-edge"
-import * as $Enums from "./enums.ts"
-import * as $Class from "./internal/class.ts"
-import * as Prisma from "./internal/prismaNamespace.ts"
+import * as $Enums from "./enums"
+import * as $Class from "./internal/class"
+import * as Prisma from "./internal/prismaNamespace"
 
-export * as $Enums from './enums.ts'
-export * from "./enums.ts"
+export * as $Enums from './enums'
+export * from "./enums"
 /**
  * ## Prisma Client
  * 
@@ -43,21 +43,6 @@ export { Prisma }
  * 
  */
 export type Tenant = Prisma.TenantModel
-/**
- * Model InstitutionType
- * 
- */
-export type InstitutionType = Prisma.InstitutionTypeModel
-/**
- * Model InstitutionCapability
- * 
- */
-export type InstitutionCapability = Prisma.InstitutionCapabilityModel
-/**
- * Model InstitutionTypeCapability
- * 
- */
-export type InstitutionTypeCapability = Prisma.InstitutionTypeCapabilityModel
 /**
  * Model User
  * 
@@ -88,43 +73,3 @@ export type RolePermission = Prisma.RolePermissionModel
  * 
  */
 export type Session = Prisma.SessionModel
-/**
- * Model AcademicYear
- * 
- */
-export type AcademicYear = Prisma.AcademicYearModel
-/**
- * Model AcademicTerm
- * 
- */
-export type AcademicTerm = Prisma.AcademicTermModel
-/**
- * Model Department
- * 
- */
-export type Department = Prisma.DepartmentModel
-/**
- * Model Program
- * 
- */
-export type Program = Prisma.ProgramModel
-/**
- * Model Course
- * 
- */
-export type Course = Prisma.CourseModel
-/**
- * Model Student
- * 
- */
-export type Student = Prisma.StudentModel
-/**
- * Model StudentEnrollment
- * 
- */
-export type StudentEnrollment = Prisma.StudentEnrollmentModel
-/**
- * Model StaffMember
- * 
- */
-export type StaffMember = Prisma.StaffMemberModel

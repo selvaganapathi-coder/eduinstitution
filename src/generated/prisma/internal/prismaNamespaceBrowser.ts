@@ -17,8 +17,8 @@
 
 import * as runtime from "@prisma/client/runtime/index-browser"
 
-export type * from '../models.ts'
-export type * from './prismaNamespace.ts'
+export type * from '../models'
+export type * from './prismaNamespace'
 
 export const Decimal = runtime.Decimal
 
@@ -52,23 +52,12 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Tenant: 'Tenant',
-  InstitutionType: 'InstitutionType',
-  InstitutionCapability: 'InstitutionCapability',
-  InstitutionTypeCapability: 'InstitutionTypeCapability',
   User: 'User',
   Membership: 'Membership',
   Role: 'Role',
   Permission: 'Permission',
   RolePermission: 'RolePermission',
-  Session: 'Session',
-  AcademicYear: 'AcademicYear',
-  AcademicTerm: 'AcademicTerm',
-  Department: 'Department',
-  Program: 'Program',
-  Course: 'Course',
-  Student: 'Student',
-  StudentEnrollment: 'StudentEnrollment',
-  StaffMember: 'StaffMember'
+  Session: 'Session'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -91,49 +80,11 @@ export const TenantScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
-  institutionTypeId: 'institutionTypeId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
-
-
-export const InstitutionTypeScalarFieldEnum = {
-  id: 'id',
-  code: 'code',
-  name: 'name',
-  description: 'description',
-  status: 'status',
-  isSystem: 'isSystem',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type InstitutionTypeScalarFieldEnum = (typeof InstitutionTypeScalarFieldEnum)[keyof typeof InstitutionTypeScalarFieldEnum]
-
-
-export const InstitutionCapabilityScalarFieldEnum = {
-  id: 'id',
-  code: 'code',
-  name: 'name',
-  description: 'description',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type InstitutionCapabilityScalarFieldEnum = (typeof InstitutionCapabilityScalarFieldEnum)[keyof typeof InstitutionCapabilityScalarFieldEnum]
-
-
-export const InstitutionTypeCapabilityScalarFieldEnum = {
-  institutionTypeId: 'institutionTypeId',
-  capabilityId: 'capabilityId',
-  enabled: 'enabled',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type InstitutionTypeCapabilityScalarFieldEnum = (typeof InstitutionTypeCapabilityScalarFieldEnum)[keyof typeof InstitutionTypeCapabilityScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -204,170 +155,6 @@ export const SessionScalarFieldEnum = {
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
-
-
-export const AcademicYearScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  name: 'name',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  isCurrent: 'isCurrent',
-  status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type AcademicYearScalarFieldEnum = (typeof AcademicYearScalarFieldEnum)[keyof typeof AcademicYearScalarFieldEnum]
-
-
-export const AcademicTermScalarFieldEnum = {
-  id: 'id',
-  academicYearId: 'academicYearId',
-  name: 'name',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  sortOrder: 'sortOrder',
-  status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type AcademicTermScalarFieldEnum = (typeof AcademicTermScalarFieldEnum)[keyof typeof AcademicTermScalarFieldEnum]
-
-
-export const DepartmentScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  name: 'name',
-  code: 'code',
-  description: 'description',
-  displayOrder: 'displayOrder',
-  status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
-
-
-export const ProgramScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  departmentId: 'departmentId',
-  name: 'name',
-  code: 'code',
-  type: 'type',
-  durationMonths: 'durationMonths',
-  description: 'description',
-  status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type ProgramScalarFieldEnum = (typeof ProgramScalarFieldEnum)[keyof typeof ProgramScalarFieldEnum]
-
-
-export const CourseScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  programId: 'programId',
-  name: 'name',
-  code: 'code',
-  description: 'description',
-  type: 'type',
-  credits: 'credits',
-  weeklyHours: 'weeklyHours',
-  displayOrder: 'displayOrder',
-  status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type CourseScalarFieldEnum = (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum]
-
-
-export const StudentScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  studentNumber: 'studentNumber',
-  firstName: 'firstName',
-  middleName: 'middleName',
-  lastName: 'lastName',
-  email: 'email',
-  phone: 'phone',
-  alternatePhone: 'alternatePhone',
-  dateOfBirth: 'dateOfBirth',
-  gender: 'gender',
-  bloodGroup: 'bloodGroup',
-  nationality: 'nationality',
-  religion: 'religion',
-  category: 'category',
-  motherTongue: 'motherTongue',
-  addressLine1: 'addressLine1',
-  addressLine2: 'addressLine2',
-  city: 'city',
-  state: 'state',
-  postalCode: 'postalCode',
-  country: 'country',
-  guardianName: 'guardianName',
-  guardianRelation: 'guardianRelation',
-  guardianPhone: 'guardianPhone',
-  guardianEmail: 'guardianEmail',
-  admissionDate: 'admissionDate',
-  admissionType: 'admissionType',
-  quota: 'quota',
-  photoUrl: 'photoUrl',
-  status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
-
-
-export const StudentEnrollmentScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  studentId: 'studentId',
-  academicYearId: 'academicYearId',
-  departmentId: 'departmentId',
-  programId: 'programId',
-  enrollmentNumber: 'enrollmentNumber',
-  status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type StudentEnrollmentScalarFieldEnum = (typeof StudentEnrollmentScalarFieldEnum)[keyof typeof StudentEnrollmentScalarFieldEnum]
-
-
-export const StaffMemberScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  membershipId: 'membershipId',
-  employeeNumber: 'employeeNumber',
-  firstName: 'firstName',
-  lastName: 'lastName',
-  email: 'email',
-  phone: 'phone',
-  photoUrl: 'photoUrl',
-  dateOfBirth: 'dateOfBirth',
-  gender: 'gender',
-  address: 'address',
-  staffType: 'staffType',
-  designation: 'designation',
-  departmentId: 'departmentId',
-  employmentType: 'employmentType',
-  joiningDate: 'joiningDate',
-  roleName: 'roleName',
-  accessLevel: 'accessLevel',
-  status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type StaffMemberScalarFieldEnum = (typeof StaffMemberScalarFieldEnum)[keyof typeof StaffMemberScalarFieldEnum]
 
 
 export const SortOrder = {

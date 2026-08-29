@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/wasm-compiler-edge"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Tenant
@@ -28,7 +28,6 @@ export type TenantMinAggregateOutputType = {
   id: string | null
   name: string | null
   slug: string | null
-  institutionTypeId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -37,7 +36,6 @@ export type TenantMaxAggregateOutputType = {
   id: string | null
   name: string | null
   slug: string | null
-  institutionTypeId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,7 +44,6 @@ export type TenantCountAggregateOutputType = {
   id: number
   name: number
   slug: number
-  institutionTypeId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -57,7 +54,6 @@ export type TenantMinAggregateInputType = {
   id?: true
   name?: true
   slug?: true
-  institutionTypeId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -66,7 +62,6 @@ export type TenantMaxAggregateInputType = {
   id?: true
   name?: true
   slug?: true
-  institutionTypeId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -75,7 +70,6 @@ export type TenantCountAggregateInputType = {
   id?: true
   name?: true
   slug?: true
-  institutionTypeId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -157,7 +151,6 @@ export type TenantGroupByOutputType = {
   id: string
   name: string
   slug: string
-  institutionTypeId: string | null
   createdAt: Date
   updatedAt: Date
   _count: TenantCountAggregateOutputType | null
@@ -187,40 +180,22 @@ export type TenantWhereInput = {
   id?: Prisma.StringFilter<"Tenant"> | string
   name?: Prisma.StringFilter<"Tenant"> | string
   slug?: Prisma.StringFilter<"Tenant"> | string
-  institutionTypeId?: Prisma.StringNullableFilter<"Tenant"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
-  institutionType?: Prisma.XOR<Prisma.InstitutionTypeNullableScalarRelationFilter, Prisma.InstitutionTypeWhereInput> | null
   memberships?: Prisma.MembershipListRelationFilter
   roles?: Prisma.RoleListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
-  academicYears?: Prisma.AcademicYearListRelationFilter
-  departments?: Prisma.DepartmentListRelationFilter
-  programs?: Prisma.ProgramListRelationFilter
-  courses?: Prisma.CourseListRelationFilter
-  students?: Prisma.StudentListRelationFilter
-  studentEnrollments?: Prisma.StudentEnrollmentListRelationFilter
-  staffMembers?: Prisma.StaffMemberListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  institutionTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  institutionType?: Prisma.InstitutionTypeOrderByWithRelationInput
   memberships?: Prisma.MembershipOrderByRelationAggregateInput
   roles?: Prisma.RoleOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
-  academicYears?: Prisma.AcademicYearOrderByRelationAggregateInput
-  departments?: Prisma.DepartmentOrderByRelationAggregateInput
-  programs?: Prisma.ProgramOrderByRelationAggregateInput
-  courses?: Prisma.CourseOrderByRelationAggregateInput
-  students?: Prisma.StudentOrderByRelationAggregateInput
-  studentEnrollments?: Prisma.StudentEnrollmentOrderByRelationAggregateInput
-  staffMembers?: Prisma.StaffMemberOrderByRelationAggregateInput
 }
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<{
@@ -230,27 +205,17 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TenantWhereInput[]
   NOT?: Prisma.TenantWhereInput | Prisma.TenantWhereInput[]
   name?: Prisma.StringFilter<"Tenant"> | string
-  institutionTypeId?: Prisma.StringNullableFilter<"Tenant"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
-  institutionType?: Prisma.XOR<Prisma.InstitutionTypeNullableScalarRelationFilter, Prisma.InstitutionTypeWhereInput> | null
   memberships?: Prisma.MembershipListRelationFilter
   roles?: Prisma.RoleListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
-  academicYears?: Prisma.AcademicYearListRelationFilter
-  departments?: Prisma.DepartmentListRelationFilter
-  programs?: Prisma.ProgramListRelationFilter
-  courses?: Prisma.CourseListRelationFilter
-  students?: Prisma.StudentListRelationFilter
-  studentEnrollments?: Prisma.StudentEnrollmentListRelationFilter
-  staffMembers?: Prisma.StaffMemberListRelationFilter
 }, "id" | "slug">
 
 export type TenantOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  institutionTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TenantCountOrderByAggregateInput
@@ -265,7 +230,6 @@ export type TenantScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
   name?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
-  institutionTypeId?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Tenant"> | Date | string
 }
@@ -276,36 +240,20 @@ export type TenantCreateInput = {
   slug: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  institutionType?: Prisma.InstitutionTypeCreateNestedOneWithoutTenantsInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
   sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
   id?: string
   name: string
   slug: string
-  institutionTypeId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramUncheckedCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
@@ -314,43 +262,26 @@ export type TenantUpdateInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  institutionType?: Prisma.InstitutionTypeUpdateOneWithoutTenantsNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUncheckedUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUncheckedUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUncheckedUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
   id?: string
   name: string
   slug: string
-  institutionTypeId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -367,7 +298,6 @@ export type TenantUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -376,7 +306,6 @@ export type TenantCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  institutionTypeId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -385,7 +314,6 @@ export type TenantMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  institutionTypeId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -394,19 +322,8 @@ export type TenantMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  institutionTypeId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type TenantListRelationFilter = {
-  every?: Prisma.TenantWhereInput
-  some?: Prisma.TenantWhereInput
-  none?: Prisma.TenantWhereInput
-}
-
-export type TenantOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
 }
 
 export type TenantScalarRelationFilter = {
@@ -425,52 +342,6 @@ export type StringFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type TenantCreateNestedManyWithoutInstitutionTypeInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutInstitutionTypeInput, Prisma.TenantUncheckedCreateWithoutInstitutionTypeInput> | Prisma.TenantCreateWithoutInstitutionTypeInput[] | Prisma.TenantUncheckedCreateWithoutInstitutionTypeInput[]
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutInstitutionTypeInput | Prisma.TenantCreateOrConnectWithoutInstitutionTypeInput[]
-  createMany?: Prisma.TenantCreateManyInstitutionTypeInputEnvelope
-  connect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
-}
-
-export type TenantUncheckedCreateNestedManyWithoutInstitutionTypeInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutInstitutionTypeInput, Prisma.TenantUncheckedCreateWithoutInstitutionTypeInput> | Prisma.TenantCreateWithoutInstitutionTypeInput[] | Prisma.TenantUncheckedCreateWithoutInstitutionTypeInput[]
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutInstitutionTypeInput | Prisma.TenantCreateOrConnectWithoutInstitutionTypeInput[]
-  createMany?: Prisma.TenantCreateManyInstitutionTypeInputEnvelope
-  connect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
-}
-
-export type TenantUpdateManyWithoutInstitutionTypeNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutInstitutionTypeInput, Prisma.TenantUncheckedCreateWithoutInstitutionTypeInput> | Prisma.TenantCreateWithoutInstitutionTypeInput[] | Prisma.TenantUncheckedCreateWithoutInstitutionTypeInput[]
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutInstitutionTypeInput | Prisma.TenantCreateOrConnectWithoutInstitutionTypeInput[]
-  upsert?: Prisma.TenantUpsertWithWhereUniqueWithoutInstitutionTypeInput | Prisma.TenantUpsertWithWhereUniqueWithoutInstitutionTypeInput[]
-  createMany?: Prisma.TenantCreateManyInstitutionTypeInputEnvelope
-  set?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
-  disconnect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
-  delete?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
-  connect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
-  update?: Prisma.TenantUpdateWithWhereUniqueWithoutInstitutionTypeInput | Prisma.TenantUpdateWithWhereUniqueWithoutInstitutionTypeInput[]
-  updateMany?: Prisma.TenantUpdateManyWithWhereWithoutInstitutionTypeInput | Prisma.TenantUpdateManyWithWhereWithoutInstitutionTypeInput[]
-  deleteMany?: Prisma.TenantScalarWhereInput | Prisma.TenantScalarWhereInput[]
-}
-
-export type TenantUncheckedUpdateManyWithoutInstitutionTypeNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutInstitutionTypeInput, Prisma.TenantUncheckedCreateWithoutInstitutionTypeInput> | Prisma.TenantCreateWithoutInstitutionTypeInput[] | Prisma.TenantUncheckedCreateWithoutInstitutionTypeInput[]
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutInstitutionTypeInput | Prisma.TenantCreateOrConnectWithoutInstitutionTypeInput[]
-  upsert?: Prisma.TenantUpsertWithWhereUniqueWithoutInstitutionTypeInput | Prisma.TenantUpsertWithWhereUniqueWithoutInstitutionTypeInput[]
-  createMany?: Prisma.TenantCreateManyInstitutionTypeInputEnvelope
-  set?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
-  disconnect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
-  delete?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
-  connect?: Prisma.TenantWhereUniqueInput | Prisma.TenantWhereUniqueInput[]
-  update?: Prisma.TenantUpdateWithWhereUniqueWithoutInstitutionTypeInput | Prisma.TenantUpdateWithWhereUniqueWithoutInstitutionTypeInput[]
-  updateMany?: Prisma.TenantUpdateManyWithWhereWithoutInstitutionTypeInput | Prisma.TenantUpdateManyWithWhereWithoutInstitutionTypeInput[]
-  deleteMany?: Prisma.TenantScalarWhereInput | Prisma.TenantScalarWhereInput[]
 }
 
 export type TenantCreateNestedOneWithoutMembershipsInput = {
@@ -517,212 +388,24 @@ export type TenantUpdateOneRequiredWithoutSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutSessionsInput, Prisma.TenantUpdateWithoutSessionsInput>, Prisma.TenantUncheckedUpdateWithoutSessionsInput>
 }
 
-export type TenantCreateNestedOneWithoutAcademicYearsInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutAcademicYearsInput, Prisma.TenantUncheckedCreateWithoutAcademicYearsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutAcademicYearsInput
-  connect?: Prisma.TenantWhereUniqueInput
-}
-
-export type TenantUpdateOneRequiredWithoutAcademicYearsNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutAcademicYearsInput, Prisma.TenantUncheckedCreateWithoutAcademicYearsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutAcademicYearsInput
-  upsert?: Prisma.TenantUpsertWithoutAcademicYearsInput
-  connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutAcademicYearsInput, Prisma.TenantUpdateWithoutAcademicYearsInput>, Prisma.TenantUncheckedUpdateWithoutAcademicYearsInput>
-}
-
-export type TenantCreateNestedOneWithoutDepartmentsInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutDepartmentsInput, Prisma.TenantUncheckedCreateWithoutDepartmentsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutDepartmentsInput
-  connect?: Prisma.TenantWhereUniqueInput
-}
-
-export type TenantUpdateOneRequiredWithoutDepartmentsNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutDepartmentsInput, Prisma.TenantUncheckedCreateWithoutDepartmentsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutDepartmentsInput
-  upsert?: Prisma.TenantUpsertWithoutDepartmentsInput
-  connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutDepartmentsInput, Prisma.TenantUpdateWithoutDepartmentsInput>, Prisma.TenantUncheckedUpdateWithoutDepartmentsInput>
-}
-
-export type TenantCreateNestedOneWithoutProgramsInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutProgramsInput, Prisma.TenantUncheckedCreateWithoutProgramsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutProgramsInput
-  connect?: Prisma.TenantWhereUniqueInput
-}
-
-export type TenantUpdateOneRequiredWithoutProgramsNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutProgramsInput, Prisma.TenantUncheckedCreateWithoutProgramsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutProgramsInput
-  upsert?: Prisma.TenantUpsertWithoutProgramsInput
-  connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutProgramsInput, Prisma.TenantUpdateWithoutProgramsInput>, Prisma.TenantUncheckedUpdateWithoutProgramsInput>
-}
-
-export type TenantCreateNestedOneWithoutCoursesInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutCoursesInput, Prisma.TenantUncheckedCreateWithoutCoursesInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutCoursesInput
-  connect?: Prisma.TenantWhereUniqueInput
-}
-
-export type TenantUpdateOneRequiredWithoutCoursesNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutCoursesInput, Prisma.TenantUncheckedCreateWithoutCoursesInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutCoursesInput
-  upsert?: Prisma.TenantUpsertWithoutCoursesInput
-  connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutCoursesInput, Prisma.TenantUpdateWithoutCoursesInput>, Prisma.TenantUncheckedUpdateWithoutCoursesInput>
-}
-
-export type TenantCreateNestedOneWithoutStudentsInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStudentsInput, Prisma.TenantUncheckedCreateWithoutStudentsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStudentsInput
-  connect?: Prisma.TenantWhereUniqueInput
-}
-
-export type TenantUpdateOneRequiredWithoutStudentsNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStudentsInput, Prisma.TenantUncheckedCreateWithoutStudentsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStudentsInput
-  upsert?: Prisma.TenantUpsertWithoutStudentsInput
-  connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutStudentsInput, Prisma.TenantUpdateWithoutStudentsInput>, Prisma.TenantUncheckedUpdateWithoutStudentsInput>
-}
-
-export type TenantCreateNestedOneWithoutStudentEnrollmentsInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStudentEnrollmentsInput, Prisma.TenantUncheckedCreateWithoutStudentEnrollmentsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStudentEnrollmentsInput
-  connect?: Prisma.TenantWhereUniqueInput
-}
-
-export type TenantUpdateOneRequiredWithoutStudentEnrollmentsNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStudentEnrollmentsInput, Prisma.TenantUncheckedCreateWithoutStudentEnrollmentsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStudentEnrollmentsInput
-  upsert?: Prisma.TenantUpsertWithoutStudentEnrollmentsInput
-  connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutStudentEnrollmentsInput, Prisma.TenantUpdateWithoutStudentEnrollmentsInput>, Prisma.TenantUncheckedUpdateWithoutStudentEnrollmentsInput>
-}
-
-export type TenantCreateNestedOneWithoutStaffMembersInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStaffMembersInput, Prisma.TenantUncheckedCreateWithoutStaffMembersInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStaffMembersInput
-  connect?: Prisma.TenantWhereUniqueInput
-}
-
-export type TenantUpdateOneRequiredWithoutStaffMembersNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStaffMembersInput, Prisma.TenantUncheckedCreateWithoutStaffMembersInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStaffMembersInput
-  upsert?: Prisma.TenantUpsertWithoutStaffMembersInput
-  connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutStaffMembersInput, Prisma.TenantUpdateWithoutStaffMembersInput>, Prisma.TenantUncheckedUpdateWithoutStaffMembersInput>
-}
-
-export type TenantCreateWithoutInstitutionTypeInput = {
-  id?: string
-  name: string
-  slug: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
-}
-
-export type TenantUncheckedCreateWithoutInstitutionTypeInput = {
-  id?: string
-  name: string
-  slug: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramUncheckedCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
-}
-
-export type TenantCreateOrConnectWithoutInstitutionTypeInput = {
-  where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutInstitutionTypeInput, Prisma.TenantUncheckedCreateWithoutInstitutionTypeInput>
-}
-
-export type TenantCreateManyInstitutionTypeInputEnvelope = {
-  data: Prisma.TenantCreateManyInstitutionTypeInput | Prisma.TenantCreateManyInstitutionTypeInput[]
-  skipDuplicates?: boolean
-}
-
-export type TenantUpsertWithWhereUniqueWithoutInstitutionTypeInput = {
-  where: Prisma.TenantWhereUniqueInput
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutInstitutionTypeInput, Prisma.TenantUncheckedUpdateWithoutInstitutionTypeInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutInstitutionTypeInput, Prisma.TenantUncheckedCreateWithoutInstitutionTypeInput>
-}
-
-export type TenantUpdateWithWhereUniqueWithoutInstitutionTypeInput = {
-  where: Prisma.TenantWhereUniqueInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutInstitutionTypeInput, Prisma.TenantUncheckedUpdateWithoutInstitutionTypeInput>
-}
-
-export type TenantUpdateManyWithWhereWithoutInstitutionTypeInput = {
-  where: Prisma.TenantScalarWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateManyMutationInput, Prisma.TenantUncheckedUpdateManyWithoutInstitutionTypeInput>
-}
-
-export type TenantScalarWhereInput = {
-  AND?: Prisma.TenantScalarWhereInput | Prisma.TenantScalarWhereInput[]
-  OR?: Prisma.TenantScalarWhereInput[]
-  NOT?: Prisma.TenantScalarWhereInput | Prisma.TenantScalarWhereInput[]
-  id?: Prisma.StringFilter<"Tenant"> | string
-  name?: Prisma.StringFilter<"Tenant"> | string
-  slug?: Prisma.StringFilter<"Tenant"> | string
-  institutionTypeId?: Prisma.StringNullableFilter<"Tenant"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
-}
-
 export type TenantCreateWithoutMembershipsInput = {
   id?: string
   name: string
   slug: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  institutionType?: Prisma.InstitutionTypeCreateNestedOneWithoutTenantsInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
   sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutMembershipsInput = {
   id?: string
   name: string
   slug: string
-  institutionTypeId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramUncheckedCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutMembershipsInput = {
@@ -747,34 +430,18 @@ export type TenantUpdateWithoutMembershipsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  institutionType?: Prisma.InstitutionTypeUpdateOneWithoutTenantsNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUncheckedUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUncheckedUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUncheckedUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutRolesInput = {
@@ -783,34 +450,18 @@ export type TenantCreateWithoutRolesInput = {
   slug: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  institutionType?: Prisma.InstitutionTypeCreateNestedOneWithoutTenantsInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
   sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutRolesInput = {
   id?: string
   name: string
   slug: string
-  institutionTypeId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramUncheckedCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutRolesInput = {
@@ -835,34 +486,18 @@ export type TenantUpdateWithoutRolesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  institutionType?: Prisma.InstitutionTypeUpdateOneWithoutTenantsNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutRolesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUncheckedUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUncheckedUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUncheckedUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSessionsInput = {
@@ -871,34 +506,18 @@ export type TenantCreateWithoutSessionsInput = {
   slug: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  institutionType?: Prisma.InstitutionTypeCreateNestedOneWithoutTenantsInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSessionsInput = {
   id?: string
   name: string
   slug: string
-  institutionTypeId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramUncheckedCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSessionsInput = {
@@ -923,702 +542,18 @@ export type TenantUpdateWithoutSessionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  institutionType?: Prisma.InstitutionTypeUpdateOneWithoutTenantsNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUncheckedUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUncheckedUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUncheckedUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantCreateWithoutAcademicYearsInput = {
-  id?: string
-  name: string
-  slug: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  institutionType?: Prisma.InstitutionTypeCreateNestedOneWithoutTenantsInput
-  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
-}
-
-export type TenantUncheckedCreateWithoutAcademicYearsInput = {
-  id?: string
-  name: string
-  slug: string
-  institutionTypeId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramUncheckedCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
-}
-
-export type TenantCreateOrConnectWithoutAcademicYearsInput = {
-  where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutAcademicYearsInput, Prisma.TenantUncheckedCreateWithoutAcademicYearsInput>
-}
-
-export type TenantUpsertWithoutAcademicYearsInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutAcademicYearsInput, Prisma.TenantUncheckedUpdateWithoutAcademicYearsInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutAcademicYearsInput, Prisma.TenantUncheckedCreateWithoutAcademicYearsInput>
-  where?: Prisma.TenantWhereInput
-}
-
-export type TenantUpdateToOneWithWhereWithoutAcademicYearsInput = {
-  where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutAcademicYearsInput, Prisma.TenantUncheckedUpdateWithoutAcademicYearsInput>
-}
-
-export type TenantUpdateWithoutAcademicYearsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  institutionType?: Prisma.InstitutionTypeUpdateOneWithoutTenantsNestedInput
-  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantUncheckedUpdateWithoutAcademicYearsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUncheckedUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUncheckedUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUncheckedUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantCreateWithoutDepartmentsInput = {
-  id?: string
-  name: string
-  slug: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  institutionType?: Prisma.InstitutionTypeCreateNestedOneWithoutTenantsInput
-  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
-}
-
-export type TenantUncheckedCreateWithoutDepartmentsInput = {
-  id?: string
-  name: string
-  slug: string
-  institutionTypeId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramUncheckedCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
-}
-
-export type TenantCreateOrConnectWithoutDepartmentsInput = {
-  where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutDepartmentsInput, Prisma.TenantUncheckedCreateWithoutDepartmentsInput>
-}
-
-export type TenantUpsertWithoutDepartmentsInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutDepartmentsInput, Prisma.TenantUncheckedUpdateWithoutDepartmentsInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutDepartmentsInput, Prisma.TenantUncheckedCreateWithoutDepartmentsInput>
-  where?: Prisma.TenantWhereInput
-}
-
-export type TenantUpdateToOneWithWhereWithoutDepartmentsInput = {
-  where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutDepartmentsInput, Prisma.TenantUncheckedUpdateWithoutDepartmentsInput>
-}
-
-export type TenantUpdateWithoutDepartmentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  institutionType?: Prisma.InstitutionTypeUpdateOneWithoutTenantsNestedInput
-  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantUncheckedUpdateWithoutDepartmentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUncheckedUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUncheckedUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantCreateWithoutProgramsInput = {
-  id?: string
-  name: string
-  slug: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  institutionType?: Prisma.InstitutionTypeCreateNestedOneWithoutTenantsInput
-  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
-}
-
-export type TenantUncheckedCreateWithoutProgramsInput = {
-  id?: string
-  name: string
-  slug: string
-  institutionTypeId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
-}
-
-export type TenantCreateOrConnectWithoutProgramsInput = {
-  where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutProgramsInput, Prisma.TenantUncheckedCreateWithoutProgramsInput>
-}
-
-export type TenantUpsertWithoutProgramsInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutProgramsInput, Prisma.TenantUncheckedUpdateWithoutProgramsInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutProgramsInput, Prisma.TenantUncheckedCreateWithoutProgramsInput>
-  where?: Prisma.TenantWhereInput
-}
-
-export type TenantUpdateToOneWithWhereWithoutProgramsInput = {
-  where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutProgramsInput, Prisma.TenantUncheckedUpdateWithoutProgramsInput>
-}
-
-export type TenantUpdateWithoutProgramsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  institutionType?: Prisma.InstitutionTypeUpdateOneWithoutTenantsNestedInput
-  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantUncheckedUpdateWithoutProgramsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUncheckedUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUncheckedUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantCreateWithoutCoursesInput = {
-  id?: string
-  name: string
-  slug: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  institutionType?: Prisma.InstitutionTypeCreateNestedOneWithoutTenantsInput
-  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
-}
-
-export type TenantUncheckedCreateWithoutCoursesInput = {
-  id?: string
-  name: string
-  slug: string
-  institutionTypeId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramUncheckedCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
-}
-
-export type TenantCreateOrConnectWithoutCoursesInput = {
-  where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutCoursesInput, Prisma.TenantUncheckedCreateWithoutCoursesInput>
-}
-
-export type TenantUpsertWithoutCoursesInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutCoursesInput, Prisma.TenantUncheckedUpdateWithoutCoursesInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutCoursesInput, Prisma.TenantUncheckedCreateWithoutCoursesInput>
-  where?: Prisma.TenantWhereInput
-}
-
-export type TenantUpdateToOneWithWhereWithoutCoursesInput = {
-  where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutCoursesInput, Prisma.TenantUncheckedUpdateWithoutCoursesInput>
-}
-
-export type TenantUpdateWithoutCoursesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  institutionType?: Prisma.InstitutionTypeUpdateOneWithoutTenantsNestedInput
-  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantUncheckedUpdateWithoutCoursesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUncheckedUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUncheckedUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantCreateWithoutStudentsInput = {
-  id?: string
-  name: string
-  slug: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  institutionType?: Prisma.InstitutionTypeCreateNestedOneWithoutTenantsInput
-  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
-}
-
-export type TenantUncheckedCreateWithoutStudentsInput = {
-  id?: string
-  name: string
-  slug: string
-  institutionTypeId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramUncheckedCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
-}
-
-export type TenantCreateOrConnectWithoutStudentsInput = {
-  where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStudentsInput, Prisma.TenantUncheckedCreateWithoutStudentsInput>
-}
-
-export type TenantUpsertWithoutStudentsInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutStudentsInput, Prisma.TenantUncheckedUpdateWithoutStudentsInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStudentsInput, Prisma.TenantUncheckedCreateWithoutStudentsInput>
-  where?: Prisma.TenantWhereInput
-}
-
-export type TenantUpdateToOneWithWhereWithoutStudentsInput = {
-  where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutStudentsInput, Prisma.TenantUncheckedUpdateWithoutStudentsInput>
-}
-
-export type TenantUpdateWithoutStudentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  institutionType?: Prisma.InstitutionTypeUpdateOneWithoutTenantsNestedInput
-  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantUncheckedUpdateWithoutStudentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUncheckedUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUncheckedUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUncheckedUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantCreateWithoutStudentEnrollmentsInput = {
-  id?: string
-  name: string
-  slug: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  institutionType?: Prisma.InstitutionTypeCreateNestedOneWithoutTenantsInput
-  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberCreateNestedManyWithoutTenantInput
-}
-
-export type TenantUncheckedCreateWithoutStudentEnrollmentsInput = {
-  id?: string
-  name: string
-  slug: string
-  institutionTypeId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramUncheckedCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTenantInput
-  staffMembers?: Prisma.StaffMemberUncheckedCreateNestedManyWithoutTenantInput
-}
-
-export type TenantCreateOrConnectWithoutStudentEnrollmentsInput = {
-  where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStudentEnrollmentsInput, Prisma.TenantUncheckedCreateWithoutStudentEnrollmentsInput>
-}
-
-export type TenantUpsertWithoutStudentEnrollmentsInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutStudentEnrollmentsInput, Prisma.TenantUncheckedUpdateWithoutStudentEnrollmentsInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStudentEnrollmentsInput, Prisma.TenantUncheckedCreateWithoutStudentEnrollmentsInput>
-  where?: Prisma.TenantWhereInput
-}
-
-export type TenantUpdateToOneWithWhereWithoutStudentEnrollmentsInput = {
-  where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutStudentEnrollmentsInput, Prisma.TenantUncheckedUpdateWithoutStudentEnrollmentsInput>
-}
-
-export type TenantUpdateWithoutStudentEnrollmentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  institutionType?: Prisma.InstitutionTypeUpdateOneWithoutTenantsNestedInput
-  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantUncheckedUpdateWithoutStudentEnrollmentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUncheckedUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUncheckedUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUncheckedUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantCreateWithoutStaffMembersInput = {
-  id?: string
-  name: string
-  slug: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  institutionType?: Prisma.InstitutionTypeCreateNestedOneWithoutTenantsInput
-  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentCreateNestedManyWithoutTenantInput
-}
-
-export type TenantUncheckedCreateWithoutStaffMembersInput = {
-  id?: string
-  name: string
-  slug: string
-  institutionTypeId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
-  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
-  departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutTenantInput
-  programs?: Prisma.ProgramUncheckedCreateNestedManyWithoutTenantInput
-  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutTenantInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTenantInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedCreateNestedManyWithoutTenantInput
-}
-
-export type TenantCreateOrConnectWithoutStaffMembersInput = {
-  where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStaffMembersInput, Prisma.TenantUncheckedCreateWithoutStaffMembersInput>
-}
-
-export type TenantUpsertWithoutStaffMembersInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutStaffMembersInput, Prisma.TenantUncheckedUpdateWithoutStaffMembersInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStaffMembersInput, Prisma.TenantUncheckedCreateWithoutStaffMembersInput>
-  where?: Prisma.TenantWhereInput
-}
-
-export type TenantUpdateToOneWithWhereWithoutStaffMembersInput = {
-  where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutStaffMembersInput, Prisma.TenantUncheckedUpdateWithoutStaffMembersInput>
-}
-
-export type TenantUpdateWithoutStaffMembersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  institutionType?: Prisma.InstitutionTypeUpdateOneWithoutTenantsNestedInput
-  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantUncheckedUpdateWithoutStaffMembersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  institutionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUncheckedUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUncheckedUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUncheckedUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantCreateManyInstitutionTypeInput = {
-  id?: string
-  name: string
-  slug: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type TenantUpdateWithoutInstitutionTypeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantUncheckedUpdateWithoutInstitutionTypeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
-  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
-  departments?: Prisma.DepartmentUncheckedUpdateManyWithoutTenantNestedInput
-  programs?: Prisma.ProgramUncheckedUpdateManyWithoutTenantNestedInput
-  courses?: Prisma.CourseUncheckedUpdateManyWithoutTenantNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutTenantNestedInput
-  studentEnrollments?: Prisma.StudentEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
-  staffMembers?: Prisma.StaffMemberUncheckedUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantUncheckedUpdateManyWithoutInstitutionTypeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -1630,26 +565,12 @@ export type TenantCountOutputType = {
   memberships: number
   roles: number
   sessions: number
-  academicYears: number
-  departments: number
-  programs: number
-  courses: number
-  students: number
-  studentEnrollments: number
-  staffMembers: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memberships?: boolean | TenantCountOutputTypeCountMembershipsArgs
   roles?: boolean | TenantCountOutputTypeCountRolesArgs
   sessions?: boolean | TenantCountOutputTypeCountSessionsArgs
-  academicYears?: boolean | TenantCountOutputTypeCountAcademicYearsArgs
-  departments?: boolean | TenantCountOutputTypeCountDepartmentsArgs
-  programs?: boolean | TenantCountOutputTypeCountProgramsArgs
-  courses?: boolean | TenantCountOutputTypeCountCoursesArgs
-  students?: boolean | TenantCountOutputTypeCountStudentsArgs
-  studentEnrollments?: boolean | TenantCountOutputTypeCountStudentEnrollmentsArgs
-  staffMembers?: boolean | TenantCountOutputTypeCountStaffMembersArgs
 }
 
 /**
@@ -1683,74 +604,16 @@ export type TenantCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types
   where?: Prisma.SessionWhereInput
 }
 
-/**
- * TenantCountOutputType without action
- */
-export type TenantCountOutputTypeCountAcademicYearsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AcademicYearWhereInput
-}
-
-/**
- * TenantCountOutputType without action
- */
-export type TenantCountOutputTypeCountDepartmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.DepartmentWhereInput
-}
-
-/**
- * TenantCountOutputType without action
- */
-export type TenantCountOutputTypeCountProgramsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ProgramWhereInput
-}
-
-/**
- * TenantCountOutputType without action
- */
-export type TenantCountOutputTypeCountCoursesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CourseWhereInput
-}
-
-/**
- * TenantCountOutputType without action
- */
-export type TenantCountOutputTypeCountStudentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.StudentWhereInput
-}
-
-/**
- * TenantCountOutputType without action
- */
-export type TenantCountOutputTypeCountStudentEnrollmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.StudentEnrollmentWhereInput
-}
-
-/**
- * TenantCountOutputType without action
- */
-export type TenantCountOutputTypeCountStaffMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.StaffMemberWhereInput
-}
-
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   slug?: boolean
-  institutionTypeId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  institutionType?: boolean | Prisma.Tenant$institutionTypeArgs<ExtArgs>
   memberships?: boolean | Prisma.Tenant$membershipsArgs<ExtArgs>
   roles?: boolean | Prisma.Tenant$rolesArgs<ExtArgs>
   sessions?: boolean | Prisma.Tenant$sessionsArgs<ExtArgs>
-  academicYears?: boolean | Prisma.Tenant$academicYearsArgs<ExtArgs>
-  departments?: boolean | Prisma.Tenant$departmentsArgs<ExtArgs>
-  programs?: boolean | Prisma.Tenant$programsArgs<ExtArgs>
-  courses?: boolean | Prisma.Tenant$coursesArgs<ExtArgs>
-  students?: boolean | Prisma.Tenant$studentsArgs<ExtArgs>
-  studentEnrollments?: boolean | Prisma.Tenant$studentEnrollmentsArgs<ExtArgs>
-  staffMembers?: boolean | Prisma.Tenant$staffMembersArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
@@ -1758,73 +621,47 @@ export type TenantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   name?: boolean
   slug?: boolean
-  institutionTypeId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  institutionType?: boolean | Prisma.Tenant$institutionTypeArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
 export type TenantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   slug?: boolean
-  institutionTypeId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  institutionType?: boolean | Prisma.Tenant$institutionTypeArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
 export type TenantSelectScalar = {
   id?: boolean
   name?: boolean
   slug?: boolean
-  institutionTypeId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "institutionTypeId" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
+export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
 export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  institutionType?: boolean | Prisma.Tenant$institutionTypeArgs<ExtArgs>
   memberships?: boolean | Prisma.Tenant$membershipsArgs<ExtArgs>
   roles?: boolean | Prisma.Tenant$rolesArgs<ExtArgs>
   sessions?: boolean | Prisma.Tenant$sessionsArgs<ExtArgs>
-  academicYears?: boolean | Prisma.Tenant$academicYearsArgs<ExtArgs>
-  departments?: boolean | Prisma.Tenant$departmentsArgs<ExtArgs>
-  programs?: boolean | Prisma.Tenant$programsArgs<ExtArgs>
-  courses?: boolean | Prisma.Tenant$coursesArgs<ExtArgs>
-  students?: boolean | Prisma.Tenant$studentsArgs<ExtArgs>
-  studentEnrollments?: boolean | Prisma.Tenant$studentEnrollmentsArgs<ExtArgs>
-  staffMembers?: boolean | Prisma.Tenant$staffMembersArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  institutionType?: boolean | Prisma.Tenant$institutionTypeArgs<ExtArgs>
-}
-export type TenantIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  institutionType?: boolean | Prisma.Tenant$institutionTypeArgs<ExtArgs>
-}
+export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type TenantIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Tenant"
   objects: {
-    institutionType: Prisma.$InstitutionTypePayload<ExtArgs> | null
     memberships: Prisma.$MembershipPayload<ExtArgs>[]
     roles: Prisma.$RolePayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
-    academicYears: Prisma.$AcademicYearPayload<ExtArgs>[]
-    departments: Prisma.$DepartmentPayload<ExtArgs>[]
-    programs: Prisma.$ProgramPayload<ExtArgs>[]
-    courses: Prisma.$CoursePayload<ExtArgs>[]
-    students: Prisma.$StudentPayload<ExtArgs>[]
-    studentEnrollments: Prisma.$StudentEnrollmentPayload<ExtArgs>[]
-    staffMembers: Prisma.$StaffMemberPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     slug: string
-    institutionTypeId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["tenant"]>
@@ -2221,17 +1058,9 @@ readonly fields: TenantFieldRefs;
  */
 export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  institutionType<T extends Prisma.Tenant$institutionTypeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$institutionTypeArgs<ExtArgs>>): Prisma.Prisma__InstitutionTypeClient<runtime.Types.Result.GetResult<Prisma.$InstitutionTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   memberships<T extends Prisma.Tenant$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   roles<T extends Prisma.Tenant$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.Tenant$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  academicYears<T extends Prisma.Tenant$academicYearsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$academicYearsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AcademicYearPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  departments<T extends Prisma.Tenant$departmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$departmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  programs<T extends Prisma.Tenant$programsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$programsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  courses<T extends Prisma.Tenant$coursesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  students<T extends Prisma.Tenant$studentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  studentEnrollments<T extends Prisma.Tenant$studentEnrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$studentEnrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  staffMembers<T extends Prisma.Tenant$staffMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$staffMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2264,7 +1093,6 @@ export interface TenantFieldRefs {
   readonly id: Prisma.FieldRef<"Tenant", 'String'>
   readonly name: Prisma.FieldRef<"Tenant", 'String'>
   readonly slug: Prisma.FieldRef<"Tenant", 'String'>
-  readonly institutionTypeId: Prisma.FieldRef<"Tenant", 'String'>
   readonly createdAt: Prisma.FieldRef<"Tenant", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Tenant", 'DateTime'>
 }
@@ -2521,10 +1349,6 @@ export type TenantCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    */
   data: Prisma.TenantCreateManyInput | Prisma.TenantCreateManyInput[]
   skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TenantIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2595,10 +1419,6 @@ export type TenantUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many Tenants to update.
    */
   limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TenantIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2665,25 +1485,6 @@ export type TenantDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Tenants to delete.
    */
   limit?: number
-}
-
-/**
- * Tenant.institutionType
- */
-export type Tenant$institutionTypeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the InstitutionType
-   */
-  select?: Prisma.InstitutionTypeSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the InstitutionType
-   */
-  omit?: Prisma.InstitutionTypeOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.InstitutionTypeInclude<ExtArgs> | null
-  where?: Prisma.InstitutionTypeWhereInput
 }
 
 /**
@@ -2756,174 +1557,6 @@ export type Tenant$sessionsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
-}
-
-/**
- * Tenant.academicYears
- */
-export type Tenant$academicYearsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the AcademicYear
-   */
-  select?: Prisma.AcademicYearSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the AcademicYear
-   */
-  omit?: Prisma.AcademicYearOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AcademicYearInclude<ExtArgs> | null
-  where?: Prisma.AcademicYearWhereInput
-  orderBy?: Prisma.AcademicYearOrderByWithRelationInput | Prisma.AcademicYearOrderByWithRelationInput[]
-  cursor?: Prisma.AcademicYearWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.AcademicYearScalarFieldEnum | Prisma.AcademicYearScalarFieldEnum[]
-}
-
-/**
- * Tenant.departments
- */
-export type Tenant$departmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Department
-   */
-  select?: Prisma.DepartmentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Department
-   */
-  omit?: Prisma.DepartmentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.DepartmentInclude<ExtArgs> | null
-  where?: Prisma.DepartmentWhereInput
-  orderBy?: Prisma.DepartmentOrderByWithRelationInput | Prisma.DepartmentOrderByWithRelationInput[]
-  cursor?: Prisma.DepartmentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.DepartmentScalarFieldEnum | Prisma.DepartmentScalarFieldEnum[]
-}
-
-/**
- * Tenant.programs
- */
-export type Tenant$programsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Program
-   */
-  select?: Prisma.ProgramSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Program
-   */
-  omit?: Prisma.ProgramOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ProgramInclude<ExtArgs> | null
-  where?: Prisma.ProgramWhereInput
-  orderBy?: Prisma.ProgramOrderByWithRelationInput | Prisma.ProgramOrderByWithRelationInput[]
-  cursor?: Prisma.ProgramWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ProgramScalarFieldEnum | Prisma.ProgramScalarFieldEnum[]
-}
-
-/**
- * Tenant.courses
- */
-export type Tenant$coursesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Course
-   */
-  select?: Prisma.CourseSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Course
-   */
-  omit?: Prisma.CourseOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CourseInclude<ExtArgs> | null
-  where?: Prisma.CourseWhereInput
-  orderBy?: Prisma.CourseOrderByWithRelationInput | Prisma.CourseOrderByWithRelationInput[]
-  cursor?: Prisma.CourseWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.CourseScalarFieldEnum | Prisma.CourseScalarFieldEnum[]
-}
-
-/**
- * Tenant.students
- */
-export type Tenant$studentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Student
-   */
-  select?: Prisma.StudentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Student
-   */
-  omit?: Prisma.StudentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.StudentInclude<ExtArgs> | null
-  where?: Prisma.StudentWhereInput
-  orderBy?: Prisma.StudentOrderByWithRelationInput | Prisma.StudentOrderByWithRelationInput[]
-  cursor?: Prisma.StudentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.StudentScalarFieldEnum | Prisma.StudentScalarFieldEnum[]
-}
-
-/**
- * Tenant.studentEnrollments
- */
-export type Tenant$studentEnrollmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the StudentEnrollment
-   */
-  select?: Prisma.StudentEnrollmentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the StudentEnrollment
-   */
-  omit?: Prisma.StudentEnrollmentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.StudentEnrollmentInclude<ExtArgs> | null
-  where?: Prisma.StudentEnrollmentWhereInput
-  orderBy?: Prisma.StudentEnrollmentOrderByWithRelationInput | Prisma.StudentEnrollmentOrderByWithRelationInput[]
-  cursor?: Prisma.StudentEnrollmentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.StudentEnrollmentScalarFieldEnum | Prisma.StudentEnrollmentScalarFieldEnum[]
-}
-
-/**
- * Tenant.staffMembers
- */
-export type Tenant$staffMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the StaffMember
-   */
-  select?: Prisma.StaffMemberSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the StaffMember
-   */
-  omit?: Prisma.StaffMemberOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.StaffMemberInclude<ExtArgs> | null
-  where?: Prisma.StaffMemberWhereInput
-  orderBy?: Prisma.StaffMemberOrderByWithRelationInput | Prisma.StaffMemberOrderByWithRelationInput[]
-  cursor?: Prisma.StaffMemberWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.StaffMemberScalarFieldEnum | Prisma.StaffMemberScalarFieldEnum[]
 }
 
 /**

@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/wasm-compiler-edge"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Role
@@ -490,6 +490,10 @@ export type RoleUncheckedUpdateManyWithoutMembershipsNestedInput = {
 
 export type EnumRoleScopeFieldUpdateOperationsInput = {
   set?: $Enums.RoleScope
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type RoleCreateNestedOneWithoutPermissionsInput = {
