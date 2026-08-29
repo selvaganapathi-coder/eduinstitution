@@ -61,6 +61,24 @@ enum StudentAcademicGroupMembershipStatus {
   ARCHIVED
 }
 
+enum AttendanceMode {
+  DAILY
+  SESSION
+}
+
+enum AttendanceSessionStatus {
+  OPEN
+  FINALIZED
+  CANCELLED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
 enum InstitutionTypeStatus {
   ACTIVE
   ARCHIVED
@@ -139,6 +157,8 @@ model Tenant {
   academicYears AcademicYear[]
   academicGroups AcademicGroup[]
   studentAcademicGroupMemberships StudentAcademicGroupMembership[]
+  attendanceSessions AttendanceSession[]
+  attendanceRecords AttendanceRecord[]
   departments Department[]
   programs Program[]
   courses Course[]
@@ -316,6 +336,7 @@ model AcademicGroup {
   parentGroup AcademicGroup? @relation("AcademicGroupHierarchy", fields: [parentGroupId], references: [id], onDelete: Restrict)
   childGroups AcademicGroup[] @relation("AcademicGroupHierarchy")
   memberships StudentAcademicGroupMembership[]
+  attendanceSessions AttendanceSession[]
   @@unique([tenantId, academicYearId, type, name])
   @@index([tenantId, academicYearId, status, sortOrder])
   @@index([tenantId, parentGroupId, status, sortOrder])
@@ -337,6 +358,40 @@ model StudentAcademicGroupMembership {
   @@unique([studentId, academicGroupId])
   @@index([tenantId, studentId, status])
   @@index([tenantId, academicGroupId, status])
+}
+
+model AttendanceSession {
+  id String @id @default(cuid())
+  tenantId String
+  academicGroupId String
+  attendanceDate DateTime
+  mode AttendanceMode @default(DAILY)
+  status AttendanceSessionStatus @default(OPEN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  academicGroup AcademicGroup @relation(fields: [academicGroupId], references: [id], onDelete: Cascade)
+  records AttendanceRecord[]
+  @@unique([academicGroupId, attendanceDate, mode])
+  @@index([tenantId, attendanceDate, status])
+  @@index([tenantId, academicGroupId, attendanceDate])
+}
+
+model AttendanceRecord {
+  id String @id @default(cuid())
+  tenantId String
+  attendanceSessionId String
+  studentId String
+  status AttendanceStatus
+  markedAt DateTime @default(now())
+  remarks String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  attendanceSession AttendanceSession @relation(fields: [attendanceSessionId], references: [id], onDelete: Cascade)
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  @@unique([attendanceSessionId, studentId])
+  @@index([tenantId, studentId, markedAt])
 }
 
 model Department {
@@ -439,6 +494,7 @@ model Student {
   guardians StudentGuardian[]
   enrollments StudentEnrollment[]
   academicGroupMemberships StudentAcademicGroupMembership[]
+  attendanceRecords AttendanceRecord[]
   @@unique([tenantId, studentNumber])
   @@index([tenantId, status, lastName, firstName])
   @@index([tenantId, email])
