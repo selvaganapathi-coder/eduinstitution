@@ -1,7 +1,31 @@
-import { AttendanceMode, AttendanceSessionStatus, AttendanceStatus, Prisma } from "../../generated/prisma";
 import { isMembershipActiveOnDate } from "./validation";
 
-export type AttendancePrismaClient = Prisma.TransactionClient;
+export type AttendanceMode = "DAILY" | "SESSION";
+export type AttendanceSessionStatus = "OPEN" | "FINALIZED" | "CANCELLED";
+export type AttendanceStatus = "PRESENT" | "ABSENT" | "LATE" | "EXCUSED";
+
+export interface AttendancePrismaClient {
+  academicGroup: { findFirst: (args: unknown) => Promise<unknown> };
+  attendanceSession: {
+    upsert: (args: unknown) => Promise<unknown>;
+    findFirst: (args: unknown) => Promise<{
+      id: string;
+      tenantId: string;
+      academicGroupId: string;
+      attendanceDate: Date;
+      status: AttendanceSessionStatus;
+    } | null>;
+  };
+  studentAcademicGroupMembership: {
+    findMany: (args: unknown) => Promise<Array<{
+      status: string;
+      startDate: Date;
+      endDate: Date | null;
+      student: { id: string; tenantId: string; status: string };
+    }>>;
+  };
+  attendanceRecord: { upsert: (args: unknown) => Promise<unknown> };
+}
 
 function dayBounds(date: Date) {
   const start = new Date(date);
@@ -15,7 +39,7 @@ export async function createOrGetAttendanceSession(
   db: AttendancePrismaClient,
   input: { tenantId: string; academicGroupId: string; attendanceDate: Date; mode?: AttendanceMode },
 ) {
-  const mode = input.mode ?? AttendanceMode.DAILY;
+  const mode = input.mode ?? "DAILY";
   const group = await db.academicGroup.findFirst({ where: { id: input.academicGroupId, tenantId: input.tenantId } });
   if (!group) throw new Error("Academic group was not found for this institution.");
 
@@ -32,7 +56,7 @@ export async function createOrGetAttendanceSession(
       academicGroupId: input.academicGroupId,
       attendanceDate: input.attendanceDate,
       mode,
-      status: AttendanceSessionStatus.OPEN,
+      status: "OPEN",
     },
     update: {},
   });
@@ -73,7 +97,7 @@ export async function markAttendance(
     where: { id: input.attendanceSessionId, tenantId: input.tenantId },
   });
   if (!session) throw new Error("Attendance session was not found for this institution.");
-  if (session.status !== AttendanceSessionStatus.OPEN) throw new Error("Attendance can only be marked while the session is open.");
+  if (session.status !== "OPEN") throw new Error("Attendance can only be marked while the session is open.");
 
   const eligibleStudents = await getEligibleStudents(db, {
     tenantId: input.tenantId,
