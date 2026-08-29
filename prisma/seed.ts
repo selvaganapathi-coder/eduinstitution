@@ -27,44 +27,10 @@ const CAPABILITIES = [
   ["STUDENTS", "Students", "Manage student records and enrollment."],
   ["FACULTY_STAFF", "Faculty and staff", "Manage teaching and administrative staff."],
   ["ATTENDANCE", "Attendance", "Record and review attendance."],
-  ["ATTENDANCE_MORNING", "Morning attendance", "Record attendance for the morning session."],
-  ["ATTENDANCE_AFTERNOON", "Afternoon attendance", "Record attendance for the afternoon session."],
-  ["ATTENDANCE_FULL_DAY", "Full day attendance", "Record attendance for the full day."],
-  ["ATTENDANCE_PERIOD", "Period attendance", "Record attendance by academic period."],
-  ["ATTENDANCE_SUBJECT_SESSION", "Subject session attendance", "Record attendance for a subject session."],
-  ["ATTENDANCE_LECTURE", "Lecture attendance", "Record attendance for a lecture."],
-  ["ATTENDANCE_LAB", "Lab attendance", "Record attendance for a laboratory session."],
-  ["ATTENDANCE_TUTORIAL", "Tutorial attendance", "Record attendance for a tutorial."],
-  ["ATTENDANCE_SESSION", "Session attendance", "Record attendance for a training session."],
-  ["ATTENDANCE_CUSTOM", "Custom attendance", "Record attendance using an institution-defined session type."],
   ["EXAMS_GRADES", "Exams and grades", "Manage examinations, assessments, and grades."],
   ["FEES", "Fees", "Manage fee structures, payments, and dues."],
   ["REPORTS", "Reports", "Generate operational and academic reports."],
 ] as const;
-
-const BASE_CAPABILITY_CODES = [
-  "ACADEMIC_YEARS",
-  "ACADEMIC_TERMS",
-  "DEPARTMENTS",
-  "PROGRAMS",
-  "STUDENTS",
-  "FACULTY_STAFF",
-  "ATTENDANCE",
-  "EXAMS_GRADES",
-  "FEES",
-  "REPORTS",
-] as const;
-
-const ATTENDANCE_CAPABILITY_CODES_BY_TYPE: Record<string, readonly string[]> = {
-  SCHOOL: ["ATTENDANCE_MORNING", "ATTENDANCE_AFTERNOON", "ATTENDANCE_FULL_DAY"],
-  ENGINEERING: ["ATTENDANCE_PERIOD", "ATTENDANCE_SUBJECT_SESSION", "ATTENDANCE_FULL_DAY"],
-  PHARMACY: ["ATTENDANCE_PERIOD", "ATTENDANCE_SUBJECT_SESSION", "ATTENDANCE_FULL_DAY"],
-  ARTS_SCIENCE: ["ATTENDANCE_PERIOD", "ATTENDANCE_SUBJECT_SESSION", "ATTENDANCE_FULL_DAY"],
-  POLYTECHNIC: ["ATTENDANCE_PERIOD", "ATTENDANCE_SUBJECT_SESSION", "ATTENDANCE_FULL_DAY"],
-  UNIVERSITY: ["ATTENDANCE_LECTURE", "ATTENDANCE_LAB", "ATTENDANCE_TUTORIAL", "ATTENDANCE_CUSTOM"],
-  VOCATIONAL: ["ATTENDANCE_SESSION", "ATTENDANCE_CUSTOM"],
-  GENERAL: [],
-};
 
 const PERMISSIONS = [
   ["institution:update", "Update the current institution profile"],
@@ -133,18 +99,13 @@ async function main() {
       capabilities.set(code, capability);
     }
 
-    for (const [typeCode, type] of institutionTypes) {
-      const allowedCodes = new Set([
-        ...BASE_CAPABILITY_CODES,
-        ...(ATTENDANCE_CAPABILITY_CODES_BY_TYPE[typeCode] ?? []),
-      ]);
-
-      for (const [capabilityCode, capability] of capabilities) {
-        const enabled = allowedCodes.has(capabilityCode);
+    for (const typeCode of institutionTypes.keys()) {
+      const type = institutionTypes.get(typeCode)!;
+      for (const capability of capabilities.values()) {
         await prisma.institutionTypeCapability.upsert({
           where: { institutionTypeId_capabilityId: { institutionTypeId: type.id, capabilityId: capability.id } },
-          update: { enabled },
-          create: { institutionTypeId: type.id, capabilityId: capability.id, enabled },
+          update: { enabled: true },
+          create: { institutionTypeId: type.id, capabilityId: capability.id, enabled: true },
         });
       }
     }
