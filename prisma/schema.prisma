@@ -18,27 +18,130 @@ datasource db {
   provider = "postgresql"
 }
 
-enum MembershipStatus { ACTIVE INVITED SUSPENDED REVOKED }
-enum RoleScope { SYSTEM TENANT }
-enum AcademicYearStatus { ACTIVE ARCHIVED }
-enum AcademicTermStatus { ACTIVE ARCHIVED }
-enum AcademicGroupType { CLASS SECTION COHORT BATCH SEMESTER GROUP }
-enum AcademicGroupStatus { ACTIVE ARCHIVED }
-enum StudentAcademicGroupMembershipStatus { ACTIVE COMPLETED WITHDRAWN ARCHIVED }
-enum AttendanceMode { DAILY SESSION }
-enum AttendanceSessionStatus { OPEN FINALIZED CANCELLED }
-enum AttendanceStatus { PRESENT ABSENT LATE EXCUSED }
-enum InstitutionTypeStatus { ACTIVE ARCHIVED }
-enum DepartmentStatus { ACTIVE ARCHIVED }
-enum ProgramStatus { ACTIVE ARCHIVED }
-enum ProgramType { DEGREE DIPLOMA CERTIFICATE OTHER }
-enum CourseStatus { ACTIVE ARCHIVED }
-enum CourseType { CORE ELECTIVE PRACTICAL PROJECT OTHER }
-enum StudentStatus { ACTIVE ARCHIVED }
-enum GuardianStatus { ACTIVE ARCHIVED }
-enum StaffType { TEACHING NON_TEACHING }
-enum StaffStatus { ACTIVE INACTIVE ON_LEAVE ARCHIVED }
-enum StudentEnrollmentStatus { ACTIVE COMPLETED WITHDRAWN ARCHIVED }
+enum MembershipStatus {
+  ACTIVE
+  INVITED
+  SUSPENDED
+  REVOKED
+}
+
+enum RoleScope {
+  SYSTEM
+  TENANT
+}
+
+enum AcademicYearStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum AcademicTermStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum AcademicGroupType {
+  CLASS
+  SECTION
+  COHORT
+  BATCH
+  SEMESTER
+  GROUP
+}
+
+enum AcademicGroupStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum StudentAcademicGroupMembershipStatus {
+  ACTIVE
+  COMPLETED
+  WITHDRAWN
+  ARCHIVED
+}
+
+enum AttendanceMode {
+  DAILY
+  SESSION
+}
+
+enum AttendanceSessionStatus {
+  OPEN
+  FINALIZED
+  CANCELLED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+enum InstitutionTypeStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum DepartmentStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum ProgramStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum ProgramType {
+  DEGREE
+  DIPLOMA
+  CERTIFICATE
+  OTHER
+}
+
+enum CourseStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum CourseType {
+  CORE
+  ELECTIVE
+  PRACTICAL
+  PROJECT
+  OTHER
+}
+
+enum StudentStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum GuardianStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum StaffType {
+  TEACHING
+  NON_TEACHING
+}
+
+enum StaffStatus {
+  ACTIVE
+  INACTIVE
+  ON_LEAVE
+  ARCHIVED
+}
+
+enum StudentEnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  WITHDRAWN
+  ARCHIVED
+}
 
 model Tenant {
   id String @id @default(cuid())
