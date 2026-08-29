@@ -13,7 +13,7 @@ const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
 };
 
-function getPrisma() {
+export function getPrisma() {
   if (globalForPrisma.prisma) return globalForPrisma.prisma;
 
   neonConfig.fetchConnectionCache = true;
